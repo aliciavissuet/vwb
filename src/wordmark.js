@@ -153,7 +153,21 @@ window.addEventListener('resize', () => {
 })
 
 const blinkTransition = document.querySelector('.blink-transition')
+const siteHeader = document.querySelector('.site-header')
+const menuToggle = document.querySelector('.menu-toggle')
 let transitionActive = false
+
+function setMenuOpen(isOpen) {
+  if (!siteHeader || !menuToggle) return
+
+  siteHeader.classList.toggle('is-menu-open', isOpen)
+  menuToggle.setAttribute('aria-expanded', String(isOpen))
+  menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation')
+}
+
+menuToggle?.addEventListener('click', () => {
+  setMenuOpen(menuToggle.getAttribute('aria-expanded') !== 'true')
+})
 
 function scrollWithBlink(target) {
   if (!blinkTransition || prefersReduced || transitionActive) {
@@ -184,6 +198,7 @@ for (const link of document.querySelectorAll('a[href^="#"]')) {
 
     event.preventDefault()
     history.pushState(null, '', id)
+    setMenuOpen(false)
     scrollWithBlink(target)
   })
 }

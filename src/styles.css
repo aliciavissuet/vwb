@@ -86,6 +86,48 @@ a {
   color: var(--red);
 }
 
+.menu-toggle {
+  display: none;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.menu-toggle span {
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.menu-toggle span:nth-child(1) {
+  transform: translateY(-7px);
+}
+
+.menu-toggle span:nth-child(3) {
+  transform: translateY(7px);
+}
+
+.menu-toggle[aria-expanded="true"] span:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.menu-toggle[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle[aria-expanded="true"] span:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
 .hero {
   position: relative;
   display: flex;
@@ -549,11 +591,35 @@ a {
 
 @media (max-width: 520px) {
   .site-nav {
-    display: none;
+    position: absolute;
+    top: calc(100% - 2px);
+    right: 18px;
+    display: grid;
+    gap: 14px;
+    min-width: 190px;
+    border: 1px solid rgb(16 16 16 / 0.1);
+    padding: 18px;
+    background: rgb(255 255 255 / 0.96);
+    box-shadow: 0 18px 44px rgb(16 16 16 / 0.08);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
   }
 
   .site-header {
     padding: 16px 18px;
+  }
+
+  .site-header.is-menu-open .site-nav {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .menu-toggle {
+    position: relative;
+    display: inline-flex;
   }
 
   .brand-name {
@@ -575,6 +641,18 @@ a {
 
   .button {
     width: auto;
+  }
+
+  .button {
+    padding-right: 0;
+  }
+
+  .button::before {
+    right: 0;
+  }
+
+  .button::after {
+    display: none;
   }
 
   .logo-svg {
