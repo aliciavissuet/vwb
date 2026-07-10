@@ -88,3 +88,100 @@ function initSphere(svg) {
 for (const globe of document.querySelectorAll('[data-sphere-globe]')) {
   initSphere(globe)
 }
+
+function centerLogoRows() {
+  const svg = document.querySelector('.logo-svg')
+  if (!svg) return
+
+  const targetCenter = svg.viewBox.baseVal.x + svg.viewBox.baseVal.width / 2
+  const rows = svg.querySelectorAll('.logo-line-vision, .logo-line-without, .logo-line-borders')
+
+  for (const row of rows) {
+    row.removeAttribute('transform')
+    const box = row.getBBox()
+    const rowCenter = box.x + box.width / 2
+    row.setAttribute('transform', `translate(${(targetCenter - rowCenter).toFixed(2)} 0)`)
+  }
+}
+
+function alignGlobeToBordersText() {
+  const svg = document.querySelector('.logo-svg')
+  const globe = document.querySelector('.logo-globe')
+  const borders = document.querySelector('.logo-line-borders')
+  if (!svg || !globe || !borders) return
+
+  const borderTexts = borders.querySelectorAll('text')
+  if (borderTexts.length < 2) return
+
+  if (!globe.dataset.baseTransform) {
+    globe.dataset.baseTransform = globe.getAttribute('transform') || ''
+  }
+
+  globe.setAttribute('transform', globe.dataset.baseTransform)
+
+  const svgRect = svg.getBoundingClientRect()
+  const textRects = Array.from(borderTexts, (text) => text.getBoundingClientRect())
+  const textTop = Math.min(...textRects.map((rect) => rect.top))
+  const textBottom = Math.max(...textRects.map((rect) => rect.bottom))
+  const textCenter = textTop + (textBottom - textTop) / 2
+  const globeRect = globe.getBoundingClientRect()
+  const globeCenter = globeRect.top + globeRect.height / 2
+  const svgUnitsPerPixel = svg.viewBox.baseVal.height / svgRect.height
+  const dy = (textCenter - globeCenter) * svgUnitsPerPixel
+  const match = globe.dataset.baseTransform.match(/translate\(([-\d.]+)\s+([-\d.]+)\)\s+scale\(([-\d.]+)\)/)
+
+  if (!match) return
+
+  const [, x, y, scale] = match
+  globe.setAttribute('transform', `translate(${x} ${(Number(y) + dy).toFixed(2)}) scale(${scale})`)
+}
+
+requestAnimationFrame(() => {
+  alignGlobeToBordersText()
+  centerLogoRows()
+  window.setTimeout(() => {
+    alignGlobeToBordersText()
+    centerLogoRows()
+  }, 120)
+})
+
+window.addEventListener('resize', () => {
+  alignGlobeToBordersText()
+  centerLogoRows()
+})
+
+const blinkTransition = document.querySelector('.blink-transition')
+let transitionActive = false
+
+function scrollWithBlink(target) {
+  if (!blinkTransition || prefersReduced || transitionActive) {
+    target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' })
+    return
+  }
+
+  transitionActive = true
+  blinkTransition.classList.add('is-active')
+
+  window.setTimeout(() => {
+    target.scrollIntoView({ behavior: 'auto', block: 'start' })
+  }, 360)
+
+  window.setTimeout(() => {
+    blinkTransition.classList.remove('is-active')
+    transitionActive = false
+  }, 820)
+}
+
+for (const link of document.querySelectorAll('a[href^="#"]')) {
+  link.addEventListener('click', (event) => {
+    const id = link.getAttribute('href')
+    if (!id || id === '#') return
+
+    const target = document.querySelector(id)
+    if (!target) return
+
+    event.preventDefault()
+    history.pushState(null, '', id)
+    scrollWithBlink(target)
+  })
+}
