@@ -92,7 +92,7 @@ a {
   min-height: 100svh;
   align-items: center;
   justify-content: center;
-  padding: clamp(116px, 15vh, 170px) clamp(20px, 6vw, 96px) clamp(56px, 8vh, 96px);
+  padding: clamp(86px, 10vh, 126px) clamp(20px, 6vw, 96px) clamp(42px, 6vh, 72px);
   text-align: center;
 }
 
@@ -116,7 +116,7 @@ a {
 }
 
 .eyebrow {
-  margin: 0 0 18px;
+  margin: 0 0 10px;
   color: var(--red);
   font-size: clamp(0.72rem, 1.3vw, 0.86rem);
   font-weight: 900;
@@ -202,7 +202,7 @@ a {
 
 .hero-text {
   max-width: 36rem;
-  margin: clamp(22px, 4vw, 34px) 0 0;
+  margin: clamp(8px, 1.8vw, 16px) 0 0;
   color: var(--muted);
   font-size: clamp(1.04rem, 2vw, 1.36rem);
   line-height: 1.55;
@@ -213,7 +213,7 @@ a {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: clamp(28px, 4vw, 42px);
+  margin-top: clamp(18px, 2.6vw, 30px);
 }
 
 .button {
@@ -533,7 +533,7 @@ a {
 
   .hero {
     min-height: 100svh;
-    padding: 104px 18px 56px;
+    padding: 88px 18px 46px;
   }
 
   .logo-svg {
@@ -564,7 +564,7 @@ a {
 
   .hero {
     align-items: start;
-    padding: 92px 14px 44px;
+    padding: 82px 14px 34px;
   }
 
   .eyebrow {
@@ -584,13 +584,13 @@ a {
 
   .hero-text {
     max-width: 24rem;
-    margin-top: 12px;
+    margin-top: 8px;
     font-size: clamp(0.88rem, 3.7vw, 1rem);
     line-height: 1.45;
   }
 
   .hero-actions {
-    margin-top: 22px;
+    margin-top: 16px;
   }
 
   .content-section h2 {

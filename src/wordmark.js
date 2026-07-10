@@ -3,7 +3,9 @@ const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').mat
 const center = { x: 60, y: 60 }
 const radius = 47
 const meridians = [-165, -135, -105, -75, -45, -15, 15, 45, 75, 105, 135, 165]
-const latitudes = [-70, -52, -34, -16, 0, 16, 34, 52, 70]
+const latitudes = [-62, -40, -20, 0, 20, 40, 62]
+const meridianVisibilityFloor = -0.08
+const latitudeVisibilityFloor = 0.18
 
 function createPath() {
   const path = document.createElementNS(svgNS, 'path')
@@ -11,7 +13,7 @@ function createPath() {
   return path
 }
 
-function globePoint(lonDeg, latDeg, rotation) {
+function globePoint(lonDeg, latDeg, rotation, visibilityFloor = meridianVisibilityFloor) {
   const lon = (((lonDeg + rotation + 540) % 360) - 180) * Math.PI / 180
   const lat = latDeg * Math.PI / 180
   const x3 = Math.cos(lat) * Math.sin(lon)
@@ -20,7 +22,7 @@ function globePoint(lonDeg, latDeg, rotation) {
   const perspective = 0.84 + z3 * 0.16
 
   return {
-    visible: z3 >= -0.08,
+    visible: z3 >= visibilityFloor,
     x: center.x + x3 * radius * perspective,
     y: center.y - y3 * radius * perspective,
   }
@@ -72,7 +74,7 @@ function initSphere(svg) {
         }
       } else {
         for (let lon = -180; lon <= 180; lon += 4) {
-          points.push(globePoint(lon, item.lat, rotation))
+          points.push(globePoint(lon, item.lat, rotation, latitudeVisibilityFloor))
         }
       }
 
