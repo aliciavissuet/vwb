@@ -202,3 +202,31 @@ for (const link of document.querySelectorAll('a[href^="#"]')) {
     scrollWithBlink(target)
   })
 }
+
+const lineTargets = document.querySelectorAll(
+  '.content-grid article, .publication-list article, .founder-profile',
+)
+
+if (lineTargets.length) {
+  if (prefersReduced || !('IntersectionObserver' in window)) {
+    for (const target of lineTargets) {
+      target.classList.add('is-line-visible')
+    }
+  } else {
+    const lineObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue
+
+          entry.target.classList.add('is-line-visible')
+          lineObserver.unobserve(entry.target)
+        }
+      },
+      { rootMargin: '0px 0px -14% 0px', threshold: 0.26 },
+    )
+
+    for (const target of lineTargets) {
+      lineObserver.observe(target)
+    }
+  }
+}
