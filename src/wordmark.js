@@ -223,17 +223,7 @@ if (
 
 try {
   window.sessionStorage.setItem('vwb-site-seen', 'true')
-
-  if (window.sessionStorage.getItem('vwb-blink-enter') === 'true' && !prefersReduced) {
-    window.sessionStorage.removeItem('vwb-blink-enter')
-    transitionActive = true
-    blinkTransition.classList.add('is-opening')
-
-    window.setTimeout(() => {
-      blinkTransition.classList.remove('is-opening')
-      transitionActive = false
-    }, 460)
-  }
+  window.sessionStorage.removeItem('vwb-blink-enter')
 } catch {
   // Navigation still works when session storage is unavailable.
 }
@@ -276,16 +266,18 @@ function navigateWithBlink(url) {
   }
 
   transitionActive = true
-  blinkTransition.classList.add('is-closing')
+  blinkTransition.classList.add('is-active')
 
-  window.setTimeout(() => {
-    try {
-      window.sessionStorage.setItem('vwb-blink-enter', 'true')
-    } catch {
-      // Continue without the opening half of the transition.
-    }
+  let hasNavigated = false
+  const finishNavigation = () => {
+    if (hasNavigated) return
+    hasNavigated = true
     window.location.assign(url)
-  }, 430)
+  }
+
+  const topLid = blinkTransition.querySelector('.blink-lid-top')
+  topLid?.addEventListener('animationend', finishNavigation, { once: true })
+  window.setTimeout(finishNavigation, 900)
 }
 
 for (const link of document.querySelectorAll('a[href^="#"]')) {
@@ -510,6 +502,9 @@ for (const explorer of document.querySelectorAll('[data-ambassador-explorer]')) 
   const pins = Array.from(explorer.querySelectorAll('[data-ambassador-pin]'))
   const detailCountry = explorer.querySelector('[data-ambassador-detail-country]')
   const detailCopy = explorer.querySelector('[data-ambassador-detail-copy]')
+  const visual = explorer.querySelector('[data-ambassador-visual]')
+  const photoCode = explorer.querySelector('[data-ambassador-photo-code]')
+  const photoPlaceholder = explorer.querySelector('.ambassador-photo-placeholder')
 
   const setActiveCountry = (countryName) => {
     const country = countries.find((item) => item.dataset.ambassadorCountry === countryName)
@@ -527,6 +522,9 @@ for (const explorer of document.querySelectorAll('[data-ambassador-explorer]')) 
 
     if (detailCountry) detailCountry.textContent = country.querySelector('span')?.textContent || ''
     if (detailCopy) detailCopy.textContent = country.querySelector('small')?.textContent || ''
+    if (visual) visual.dataset.country = countryName
+    if (photoCode) photoCode.textContent = country.dataset.photoCode || ''
+    if (photoPlaceholder) photoPlaceholder.setAttribute('aria-label', `Photo placeholder for ${detailCountry?.textContent || countryName}`)
   }
 
   for (const country of countries) {
