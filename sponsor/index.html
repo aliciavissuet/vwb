@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Start a sponsorship conversation with Vision Without Borders." />
+    <title>Become a Sponsor | Vision Without Borders</title>
+    <link rel="icon" href="/assets/vwb-logo-mark.svg?v=1" type="image/svg+xml" />
+    <link rel="stylesheet" href="/src/styles.css?v=56" />
+  </head>
+  <body class="inner-page sponsor-page">
+    <main class="site-shell">
+      <header class="site-header" aria-label="Vision Without Borders"><a class="brand" href="/" aria-label="Vision Without Borders home"><img class="brand-mark" src="/assets/vwb-logo-mark.svg" alt="" aria-hidden="true" /><span class="brand-name">Vision Without Borders</span></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation"><span></span><span></span><span></span></button><nav id="primary-nav" class="site-nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/mission">Mission</a><a href="/about">About</a><a href="/timeline">Timeline</a><a href="/news">News &amp; Research</a><a href="/sponsor" aria-current="page">Sponsor</a><a href="/contact">Contact</a></nav></header>
+
+      <section class="content-section sponsor-section" aria-labelledby="sponsor-title">
+        <div class="section-shell sponsor-shell">
+          <header class="sponsor-intro">
+            <p class="section-kicker">Become a sponsor</p>
+            <h1 id="sponsor-title">Help the work travel farther.</h1>
+            <p class="lead">Tell us what meaningful support looks like to your organization. This is a conversation—not a payment page.</p>
+            <div class="sponsor-promise"><span>What happens next</span><p>We’ll review your proposal and respond within <strong>1–2 business days.</strong></p></div>
+          </header>
+
+          <div class="sponsor-form-wrap" data-sponsor-flow>
+            <div class="sponsor-progress" aria-label="Form progress"><span class="is-active" data-sponsor-progress="0">01</span><i></i><span data-sponsor-progress="1">02</span><i></i><span data-sponsor-progress="2">03</span><i></i><span data-sponsor-progress="3">04</span></div>
+            <form class="sponsor-form" name="sponsor-inquiry" method="POST" action="/sponsor/thanks/" data-netlify="true">
+              <input type="hidden" name="form-name" value="sponsor-inquiry" />
+
+              <fieldset class="sponsor-step is-active" data-sponsor-step="0">
+                <legend><span>Step 1 of 4</span>Who you are</legend>
+                <div class="sponsor-fields sponsor-fields-two"><label><span>Company or organization</span><input name="organization" autocomplete="organization" required /></label><label><span>Contact name</span><input name="contact-name" autocomplete="name" required /></label><label><span>Email</span><input name="email" type="email" autocomplete="email" required /></label><label><span>Website <small>Optional</small></span><input name="website" type="url" autocomplete="url" placeholder="https://" /></label></div>
+              </fieldset>
+
+              <fieldset class="sponsor-step" data-sponsor-step="1" hidden>
+                <legend><span>Step 2 of 4</span>Intended support</legend>
+                <p class="sponsor-step-intro">A rough amount is helpful. It does not commit you to a contribution.</p>
+                <label class="sponsor-amount"><span>Estimated contribution amount</span><span class="sponsor-currency" aria-hidden="true">$</span><input name="intended-amount" inputmode="decimal" aria-label="Estimated contribution amount in dollars" placeholder="Amount" required /></label>
+                <p class="sponsor-field-note">Suggested sponsorship levels will be added after they are finalized.</p>
+              </fieldset>
+
+              <fieldset class="sponsor-step" data-sponsor-step="2" hidden>
+                <legend><span>Step 3 of 4</span>What are you looking for?</legend>
+                <p class="sponsor-step-intro">Select any ideas you’d like to explore. We’ll shape the details together.</p>
+                <div class="sponsor-options">
+                  <label><input type="checkbox" name="proposal-interest" value="Social posts" /><span>Social posts featuring your brand</span></label>
+                  <label><input type="checkbox" name="proposal-interest" value="Field and event gear" /><span>VWB team wearing or using your gear in field and event content</span></label>
+                  <label><input type="checkbox" name="proposal-interest" value="Event logo placement" /><span>Logo placement at events</span></label>
+                  <label><input type="checkbox" name="proposal-interest" value="Co-branded content" /><span>Co-branded content or podcast mention</span></label>
+                  <label><input type="checkbox" name="proposal-interest" value="Other" /><span>Another idea</span></label>
+                </div>
+                <label class="sponsor-textarea"><span>Tell us more</span><textarea name="proposal-details" rows="5" placeholder="What would make this partnership useful and meaningful to you?"></textarea></label>
+              </fieldset>
+
+              <fieldset class="sponsor-step" data-sponsor-step="3" hidden>
+                <legend><span>Step 4 of 4</span>Ready to start the conversation?</legend>
+                <div class="sponsor-review"><p>We’ll use this information to understand your goals and prepare for a focused follow-up.</p><ul><li>This form does not process a payment.</li><li>Submitting does not create a sponsorship agreement.</li><li>We’ll respond within 1–2 business days.</li></ul></div>
+                <label class="sponsor-consent"><input type="checkbox" name="contact-consent" required /><span>I agree that Vision Without Borders may contact me about this sponsorship inquiry.</span></label>
+                <p class="sponsor-tax-language" data-sponsor-tax-language hidden>Vision Without Borders is a 501(c)(3) nonprofit organization. Contributions may be tax-deductible to the extent permitted by law; consult your tax advisor.</p>
+              </fieldset>
+
+              <div class="sponsor-controls"><button class="sponsor-back" type="button" data-sponsor-back hidden>Back</button><button class="button button-primary sponsor-next" type="button" data-sponsor-next>Continue</button><button class="button button-primary sponsor-submit" type="submit" data-sponsor-submit hidden>Send inquiry</button></div>
+              <p class="sponsor-form-status" data-sponsor-status aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <footer class="site-footer" aria-label="Footer"><div class="footer-shell"><a class="footer-brand" href="/" aria-label="Vision Without Borders home"><img src="/assets/vwb-eye-globe-mark.svg" alt="" /><span>Vision Without Borders</span></a><nav class="footer-links" aria-label="Footer links"><a href="https://www.instagram.com/visionwithoutbordersmd/" target="_blank" rel="noreferrer">Instagram</a><a href="/mission">Mission</a><a href="/about">About</a><a href="/timeline">Timeline</a><a href="/news">News &amp; Research</a><a href="/sponsor">Sponsor</a><a href="/contact">Contact</a></nav></div></footer>
+    </main>
+    <script type="module" src="/src/wordmark.js?v=40"></script>
+  </body>
+</html>

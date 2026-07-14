@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 560" role="img" aria-labelledby="title desc">
+  <title id="title">Vision Without Borders Logo</title>
+  <desc id="desc">Vision Without Borders wordmark with an eye-globe in Vision and a globe in Borders.</desc>
+  <defs>
+    <style>
+      .word {
+        font-family: Inter, Arial, Helvetica, sans-serif;
+        font-weight: 900;
+        letter-spacing: -0.055em;
+      }
+      .without {
+        fill: #7a7d80;
+        font-size: 96px;
+        letter-spacing: 0.08em;
+      }
+      .primary {
+        fill: #101010;
+        font-size: 168px;
+      }
+      .mark-line {
+        fill: none;
+        stroke: #101010;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    </style>
+    <clipPath id="eye-iris-clip">
+      <circle cx="92" cy="60" r="30"/>
+    </clipPath>
+  </defs>
+  <g transform="translate(0 16)">
+    <g class="primary word" transform="translate(-6 0)">
+      <text x="590" y="150" text-anchor="end">VISI</text>
+      <g transform="translate(607 48) scale(0.72)">
+        <path class="mark-line" d="M26 60C48 34 70 24 92 24s44 10 66 36M26 60C48 86 70 96 92 96s44-10 66-36" stroke-width="7.2"/>
+        <g clip-path="url(#eye-iris-clip)">
+          <circle class="mark-line" cx="92" cy="60" r="25" stroke-width="5.6"/>
+          <path class="mark-line" d="M67 60H117" stroke-width="2.9"/>
+          <path class="mark-line" d="M92 35C80 46 80 74 92 85" stroke-width="2.9"/>
+          <path class="mark-line" d="M92 35C104 46 104 74 92 85" stroke-width="2.9"/>
+        </g>
+      </g>
+      <text x="744" y="150">N</text>
+    </g>
+    <text class="without word" x="578" y="300" text-anchor="middle">WITHOUT</text>
+    <g class="primary word" transform="translate(-88 0)">
+      <text x="360" y="484" text-anchor="end">B</text>
+      <g transform="translate(360 352) scale(1.44)">
+        <path class="mark-line" d="M60 16C60 33 60 87 60 104" stroke-width="2.6" opacity="0.7"/>
+        <path class="mark-line" d="M60 16C38 33 38 87 60 104" stroke-width="2.6" opacity="0.58"/>
+        <path class="mark-line" d="M60 16C82 33 82 87 60 104" stroke-width="2.6" opacity="0.58"/>
+        <path class="mark-line" d="M60 16C16 36 16 84 60 104" stroke-width="2.6" opacity="0.38"/>
+        <path class="mark-line" d="M60 16C104 36 104 84 60 104" stroke-width="2.6" opacity="0.38"/>
+        <path class="mark-line" d="M24 37C42 32 78 32 96 37" stroke-width="2.6" opacity="0.6"/>
+        <path class="mark-line" d="M19 49C42 46 78 46 101 49" stroke-width="2.6" opacity="0.6"/>
+        <path class="mark-line" d="M17 60H103" stroke-width="2.6" opacity="0.6"/>
+        <path class="mark-line" d="M19 71C42 74 78 74 101 71" stroke-width="2.6" opacity="0.6"/>
+        <path class="mark-line" d="M24 83C42 88 78 88 96 83" stroke-width="2.6" opacity="0.6"/>
+        <circle class="mark-line" cx="60" cy="60" r="45" stroke-width="5.6"/>
+      </g>
+      <text x="528" y="484">RDERS</text>
+    </g>
+  </g>
+</svg>

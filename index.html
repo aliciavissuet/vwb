@@ -8,14 +8,24 @@
       content="Vision Without Borders expands access to eye care across communities and borders."
     />
     <title>Vision Without Borders</title>
-    <link rel="icon" href="/assets/favicon.svg?v=2" type="image/svg+xml" />
-    <link rel="shortcut icon" href="/assets/favicon.svg?v=2" type="image/svg+xml" />
-    <link rel="stylesheet" href="/src/styles.css" />
+    <script>
+      if (
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        !new URLSearchParams(window.location.search).has('skipIntro') &&
+        window.performance?.getEntriesByType('navigation')?.[0]?.type !== 'back_forward'
+      ) {
+        document.documentElement.classList.add('show-intro')
+      }
+    </script>
+    <link rel="icon" href="/assets/vwb-logo-mark.svg?v=1" type="image/svg+xml" />
+    <link rel="shortcut icon" href="/assets/vwb-logo-mark.svg?v=1" type="image/svg+xml" />
+    <link rel="stylesheet" href="/src/styles.css?v=56" />
   </head>
-  <body>
+  <body class="home-page">
     <main class="site-shell">
       <header class="site-header" aria-label="Vision Without Borders">
-        <a class="brand" href="#home" aria-label="Vision Without Borders home">
+        <a class="brand" href="/?skipIntro=1" aria-label="Vision Without Borders home">
+          <img class="brand-mark" src="/assets/vwb-logo-mark.svg" alt="" aria-hidden="true" />
           <span class="brand-name">Vision Without Borders</span>
         </a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation">
@@ -24,9 +34,13 @@
           <span></span>
         </button>
         <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
-          <a href="#mission">Mission</a>
-          <a href="#publications">Publications</a>
-          <a href="#contact">Contact</a>
+          <a href="/?skipIntro=1" aria-current="page">Home</a>
+          <a href="/mission">Mission</a>
+          <a href="/about">About</a>
+          <a href="/timeline">Timeline</a>
+          <a href="/news">News &amp; Research</a>
+          <a href="/sponsor">Sponsor</a>
+          <a href="/contact">Contact</a>
         </nav>
       </header>
 
@@ -37,19 +51,27 @@
           <svg class="logo-svg" viewBox="0 0 1120 520" aria-hidden="true" focusable="false">
             <defs>
               <clipPath id="logo-eye-clip">
-                <path d="M0 60C28 22 58 8 92 8s64 14 92 52c-28 38-58 52-92 52S28 98 0 60Z" />
+                <path d="M12 60C36 27 64 14 92 14s56 13 80 46c-24 33-52 46-80 46S36 93 12 60Z" />
+              </clipPath>
+              <clipPath id="logo-eye-iris-clip">
+                <circle cx="92" cy="60" r="30" />
               </clipPath>
             </defs>
 
             <g class="logo-line logo-line-vision">
               <text x="590" y="150" text-anchor="end">VISI</text>
-              <g class="logo-eye" transform="translate(614 48) scale(0.62 0.72)">
-                <path class="eye-outline" d="M0 60C28 22 58 8 92 8s64 14 92 52c-28 38-58 52-92 52S28 98 0 60Z" />
-                <circle class="eye-pupil" cx="92" cy="60" r="22" />
-                <g clip-path="url(#logo-eye-clip)">
-                  <path class="eye-lid-fill" d="M-12 -78H196V60C150 31 120 18 92 18S34 31-12 60Z" />
+              <g class="logo-eye" transform="translate(607 48) scale(0.72)">
+                <path class="eye-outline" d="M18 60C42 30 66 18 92 18s50 12 74 42M18 60C42 90 66 102 92 102s50-12 74-42" />
+                <g class="eye-iris" clip-path="url(#logo-eye-iris-clip)">
+                  <circle class="eye-iris-ring" cx="92" cy="60" r="25" />
+                  <path class="eye-globe-line" d="M67 60H117" />
+                  <path class="eye-globe-line" d="M92 35C80 46 80 74 92 85" />
+                  <path class="eye-globe-line" d="M92 35C104 46 104 74 92 85" />
                 </g>
-                <path class="eye-closed-line" d="M3 60C34 60 62 60 92 60s58 0 89 0" />
+                <g clip-path="url(#logo-eye-clip)">
+                  <path class="eye-lid-fill" d="M-72 -90H256V72C196 36 146 18 92 18S-12 36-72 72Z" />
+                </g>
+                <path class="eye-closed-line" d="M16 60C42 60 66 60 92 60s50 0 76 0" />
               </g>
               <text x="744" y="150">N</text>
             </g>
@@ -60,7 +82,7 @@
 
             <g class="logo-line logo-line-borders">
               <text x="360" y="484" text-anchor="end">B</text>
-              <g class="logo-globe" data-sphere-globe transform="translate(346 338) scale(1.68)">
+              <g class="logo-globe" data-sphere-globe transform="translate(360 352) scale(1.44)">
                 <g data-sphere-grid></g>
               </g>
               <text x="528" y="484">RDERS</text>
@@ -68,16 +90,32 @@
           </svg>
           <p class="hero-text">Blindness and vision loss shouldn't depend on where you're born.</p>
           <div class="hero-actions" aria-label="Primary actions">
-            <a class="button button-primary" href="#mission">View Mission</a>
+            <a class="button button-primary" href="/mission">Explore our mission</a>
+            <p class="hero-support-cta">Want to help build what comes next? <a href="/sponsor">Become a sponsor <span aria-hidden="true">↗</span></a></p>
           </div>
         </div>
       </section>
 
       <section id="mission" class="content-section mission-section" aria-labelledby="mission-title">
         <div class="section-shell">
-          <p class="section-kicker">Vision Without Borders</p>
-          <h2 id="mission-title">Blindness and vision loss shouldn't depend on where you're born.</h2>
-          <p class="lead">Vision Without Borders goes there.</p>
+          <h2 id="mission-title" class="sr-only">Our mission and organizational philosophy</h2>
+
+          <div class="bidirectional-model" aria-label="A bidirectional help me help you model that helps ourselves and everyone else">
+            <div class="direction-side direction-side-left">
+              <p class="direction-label">First, we listen</p>
+              <p class="direction-copy">“Help me help you.”</p>
+            </div>
+            <div class="direction-center">
+              <strong>Bidirectional</strong>
+              <span class="direction-model-word">model</span>
+            </div>
+            <div class="direction-side direction-side-right">
+              <p class="direction-label">Then, we grow together</p>
+              <p class="direction-copy">Helping ourselves—and everyone else.</p>
+            </div>
+            <span class="direction-line direction-line-left" aria-hidden="true"></span>
+            <span class="direction-line direction-line-right" aria-hidden="true"></span>
+          </div>
 
           <div class="content-grid">
             <article>
@@ -95,10 +133,6 @@
             <article>
               <h3>Organizational Philosophy</h3>
               <p>
-                A bidirectional "help me help you" model. In the process, helping ourselves and everyone
-                else. Let's get it done and make it fun.
-              </p>
-              <p>
                 Vision Without Borders operates like a startup, not a traditional nonprofit. We reject the
                 guilt-based donor model in favor of genuine mutual partnerships. We prove the model in one
                 location, do it right, then scale.
@@ -106,12 +140,21 @@
             </article>
           </div>
 
-          <div class="founder-profile">
-            <div class="founder-image-wrap">
-              <img src="/assets/blake-snyder-headshot.jpeg" alt="Blake Snyder, MD" />
+          <div class="founder-bio">
+            <div class="founder-quote-bubble">
+              <svg viewBox="0 0 760 460" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <path pathLength="1" d="M170 86C194 28 270 22 316 64C356 16 430 18 470 70C530 30 604 48 625 115C690 112 730 137 720 190C758 226 752 278 706 304C718 354 662 388 600 354C565 416 490 428 438 382C390 438 310 430 270 370C245 410 205 442 150 458C178 416 186 382 178 348C108 356 65 320 82 272C28 248 34 194 72 162C46 120 98 76 170 86Z" />
+              </svg>
+              <p>“Let’s get it done - and make it fun.”</p>
             </div>
+            <figure class="founder-bio-portrait">
+              <div class="founder-bio-image">
+                <img src="/assets/blake-snyder-cutout.png" alt="Blake Snyder, MD" />
+              </div>
+              <figcaption>Blake Snyder, MD <span>Founder</span></figcaption>
+            </figure>
             <div class="founder-copy">
-              <p class="section-kicker">Founder</p>
+              <p class="section-kicker">About the founder</p>
               <h3>Blake Snyder, MD</h3>
               <p>
                 Vision Without Borders was founded by Blake Snyder, MD, an ophthalmologist focused
@@ -128,14 +171,125 @@
         </div>
       </section>
 
-      <section id="publications" class="content-section publications-section" aria-labelledby="publications-title">
+      <section id="affiliations" class="content-section affiliations-section" aria-labelledby="affiliations-title">
         <div class="section-shell">
-          <p class="section-kicker">Publications</p>
-          <h2 id="publications-title">Research and press will live here.</h2>
-          <div class="publication-list">
+          <p class="section-kicker">Affiliations</p>
+          <h2 id="affiliations-title">A growing network of care, research, and coverage.</h2>
+
+          <div class="association-stack">
+            <section class="association-block association-marquee" aria-labelledby="featured-title">
+              <h3 id="featured-title">Featured In</h3>
+              <div class="marquee-track" aria-label="Featured media outlets">
+                <div class="logo-strip">
+                  <span><img src="/assets/Today_logo.svg" alt="Today" loading="lazy" /></span>
+                  <span><img src="/assets/aspen_times.jpg" alt="Aspen Times" loading="lazy" /></span>
+                  <span><img src="/assets/logos/aspen-sojourner.svg" alt="Aspen Sojourner" loading="lazy" /></span>
+                  <span><img src="/assets/med-angel.png" alt="MedAngel" loading="lazy" /></span>
+                </div>
+                <div class="logo-strip" aria-hidden="true">
+                  <span><img src="/assets/Today_logo.svg" alt="" loading="lazy" /></span>
+                  <span><img src="/assets/aspen_times.jpg" alt="" loading="lazy" /></span>
+                  <span><img src="/assets/logos/aspen-sojourner.svg" alt="" loading="lazy" /></span>
+                  <span><img src="/assets/med-angel.png" alt="" loading="lazy" /></span>
+                </div>
+              </div>
+            </section>
+
+            <section class="association-block" aria-labelledby="practice-affiliations-title">
+              <h3 id="practice-affiliations-title">Affiliations Past and Present</h3>
+              <div class="logo-grid logo-grid-color">
+                <a href="https://www.perlmancenter.com/meet-team" target="_blank" rel="noreferrer"><img src="https://static.wixstatic.com/media/fb9d2f_3cdd4453186046719411812ccf744a78~mv2.png/v1/fill/w_396,h_85,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/PerlmanLogo-28.png" alt="Perlman Center" loading="lazy" /></a>
+                <a href="https://profiles.stanford.edu/blake-snyder" target="_blank" rel="noreferrer"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Stanford_wordmark_(2012).svg" alt="Stanford" loading="lazy" /></a>
+                <span><img src="https://logo.clearbit.com/ucsf.edu" alt="UCSF" loading="lazy" /></span>
+                <span><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/UC_Davis_wordmark.svg" alt="UC Davis" loading="lazy" /></span>
+                <span><img src="https://www.nih.gov/themes/custom/nih2_uswds/assets/img/nih-mark-reversed.png" alt="NIH" loading="lazy" /></span>
+                <span><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/UC_Boulder_logo.svg" alt="CU Boulder" loading="lazy" /></span>
+              </div>
+            </section>
+
+            <section class="association-block" aria-labelledby="journals-title">
+              <h3 id="journals-title">Publications</h3>
+              <div class="logo-grid logo-grid-journals">
+                <span><img src="https://logo.clearbit.com/thelancet.com" alt="The Lancet" loading="lazy" /></span>
+                <span><img src="https://logo.clearbit.com/ajo.com" alt="American Journal of Ophthalmology" loading="lazy" /></span>
+                <span><img src="https://logo.clearbit.com/bmj.com" alt="British Journal of Ophthalmology" loading="lazy" /></span>
+                <span><img src="https://logo.clearbit.com/scitechjournals.com" alt="Journal of Eye Disorders and Therapy" loading="lazy" /></span>
+              </div>
+            </section>
+
+            <section class="association-block" aria-labelledby="trusted-title">
+              <h3 id="trusted-title">Trusted By</h3>
+              <div class="logo-grid logo-grid-trusted">
+                <a href="https://health.usnews.com/doctors/blake-snyder-3277283" target="_blank" rel="noreferrer"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/U.S._News_%26_World_Report_logo.svg" alt="U.S. News" loading="lazy" /></a>
+                <a href="https://www.doximity.com/pub/blake-snyder-md" target="_blank" rel="noreferrer"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Doximity.svg" alt="Doximity" loading="lazy" /></a>
+                <a href="https://doctor.webmd.com/doctor/blake-snyder-d07912c8-f3f4-4066-9416-ca22d33568a6-overview" target="_blank" rel="noreferrer"><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/WebMD_logo.svg" alt="WebMD" loading="lazy" /></a>
+                <span><img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Healthgrades_logo.svg" alt="Healthgrades" loading="lazy" /></span>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="press" class="content-section press-section" aria-labelledby="press-title">
+        <div class="section-shell">
+          <p class="section-kicker">Articles and Press</p>
+          <h2 id="press-title">Coverage, presentations, and public updates.</h2>
+
+          <div class="press-list">
             <article>
-              <h3>Coming Soon</h3>
-              <p>Publications, partner updates, and outcomes reporting can be added here as they become available.</p>
+              <p class="press-type">Media Coverage</p>
+              <h3><a href="https://www.aspentimes.com/news/aspens-own-has-an-eye-for-change/" target="_blank" rel="noreferrer">Aspen's own has an eye for change</a></h3>
+              <p>Aspen Times</p>
+            </article>
+            <article>
+              <p class="press-type">Media Coverage</p>
+              <h3><a href="https://www.aspensojo.com/news-and-profiles/2026/06/community-table-aspen-ideas" target="_blank" rel="noreferrer">Community Table: Aspen Ideas</a></h3>
+              <p>Aspen Sojourner</p>
+            </article>
+            <article>
+              <p class="press-type">Media Coverage</p>
+              <h3><a href="https://www.medangel.org/colorado-ophthalmologist-ethiopia/" target="_blank" rel="noreferrer">Colorado ophthalmologist in Ethiopia</a></h3>
+              <p>MedAngel</p>
+            </article>
+            <article>
+              <p class="press-type">Social Update</p>
+              <h3><a href="https://www.linkedin.com/posts/danny-laycock_loveyoureyes-worldsightday-loveyoureyes-activity-7382067234359382017-2WN_/" target="_blank" rel="noreferrer">Love Your Eyes / World Sight Day</a></h3>
+              <p>LinkedIn</p>
+            </article>
+            <article>
+              <p class="press-type">Affiliation</p>
+              <h3><a href="https://www.linkedin.com/posts/byers-eye-institute-at-stanford_ophthalmology-fellowship-globalhealth-activity-7396926632873123840-CsPX/" target="_blank" rel="noreferrer">Global ophthalmology fellowship update</a></h3>
+              <p>Byers Eye Institute at Stanford</p>
+            </article>
+            <article>
+              <p class="press-type">Recognition</p>
+              <h3><a href="https://www.facebook.com/stanfordophthalmology/posts/congratulations-to-dr-blake-snyder-who-specialized-in-global-ophthalmology-from-/1592413552889672/" target="_blank" rel="noreferrer">Stanford Ophthalmology recognition</a></h3>
+              <p>Stanford Ophthalmology</p>
+            </article>
+            <article>
+              <p class="press-type">Video</p>
+              <h3><a href="https://www.instagram.com/reels/DSLX40EitKy/" target="_blank" rel="noreferrer">Field update reel</a></h3>
+              <p>Instagram</p>
+            </article>
+            <article>
+              <p class="press-type">Video</p>
+              <h3><a href="https://www.instagram.com/reels/DVEOlNwDfkY/" target="_blank" rel="noreferrer">Vision Without Borders reel</a></h3>
+              <p>Instagram</p>
+            </article>
+            <article>
+              <p class="press-type">Social Update</p>
+              <h3><a href="https://www.instagram.com/p/DQZU3O3Eh5E/" target="_blank" rel="noreferrer">Vision Without Borders post</a></h3>
+              <p>Instagram</p>
+            </article>
+            <article>
+              <p class="press-type">Presentation</p>
+              <h3><a href="https://scitechjournals.com/journal-of-eye-disorders-and-therapy/conference-proceedings/storytelling-to-cure-blindness-early-successes-and-lessons-in-expanding-vision-science-awareness-training-and-engagement.pdf" target="_blank" rel="noreferrer">Storytelling to cure blindness</a></h3>
+              <p>Journal of Eye Disorders and Therapy</p>
+            </article>
+            <article>
+              <p class="press-type">Publication</p>
+              <h3><a href="https://www.sciencedirect.com/science/article/abs/pii/S0002939421001537" target="_blank" rel="noreferrer">American Journal of Ophthalmology article</a></h3>
+              <p>ScienceDirect</p>
             </article>
           </div>
         </div>
@@ -169,7 +323,7 @@
 
       <footer class="site-footer" aria-label="Footer">
         <div class="footer-shell">
-          <p>Vision Without Borders</p>
+          <a class="footer-brand" href="/?skipIntro=1" aria-label="Vision Without Borders home"><img src="/assets/vwb-eye-globe-mark.svg" alt="" /><span>Vision Without Borders</span></a>
           <nav class="footer-links" aria-label="Footer links">
             <a href="https://www.instagram.com/visionwithoutbordersmd/" target="_blank" rel="noreferrer" aria-label="Vision Without Borders on Instagram">
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -179,16 +333,41 @@
               </svg>
               <span>Instagram</span>
             </a>
-            <a href="#publications">Publications</a>
-            <a href="#contact">Contact</a>
+            <a href="/mission">Mission</a>
+            <a href="/about">About</a>
+            <a href="/timeline">Timeline</a>
+            <a href="/news">News &amp; Research</a>
+            <a href="/sponsor">Sponsor</a>
+            <a href="/contact">Contact</a>
           </nav>
         </div>
       </footer>
     </main>
+    <div class="intro-loader" aria-hidden="true">
+      <svg class="intro-logo" viewBox="0 0 1120 520" focusable="false">
+        <g class="intro-word intro-word-vision">
+          <text x="560" y="60" text-anchor="middle">VISION</text>
+        </g>
+        <g class="intro-word intro-word-without">
+          <text x="560" y="106" text-anchor="middle">WITHOUT</text>
+        </g>
+        <g class="intro-word intro-word-borders">
+          <text x="560" y="158" text-anchor="middle">BORDERS</text>
+        </g>
+        <g class="intro-feature-globe" data-sphere-globe data-sphere-speed="0.32" transform="translate(362 172) scale(3.3)">
+          <g data-sphere-grid></g>
+          <g class="intro-pins" aria-hidden="true">
+            <circle class="intro-pin intro-pin-1" cx="42" cy="49" r="3.7" />
+            <circle class="intro-pin intro-pin-2" cx="72" cy="38" r="3.7" />
+            <circle class="intro-pin intro-pin-3" cx="84" cy="72" r="3.7" />
+          </g>
+        </g>
+      </svg>
+    </div>
     <div class="blink-transition" aria-hidden="true">
       <div class="blink-lid blink-lid-top"></div>
       <div class="blink-lid blink-lid-bottom"></div>
     </div>
-    <script type="module" src="/src/wordmark.js"></script>
+    <script type="module" src="/src/wordmark.js?v=40"></script>
   </body>
 </html>
