@@ -1,2 +1,90 @@
 [build]
   publish = "."
+
+[build.processing]
+  skip_processing = false
+
+[build.processing.html]
+  pretty_urls = true
+
+# Legacy URLs live here instead of as duplicate root HTML files. Keeping
+# about.html beside about/index.html, for example, creates a route collision
+# when Netlify applies its pretty-URL processing.
+[[redirects]]
+  from = "/about.html"
+  to = "/about/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/mission.html"
+  to = "/mission/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/contact.html"
+  to = "/contact/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/press.html"
+  to = "/news/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/press"
+  to = "/news/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/affiliations.html"
+  to = "/about/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/affiliations"
+  to = "/about/"
+  status = 301
+  force = true
+
+# Route documents should always be revalidated after a deployment. Versioned
+# CSS and JavaScript asset URLs still allow browsers to cache those resources.
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/about/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/mission/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/timeline/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/news/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/sponsor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/contact/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

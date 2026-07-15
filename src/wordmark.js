@@ -66,7 +66,18 @@ function initSphere(svg) {
 
   grid.append(createCircle())
 
-  sphereInstances.push({ meridians: instanceMeridians, speed })
+  const initialOffset = Number(svg.dataset.sphereOffset || 0)
+  const instance = {
+    meridians: instanceMeridians,
+    speed,
+    offset: initialOffset,
+    targetOffset: initialOffset,
+    interactive: svg.dataset.sphereMode === 'interactive',
+  }
+
+  svg.sphereInstance = instance
+  sphereInstances.push(instance)
+  renderSphereInstance(instance, 0)
 }
 
 function meridianPath(controlX) {
@@ -101,16 +112,28 @@ function animateSphere(now) {
   const time = now / 1000
 
   for (const instance of sphereInstances) {
-    for (const meridian of instance.meridians) {
-      const progress = (time * instance.speed + meridian.phase) % 1
-      const position = progress * 2 - 1
-      const controlX = center.x + position * 56
-      meridian.path.setAttribute('d', meridianPath(controlX))
-      meridian.path.style.opacity = (edgeFade(position) * 0.64).toFixed(2)
-    }
+    renderSphereInstance(instance, time)
   }
 
   requestAnimationFrame(animateSphere)
+}
+
+function renderSphereInstance(instance, time) {
+  if (instance.interactive) {
+    const distance = instance.targetOffset - instance.offset
+    instance.offset = prefersReduced ? instance.targetOffset : instance.offset + distance * 0.085
+  }
+
+  const rotation = instance.interactive ? instance.offset : time * instance.speed
+
+  for (const meridian of instance.meridians) {
+    const rawProgress = rotation + meridian.phase
+    const progress = ((rawProgress % 1) + 1) % 1
+    const position = progress * 2 - 1
+    const controlX = center.x + position * 56
+    meridian.path.setAttribute('d', meridianPath(controlX))
+    meridian.path.style.opacity = (edgeFade(position) * 0.64).toFixed(2)
+  }
 }
 
 for (const globe of document.querySelectorAll('[data-sphere-globe]')) {
@@ -425,7 +448,8 @@ if (timelineStream) {
     }
 
     for (const year of timelineYears) {
-      year.classList.toggle('is-active', year.dataset.timelineNavYear === entry.dataset.timelineYear)
+      const representedYears = (year.dataset.timelineNavYear || '').split('|')
+      year.classList.toggle('is-active', representedYears.includes(entry.dataset.timelineYear))
     }
 
     for (const pin of timelineGlobePins) {
@@ -505,6 +529,10 @@ for (const explorer of document.querySelectorAll('[data-ambassador-explorer]')) 
   const visual = explorer.querySelector('[data-ambassador-visual]')
   const photoCode = explorer.querySelector('[data-ambassador-photo-code]')
   const photoPlaceholder = explorer.querySelector('.ambassador-photo-placeholder')
+  const globe = explorer.querySelector('[data-sphere-mode="interactive"]')
+  const globeMarker = explorer.querySelector('[data-ambassador-globe-marker]')
+  const globeHalo = explorer.querySelector('[data-ambassador-globe-halo]')
+  const globeLabel = explorer.querySelector('[data-ambassador-globe-label]')
 
   const setActiveCountry = (countryName) => {
     const country = countries.find((item) => item.dataset.ambassadorCountry === countryName)
@@ -520,11 +548,45 @@ for (const explorer of document.querySelectorAll('[data-ambassador-explorer]')) 
       pin.classList.toggle('is-active', pin.dataset.ambassadorPin === countryName)
     }
 
-    if (detailCountry) detailCountry.textContent = country.querySelector('span')?.textContent || ''
+    const countryLabel = country.querySelector('span')?.textContent || ''
+
+    if (detailCountry) detailCountry.textContent = countryLabel
     if (detailCopy) detailCopy.textContent = country.querySelector('small')?.textContent || ''
     if (visual) visual.dataset.country = countryName
     if (photoCode) photoCode.textContent = country.dataset.photoCode || ''
-    if (photoPlaceholder) photoPlaceholder.setAttribute('aria-label', `Photo placeholder for ${detailCountry?.textContent || countryName}`)
+    if (globeLabel) globeLabel.textContent = countryLabel
+
+    const sphereInstance = globe?.sphereInstance
+    if (sphereInstance) {
+      const targetTurn = Number(country.dataset.globeTurn || 0)
+      sphereInstance.targetOffset = targetTurn + Math.round(sphereInstance.offset - targetTurn)
+      if (prefersReduced) renderSphereInstance(sphereInstance, 0)
+    }
+
+    const markerY = Number(country.dataset.globeY || 60)
+    const previousY = Number(globeMarker?.getAttribute('cy') || markerY)
+
+    for (const marker of [globeMarker, globeHalo]) {
+      if (!marker) continue
+      marker.setAttribute('cy', String(markerY))
+      if (!prefersReduced && marker.animate) {
+        marker.animate(
+          [
+            { transform: `translateY(${previousY - markerY}px) scale(0.78)`, opacity: 0.4 },
+            { transform: 'translateY(0) scale(1)', opacity: 1 },
+          ],
+          { duration: 620, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+        )
+      }
+    }
+
+    if (visual && !prefersReduced) {
+      visual.classList.remove('is-globe-turning')
+      void visual.offsetWidth
+      visual.classList.add('is-globe-turning')
+    }
+
+    if (photoPlaceholder) photoPlaceholder.setAttribute('aria-label', `Interactive globe focused on ${countryLabel || countryName}; location photo forthcoming`)
   }
 
   for (const country of countries) {
