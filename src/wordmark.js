@@ -35,37 +35,41 @@ function createBorderlessGlobeScribbles(width, height) {
     return (randomState >>> 0) / 4294967296
   }
 
-  // A dense back-and-forth marker gesture fills one field around the wordmark.
-  // Shorter strokes keep the motion from reading as ribbons across the page.
-  const brushStrokeCount = 24
+  // Scattered marker gestures build the field from different directions. Their
+  // deterministic randomness keeps the composition stable without becoming a
+  // stack of horizontal ribbons.
+  const brushStrokeCount = 58
   const fieldWidth = Math.min(width * 0.78, globeRadius * 3.35)
   const fieldHeight = Math.min(height * 0.82, globeRadius * 2.65)
-  const fieldLeft = centerX - fieldWidth / 2
-  const fieldTop = centerY - fieldHeight / 2
   for (let strokeIndex = 0; strokeIndex < brushStrokeCount; strokeIndex += 1) {
     const points = []
-    const baseY = fieldTop + ((strokeIndex + 0.5) / brushStrokeCount) * fieldHeight
     const phase = random() * fullTurn
-    const frequency = 1.5 + random() * 1.2
-    const amplitude = height * (0.004 + random() * 0.006)
-    const reverse = strokeIndex % 2 === 1
+    const angle = -1.05 + random() * 2.1
+    const strokeLength = globeRadius * (0.7 + random() * 1.45)
+    const strokeCenterX = centerX + (random() - 0.5) * fieldWidth * 0.78
+    const strokeCenterY = centerY + (random() - 0.5) * fieldHeight * 0.78
+    const directionX = Math.cos(angle)
+    const directionY = Math.sin(angle)
+    const perpendicularX = -directionY
+    const perpendicularY = directionX
+    const bend = (random() - 0.5) * globeRadius * 0.22
+    const reverse = random() > 0.5
 
-    for (let index = 0; index <= 90; index += 1) {
-      const progress = index / 90
+    for (let index = 0; index <= 64; index += 1) {
+      const progress = index / 64
       const direction = reverse ? 1 - progress : progress
-      const handJitter = Math.sin(index * 1.83 + phase) * height * 0.0018
+      const travel = (direction - 0.5) * strokeLength
+      const curve = Math.sin(direction * Math.PI) * bend
+      const handJitter = Math.sin(index * 1.77 + phase) * height * 0.0022
       points.push({
-        x: fieldLeft + direction * fieldWidth + Math.sin(progress * Math.PI) * Math.sin(phase) * width * 0.008,
-        y:
-          baseY +
-          Math.sin(progress * fullTurn * frequency + phase) * amplitude +
-          handJitter,
+        x: strokeCenterX + travel * directionX + curve * perpendicularX + handJitter * perpendicularX,
+        y: strokeCenterY + travel * directionY + curve * perpendicularY + handJitter * perpendicularY,
       })
     }
     strokes.push({
       points,
-      color: strokeIndex % 4 === 0 ? 'rgb(232 93 74 / 0.38)' : 'rgb(232 93 74 / 0.29)',
-      width: (fieldHeight / brushStrokeCount) * (0.72 + random() * 0.18),
+      color: strokeIndex % 5 === 0 ? 'rgb(232 93 74 / 0.34)' : 'rgb(232 93 74 / 0.23)',
+      width: height * (0.012 + random() * 0.012),
     })
   }
 
@@ -435,16 +439,25 @@ try {
 }
 
 if (isBlinkEntering) {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      document.documentElement.classList.remove('page-entering')
-      try {
-        window.sessionStorage.removeItem('vwb-blink-enter')
-      } catch {
-        // The page can still reveal when storage is unavailable.
-      }
-    })
-  })
+  transitionActive = true
+  blinkTransition.classList.add('is-opening')
+
+  let hasRevealedIncomingPage = false
+  const revealIncomingPage = () => {
+    if (hasRevealedIncomingPage) return
+    hasRevealedIncomingPage = true
+    blinkTransition.classList.remove('is-opening')
+    document.documentElement.classList.remove('page-entering')
+    transitionActive = false
+    try {
+      window.sessionStorage.removeItem('vwb-blink-enter')
+    } catch {
+      // The page can still reveal when storage is unavailable.
+    }
+  }
+
+  blinkTransition.querySelector('.blink-lid-top')?.addEventListener('animationend', revealIncomingPage, { once: true })
+  window.setTimeout(revealIncomingPage, 700)
 }
 
 function setMenuOpen(isOpen) {

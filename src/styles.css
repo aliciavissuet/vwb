@@ -28,10 +28,14 @@ html.page-entering {
 }
 
 html.page-entering body {
+  background: var(--bg);
+}
+
+html.page-entering .site-shell {
   visibility: hidden;
 }
 
-html.page-entering * {
+html.page-entering .site-shell * {
   animation-play-state: paused !important;
 }
 
@@ -1732,7 +1736,7 @@ textarea {
 }
 
 .blink-transition.is-opening .blink-lid {
-  animation: blinkOpen 0.42s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+  animation: blinkOpen 0.42s cubic-bezier(0.8, 0, 0.2, 1) both;
 }
 
 /* Integrated editorial openings and mission story chapters */
