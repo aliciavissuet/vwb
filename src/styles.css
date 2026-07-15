@@ -4158,6 +4158,51 @@ textarea {
   isolation: isolate;
 }
 
+.ambassador-location-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 32%;
+  animation: ambassadorPhotoReveal 0.5s ease both;
+}
+
+.ambassador-photo-panel[data-country="india"] .ambassador-location-photo {
+  object-position: center 24%;
+}
+
+.ambassador-photo-placeholder.has-location-photo::before,
+.ambassador-photo-placeholder.has-location-photo::after,
+.ambassador-photo-placeholder.has-location-photo > .ambassador-photo-code {
+  opacity: 0;
+}
+
+.ambassador-photo-placeholder.has-location-photo .ambassador-globe-wrap {
+  top: 18px;
+  right: 18px;
+  left: auto;
+  width: clamp(96px, 24%, 148px);
+  border: 1px solid rgb(255 250 242 / 0.7);
+  border-radius: 50%;
+  padding: 8px;
+  background: rgb(255 250 242 / 0.88);
+  box-shadow: 0 12px 28px rgb(23 37 43 / 0.18);
+  transform: none;
+  backdrop-filter: blur(8px);
+}
+
+.ambassador-photo-placeholder.has-location-photo .ambassador-globe-wrap > p {
+  display: none;
+}
+
+@keyframes ambassadorPhotoReveal {
+  from { opacity: 0; transform: scale(1.025); }
+  to { opacity: 1; transform: scale(1); }
+}
+
 .ambassador-photo-placeholder::before,
 .ambassador-photo-placeholder::after {
   position: absolute;

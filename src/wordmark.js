@@ -619,6 +619,8 @@ for (const explorer of document.querySelectorAll('[data-ambassador-explorer]')) 
   const visual = explorer.querySelector('[data-ambassador-visual]')
   const photoCode = explorer.querySelector('[data-ambassador-photo-code]')
   const photoPlaceholder = explorer.querySelector('.ambassador-photo-placeholder')
+  const locationPhoto = explorer.querySelector('[data-ambassador-photo]')
+  const photoStatus = explorer.querySelector('.ambassador-photo-status')
   const globe = explorer.querySelector('[data-sphere-mode="interactive"]')
   const globeMarker = explorer.querySelector('[data-ambassador-globe-marker]')
   const globeHalo = explorer.querySelector('[data-ambassador-globe-halo]')
@@ -645,6 +647,17 @@ for (const explorer of document.querySelectorAll('[data-ambassador-explorer]')) 
     if (visual) visual.dataset.country = countryName
     if (photoCode) photoCode.textContent = country.dataset.photoCode || ''
     if (globeLabel) globeLabel.textContent = countryLabel
+
+    const photoSrc = country.dataset.photo || ''
+    const photoAlt = country.dataset.photoAlt || ''
+    if (locationPhoto) {
+      locationPhoto.hidden = !photoSrc
+      if (photoSrc) locationPhoto.src = photoSrc
+      else locationPhoto.removeAttribute('src')
+      locationPhoto.alt = photoAlt
+    }
+    photoPlaceholder?.classList.toggle('has-location-photo', Boolean(photoSrc))
+    if (photoStatus) photoStatus.hidden = Boolean(photoSrc)
 
     const sphereInstance = globe?.sphereInstance
     if (sphereInstance) {
@@ -676,7 +689,12 @@ for (const explorer of document.querySelectorAll('[data-ambassador-explorer]')) 
       visual.classList.add('is-globe-turning')
     }
 
-    if (photoPlaceholder) photoPlaceholder.setAttribute('aria-label', `Interactive globe focused on ${countryLabel || countryName}; location photo forthcoming`)
+    if (photoPlaceholder) {
+      photoPlaceholder.setAttribute(
+        'aria-label',
+        photoSrc ? `${photoAlt}. Interactive globe focused on ${countryLabel || countryName}.` : `Interactive globe focused on ${countryLabel || countryName}; location photo forthcoming`,
+      )
+    }
   }
 
   for (const country of countries) {
@@ -689,6 +707,9 @@ for (const explorer of document.querySelectorAll('[data-ambassador-explorer]')) 
     pin.addEventListener('click', () => setActiveCountry(pin.dataset.ambassadorPin))
     pin.addEventListener('focus', () => setActiveCountry(pin.dataset.ambassadorPin))
   }
+
+  const initialCountry = countries.find((country) => country.classList.contains('is-active'))
+  if (initialCountry) setActiveCountry(initialCountry.dataset.ambassadorCountry)
 }
 
 const SPONSOR_TAX_LANGUAGE_ENABLED = false
