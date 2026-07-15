@@ -482,11 +482,26 @@ if (timelineStream) {
   const timelineLinks = Array.from(document.querySelectorAll('[data-timeline-link]'))
   const timelinePhaseLinks = Array.from(document.querySelectorAll('[data-timeline-phase-link]'))
   const timelineYears = Array.from(document.querySelectorAll('[data-timeline-nav-year]'))
+  const timelineNavigator = document.querySelector('.timeline-navigator')
   const timelineGlobeCard = document.querySelector('[data-timeline-globe-card]')
   const timelineGlobePins = Array.from(document.querySelectorAll('[data-timeline-globe-pin]'))
   const timelineGlobeLocation = document.querySelector('[data-timeline-globe-location]')
   let activeTimelineEntry = null
   let timelineFrame = null
+  let timelineNavigatorManualUntil = 0
+
+  const isDesktopTimelineNavigator = () => window.matchMedia('(min-width: 821px)').matches
+
+  const followActiveTimelineYear = (activeYear) => {
+    if (!timelineNavigator || !activeYear || !isDesktopTimelineNavigator()) return
+    if (window.performance.now() < timelineNavigatorManualUntil) return
+
+    const targetTop = activeYear.offsetTop - (timelineNavigator.clientHeight - activeYear.offsetHeight) / 2
+    timelineNavigator.scrollTo({
+      top: Math.max(0, targetTop),
+      behavior: prefersReduced ? 'auto' : 'smooth',
+    })
+  }
 
   const setActiveTimelineEntry = (entry) => {
     if (!entry || entry === activeTimelineEntry) return
@@ -511,10 +526,15 @@ if (timelineStream) {
       else link.removeAttribute('aria-current')
     }
 
+    let activeYear = null
     for (const year of timelineYears) {
       const representedYears = (year.dataset.timelineNavYear || '').split('|')
-      year.classList.toggle('is-active', representedYears.includes(entry.dataset.timelineYear))
+      const isActive = representedYears.includes(entry.dataset.timelineYear)
+      year.classList.toggle('is-active', isActive)
+      if (isActive) activeYear = year
     }
+
+    followActiveTimelineYear(activeYear)
 
     for (const pin of timelineGlobePins) {
       pin.classList.toggle('is-active', pin.dataset.timelineGlobePin === entry.dataset.timelinePin)
@@ -582,6 +602,12 @@ if (timelineStream) {
 
   window.addEventListener('scroll', queueTimelineProgress, { passive: true })
   window.addEventListener('resize', queueTimelineProgress)
+  timelineNavigator?.addEventListener('wheel', () => {
+    timelineNavigatorManualUntil = window.performance.now() + 1400
+  }, { passive: true })
+  timelineNavigator?.addEventListener('pointerdown', () => {
+    timelineNavigatorManualUntil = window.performance.now() + 1400
+  }, { passive: true })
   updateTimelineProgress()
 }
 

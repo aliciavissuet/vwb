@@ -3734,9 +3734,25 @@ textarea {
   position: sticky;
   top: 130px;
   align-self: start;
-  height: fit-content;
-  padding-left: 20px;
+  max-height: calc(100svh - 160px);
+  padding: 0 10px 22px 20px;
   border-left: 1px dashed rgb(50 106 116 / 0.28);
+  overflow-y: auto;
+  scrollbar-color: rgb(232 93 74 / 0.64) transparent;
+  scrollbar-width: thin;
+}
+
+.timeline-navigator::-webkit-scrollbar {
+  width: 5px;
+}
+
+.timeline-navigator::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.timeline-navigator::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgb(232 93 74 / 0.64);
 }
 
 .timeline-globe-card {
@@ -4881,11 +4897,13 @@ figcaption {
     z-index: 3;
     grid-row: 1;
     display: flex;
+    max-height: none;
     align-items: center;
     gap: 20px;
     border: 0;
     padding: 12px 16px;
     overflow-x: auto;
+    overflow-y: hidden;
     background: rgb(251 250 247 / 0.94);
     box-shadow: 0 8px 26px rgb(16 16 16 / 0.05);
     backdrop-filter: blur(12px);
