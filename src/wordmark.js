@@ -20,102 +20,79 @@ const latitudes = [
 ]
 const sphereInstances = []
 
-function createScribbledTopographicGlobe(width, height) {
+function createBorderlessGlobeScribbles(width, height) {
   const strokes = []
   const centerX = width * 0.5
-  const centerY = height * 0.5
-  const globeRadius = Math.min(height * 0.43, width * 0.265)
+  const centerY = height * 0.48
+  const globeRadius = Math.min(height * 0.31, width * 0.22)
   const fullTurn = Math.PI * 2
+  let randomState = 0x7f4a7c15
 
-  const makeArc = (radius, startAngle, endAngle, phase, pointCount = 42) => {
-    const points = []
-    for (let index = 0; index <= pointCount; index += 1) {
-      const progress = index / pointCount
-      const angle = startAngle + (endAngle - startAngle) * progress
-      const wobble =
-        Math.sin(angle * 9 + phase) * globeRadius * 0.0045 +
-        Math.sin(angle * 17 - phase * 0.6) * globeRadius * 0.0022
-      points.push({
-        x: centerX + Math.cos(angle) * (radius + wobble),
-        y: centerY + Math.sin(angle) * (radius + wobble),
-      })
-    }
-    return points
+  const random = () => {
+    randomState ^= randomState << 13
+    randomState ^= randomState >>> 17
+    randomState ^= randomState << 5
+    return (randomState >>> 0) / 4294967296
   }
 
-  // Short, overlapping pencil passes build the globe edge in a scattered order.
-  const fragmentCount = 38
-  for (let index = 0; index < fragmentCount; index += 1) {
-    const scatteredIndex = (index * 11) % fragmentCount
-    const angle = (scatteredIndex / fragmentCount) * fullTurn
-    const passOffset = ((index % 5) - 2) * globeRadius * 0.0036
+  // Long restless pencil lines travel across the full hero rather than tracing a shape.
+  const horizontalStrokeCount = 22
+  for (let strokeIndex = 0; strokeIndex < horizontalStrokeCount; strokeIndex += 1) {
+    const points = []
+    const baseY = ((strokeIndex + 0.5) / horizontalStrokeCount) * height
+    const phase = random() * fullTurn
+    const frequency = 2.4 + random() * 3.8
+    const amplitude = height * (0.018 + random() * 0.032)
+    const reverse = strokeIndex % 2 === 1
+
+    for (let index = 0; index <= 150; index += 1) {
+      const progress = index / 150
+      const direction = reverse ? 1 - progress : progress
+      const pencil = Math.sin(index * 1.73 + phase) * height * 0.0018
+      points.push({
+        x: -width * 0.04 + direction * width * 1.08,
+        y:
+          baseY +
+          Math.sin(progress * fullTurn * frequency + phase) * amplitude +
+          Math.sin(progress * fullTurn * (frequency * 2.3) - phase) * amplitude * 0.28 +
+          pencil,
+      })
+    }
     strokes.push({
-      points: makeArc(globeRadius + passOffset, angle - 0.11, angle + 0.34, index * 0.73),
-      color: 'rgb(50 106 116 / 0.19)',
-      width: index % 4 === 0 ? 1.15 : 0.82,
+      points,
+      color: strokeIndex % 7 === 0 ? 'rgb(50 106 116 / 0.14)' : 'rgb(23 37 43 / 0.085)',
+      width: strokeIndex % 5 === 0 ? 1.05 : 0.72,
     })
   }
 
-  // Loose latitude strokes make the outline read as a sphere, not a flat circle.
-  for (const [latitudeIndex, latitude] of [-0.58, -0.3, 0, 0.3, 0.58].entries()) {
-    for (let pass = 0; pass < 2; pass += 1) {
-      const points = []
-      const halfWidth = globeRadius * Math.sqrt(1 - latitude * latitude)
-      const baseY = centerY + latitude * globeRadius
-      for (let index = 0; index <= 100; index += 1) {
-        const progress = index / 100
-        const x = -halfWidth + halfWidth * 2 * progress
-        const edgeLift = Math.pow(Math.abs(x) / Math.max(halfWidth, 1), 2) * latitude * globeRadius * 0.035
-        const pencil = Math.sin(index * 0.91 + latitudeIndex + pass) * globeRadius * 0.0024
-        points.push({ x: centerX + x, y: baseY + edgeLift + pencil + pass * 0.55 })
-      }
-      strokes.push({ points, color: 'rgb(23 37 43 / 0.09)', width: 0.7 })
-    }
-  }
-
-  // Bowed meridians add a second family of quick construction lines.
-  for (const [meridianIndex, meridian] of [-0.62, -0.31, 0, 0.31, 0.62].entries()) {
+  // Looped gestures break up the horizontal rhythm and make the field feel hand-scribbled.
+  const loopCount = 20
+  for (let loopIndex = 0; loopIndex < loopCount; loopIndex += 1) {
     const points = []
-    for (let index = 0; index <= 110; index += 1) {
-      const progress = index / 110
-      const vertical = -1 + progress * 2
-      const bow = Math.sqrt(Math.max(0, 1 - vertical * vertical))
-      const pencil = Math.sin(index * 0.83 + meridianIndex * 1.7) * globeRadius * 0.0025
+    const loopCenterX = random() * width
+    const loopCenterY = random() * height
+    const loopWidth = width * (0.045 + random() * 0.1)
+    const loopHeight = height * (0.025 + random() * 0.075)
+    const turns = 2.4 + random() * 3.2
+    const phase = random() * fullTurn
+
+    for (let index = 0; index <= 120; index += 1) {
+      const progress = index / 120
+      const angle = progress * fullTurn * turns + phase
+      const pulse = 0.62 + Math.sin(progress * Math.PI) * 0.38
       points.push({
-        x: centerX + meridian * globeRadius * bow + pencil,
-        y: centerY + vertical * globeRadius,
+        x: loopCenterX + Math.cos(angle) * loopWidth * pulse + (progress - 0.5) * loopWidth * 0.7,
+        y: loopCenterY + Math.sin(angle) * loopHeight * pulse,
       })
     }
-    strokes.push({ points, color: 'rgb(23 37 43 / 0.085)', width: 0.72 })
+    strokes.push({
+      points,
+      color: loopIndex % 6 === 0 ? 'rgb(232 93 74 / 0.09)' : 'rgb(50 106 116 / 0.1)',
+      width: loopIndex % 4 === 0 ? 0.95 : 0.68,
+    })
   }
 
-  // Sparse nested elevation contours sit inside the spherical construction lines.
-  const contourFields = [
-    { x: -0.3, y: -0.18, rx: 0.2, ry: 0.18, count: 4, phase: 0.5 },
-    { x: 0.26, y: 0.08, rx: 0.23, ry: 0.21, count: 5, phase: 1.9 },
-    { x: -0.06, y: 0.3, rx: 0.16, ry: 0.13, count: 3, phase: 3.1 },
-  ]
-
-  for (const field of contourFields) {
-    for (let level = 1; level <= field.count; level += 1) {
-      const points = []
-      const scale = level / field.count
-      for (let index = 0; index <= 110; index += 1) {
-        const angle = (index / 110) * fullTurn
-        const irregularity =
-          1 +
-          Math.sin(angle * 3 + field.phase + level * 0.37) * 0.09 +
-          Math.sin(angle * 7 - field.phase + level * 0.21) * 0.035
-        points.push({
-          x: centerX + field.x * globeRadius + Math.cos(angle) * field.rx * globeRadius * scale * irregularity,
-          y: centerY + field.y * globeRadius + Math.sin(angle) * field.ry * globeRadius * scale * irregularity,
-        })
-      }
-      strokes.push({ points, color: 'rgb(50 106 116 / 0.13)', width: 0.78 })
-    }
-  }
-
-  return strokes
+  return { strokes, globe: { centerX, centerY, radius: globeRadius } }
 }
 
 function initHeroTopography(canvas) {
@@ -123,6 +100,7 @@ function initHeroTopography(canvas) {
   if (!context) return
 
   let scribbleStrokes = []
+  let globe = { centerX: 0, centerY: 0, radius: 0 }
   let width = 0
   let height = 0
   let reveal = prefersReduced ? 1 : 0
@@ -136,18 +114,19 @@ function initHeroTopography(canvas) {
     canvas.width = Math.round(width * ratio)
     canvas.height = Math.round(height * ratio)
     context.setTransform(ratio, 0, 0, ratio, 0, 0)
-    scribbleStrokes = createScribbledTopographicGlobe(width, height)
+    const drawing = createBorderlessGlobeScribbles(width, height)
+    scribbleStrokes = drawing.strokes
+    globe = drawing.globe
     draw()
   }
 
-  const draw = () => {
-    context.clearRect(0, 0, width, height)
+  const drawScribbles = (progress) => {
     context.lineCap = 'round'
     context.lineJoin = 'round'
 
     scribbleStrokes.forEach((stroke, strokeIndex) => {
-      const stagger = (strokeIndex / Math.max(1, scribbleStrokes.length)) * 0.62
-      const strokeProgress = Math.min(1, Math.max(0, (reveal - stagger) / 0.3))
+      const stagger = (strokeIndex / Math.max(1, scribbleStrokes.length)) * 0.7
+      const strokeProgress = Math.min(1, Math.max(0, (progress - stagger) / 0.3))
       const visiblePoints = Math.floor(stroke.points.length * strokeProgress)
       if (visiblePoints < 2) return
 
@@ -162,6 +141,40 @@ function initHeroTopography(canvas) {
     })
   }
 
+  const draw = () => {
+    context.clearRect(0, 0, width, height)
+    const scribbleProgress = Math.min(1, reveal / 0.67)
+    const flyProgress = Math.min(1, Math.max(0, (reveal - 0.67) / 0.33))
+    drawScribbles(scribbleProgress)
+
+    if (flyProgress <= 0) return
+
+    // Remove the circular field from the page. A matching scribbled disc is then
+    // redrawn above it and physically carried away, leaving only negative space.
+    context.save()
+    context.globalCompositeOperation = 'destination-out'
+    context.fillStyle = '#000'
+    context.beginPath()
+    context.arc(globe.centerX, globe.centerY, globe.radius, 0, Math.PI * 2)
+    context.fill()
+    context.restore()
+
+    const flight = 1 - Math.pow(1 - flyProgress, 3)
+    context.save()
+    context.globalAlpha = Math.max(0, 1 - flyProgress)
+    context.translate(globe.centerX, globe.centerY)
+    context.translate(width * 0.46 * flight, -height * 0.58 * flight)
+    context.rotate(flight * 0.78)
+    context.translate(-globe.centerX, -globe.centerY)
+    context.beginPath()
+    context.arc(globe.centerX, globe.centerY, globe.radius, 0, Math.PI * 2)
+    context.clip()
+    context.fillStyle = 'rgb(255 250 242 / 0.82)'
+    context.fillRect(0, 0, width, height)
+    drawScribbles(1)
+    context.restore()
+  }
+
   const beginReveal = () => {
     if (prefersReduced) {
       reveal = 1
@@ -171,7 +184,7 @@ function initHeroTopography(canvas) {
 
     const startedAt = performance.now()
     const animate = (now) => {
-      const elapsed = Math.min(1, (now - startedAt) / 3900)
+      const elapsed = Math.min(1, (now - startedAt) / 4700)
       reveal = elapsed
       draw()
       if (elapsed < 1) animationFrame = requestAnimationFrame(animate)
