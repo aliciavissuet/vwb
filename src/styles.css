@@ -4606,6 +4606,12 @@ textarea {
   margin-top: 36px;
 }
 
+.sponsor-next,
+.sponsor-submit {
+  background: transparent;
+  cursor: pointer;
+}
+
 .sponsor-back {
   border: 0;
   border-bottom: 1px solid currentColor;
