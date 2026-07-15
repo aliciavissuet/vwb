@@ -6,7 +6,7 @@
     <meta name="description" content="Follow the fieldwork, partnerships, research, and milestones that led to Vision Without Borders." />
     <title>What Have We Been Up To? | Vision Without Borders</title>
     <link rel="icon" href="/assets/vwb-logo-mark.svg?v=1" type="image/svg+xml" />
-    <link rel="stylesheet" href="/src/styles.css?v=83" />
+    <link rel="stylesheet" href="/src/styles.css?v=86" />
   </head>
   <body class="inner-page timeline-page">
     <main class="site-shell">
@@ -29,12 +29,6 @@
               <img src="/assets/Screenshot 2026-01-21 at 12.44.03 PM.png" alt="Community members gathered during an eye-health program" />
             </figure>
           </header>
-
-          <nav class="timeline-phase-index" aria-label="Timeline chapters">
-            <a href="#pre-founding" data-timeline-phase-link="pre-founding"><span>01</span><strong>Before the nonprofit</strong><small>2017–2025</small></a>
-            <a href="#formation" data-timeline-phase-link="formation"><span>02</span><strong>During formation</strong><small>Aug 2025–May 2026</small></a>
-            <a class="is-current" href="#established" data-timeline-phase-link="established" aria-current="location"><span>03</span><strong>Established work</strong><small>June 2026–now</small></a>
-          </nav>
 
           <div class="timeline-layout">
             <div class="timeline-stream" data-timeline-stream>
@@ -236,26 +230,35 @@
               </section>
             </div>
 
-            <aside class="timeline-navigator" aria-label="Timeline dates">
+            <aside class="timeline-navigator" aria-label="Timeline categories and dates">
               <div class="timeline-globe-card" data-timeline-globe-card aria-live="polite">
                 <svg class="timeline-globe" data-sphere-globe data-sphere-speed="0.22" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><g data-sphere-grid></g><g class="timeline-globe-pins"><circle data-timeline-globe-pin="prague" cx="65" cy="39" r="3"></circle><circle data-timeline-globe-pin="california" cx="29" cy="43" r="3"></circle><circle data-timeline-globe-pin="paraguay" cx="45" cy="77" r="3"></circle><circle data-timeline-globe-pin="rwanda" cx="61" cy="62" r="3"></circle><circle data-timeline-globe-pin="aspen" cx="34" cy="45" r="3"></circle><circle data-timeline-globe-pin="india" cx="78" cy="55" r="3"></circle><circle data-timeline-globe-pin="nepal" cx="77" cy="47" r="3"></circle><circle data-timeline-globe-pin="ethiopia" cx="64" cy="57" r="3"></circle><circle data-timeline-globe-pin="thailand" cx="84" cy="59" r="3"></circle><circle data-timeline-globe-pin="washington" cx="36" cy="42" r="3"></circle><circle data-timeline-globe-pin="burkina" cx="55" cy="59" r="3"></circle></g></svg>
                 <div><span>Active location</span><strong data-timeline-globe-location>Colorado · Stanford · Prague · Nepal</strong></div>
               </div>
-              <p>Jump to</p>
-              <div class="timeline-nav-group">
-                <p class="timeline-nav-group-label">Present</p>
-                <div class="timeline-nav-year is-active" data-timeline-nav-year="2026"><a class="timeline-nav-year-link" href="#june-2026">2026</a><div class="timeline-nav-months"><a href="#june-2026" data-timeline-link="june-2026">Jun</a><a href="#may-2026" data-timeline-link="may-2026">May</a><a href="#april-2026" data-timeline-link="april-2026">Apr</a><a href="#march-2026" data-timeline-link="march-2026">Mar</a><a href="#february-2026" data-timeline-link="february-2026">Feb</a><a href="#january-2026" data-timeline-link="january-2026">Jan</a></div></div>
-              </div>
-              <div class="timeline-nav-group">
-                <p class="timeline-nav-group-label">During formation</p>
-                <div class="timeline-nav-year" data-timeline-nav-year="2025|2024–25"><a class="timeline-nav-year-link" href="#november-2025">2025</a><div class="timeline-nav-months"><a href="#november-2025" data-timeline-link="november-2025">Nov–Dec</a><a href="#september-2025" data-timeline-link="september-2025">Sep–Oct</a><a href="#august-2025" data-timeline-link="august-2025">Aug</a><a href="#exchange-2024" data-timeline-link="exchange-2024">Exchange</a></div></div>
-              </div>
-              <div class="timeline-nav-group">
-                <p class="timeline-nav-group-label">Before founding</p>
-                <div class="timeline-nav-year" data-timeline-nav-year="2021–22"><a class="timeline-nav-year-link" href="#policy-2021" aria-label="Policy work from 2021 to 2022">2022</a></div>
-                <div class="timeline-nav-year" data-timeline-nav-year="2020–21"><a class="timeline-nav-year-link" href="#training-2020" aria-label="Training work from 2020 to 2021">2021</a></div>
-                <div class="timeline-nav-year" data-timeline-nav-year="2018–20|2017–20"><a class="timeline-nav-year-link" href="#technology-2018" aria-label="Work ending in 2020">2020</a><div class="timeline-nav-months"><a href="#technology-2018" data-timeline-link="technology-2018">Technology</a><a href="#research-2017" data-timeline-link="research-2017">Research</a></div></div>
-              </div>
+              <nav class="timeline-nav-categories" aria-label="Jump to a timeline category or year">
+                <section class="timeline-nav-group is-current" data-timeline-nav-phase="established">
+                  <a class="timeline-nav-group-heading is-current" href="#established" data-timeline-phase-link="established" aria-current="location"><span>03</span><strong>Established work</strong><small>June 2026–now</small></a>
+                  <div class="timeline-nav-years">
+                    <div class="timeline-nav-year is-active" data-timeline-nav-phase="established" data-timeline-nav-year="2026"><a class="timeline-nav-year-link" href="#june-2026">2026</a><div class="timeline-nav-months"><a href="#june-2026" data-timeline-link="june-2026">Jun</a></div></div>
+                  </div>
+                </section>
+                <section class="timeline-nav-group" data-timeline-nav-phase="formation">
+                  <a class="timeline-nav-group-heading" href="#formation" data-timeline-phase-link="formation"><span>02</span><strong>During formation</strong><small>Aug 2025–May 2026</small></a>
+                  <div class="timeline-nav-years">
+                    <div class="timeline-nav-year" data-timeline-nav-phase="formation" data-timeline-nav-year="2026"><a class="timeline-nav-year-link" href="#may-2026">2026</a><div class="timeline-nav-months"><a href="#may-2026" data-timeline-link="may-2026">May</a><a href="#april-2026" data-timeline-link="april-2026">Apr</a><a href="#march-2026" data-timeline-link="march-2026">Mar</a><a href="#february-2026" data-timeline-link="february-2026">Feb</a><a href="#january-2026" data-timeline-link="january-2026">Jan</a></div></div>
+                    <div class="timeline-nav-year" data-timeline-nav-phase="formation" data-timeline-nav-year="2025"><a class="timeline-nav-year-link" href="#november-2025">2025</a><div class="timeline-nav-months"><a href="#november-2025" data-timeline-link="november-2025">Nov–Dec</a><a href="#september-2025" data-timeline-link="september-2025">Sep–Oct</a><a href="#august-2025" data-timeline-link="august-2025">Aug</a></div></div>
+                  </div>
+                </section>
+                <section class="timeline-nav-group" data-timeline-nav-phase="pre-founding">
+                  <a class="timeline-nav-group-heading" href="#pre-founding" data-timeline-phase-link="pre-founding"><span>01</span><strong>Before the nonprofit</strong><small>2017–2025</small></a>
+                  <div class="timeline-nav-years">
+                    <div class="timeline-nav-year" data-timeline-nav-phase="pre-founding" data-timeline-nav-year="2024–25"><a class="timeline-nav-year-link" href="#exchange-2024" aria-label="Exchange work from 2024 to 2025">2025</a></div>
+                    <div class="timeline-nav-year" data-timeline-nav-phase="pre-founding" data-timeline-nav-year="2021–22"><a class="timeline-nav-year-link" href="#policy-2021" aria-label="Policy work from 2021 to 2022">2022</a></div>
+                    <div class="timeline-nav-year" data-timeline-nav-phase="pre-founding" data-timeline-nav-year="2020–21"><a class="timeline-nav-year-link" href="#training-2020" aria-label="Training work from 2020 to 2021">2021</a></div>
+                    <div class="timeline-nav-year" data-timeline-nav-phase="pre-founding" data-timeline-nav-year="2018–20|2017–20"><a class="timeline-nav-year-link" href="#technology-2018" aria-label="Work ending in 2020">2020</a><div class="timeline-nav-months"><a href="#technology-2018" data-timeline-link="technology-2018">Technology</a><a href="#research-2017" data-timeline-link="research-2017">Research</a></div></div>
+                  </div>
+                </section>
+              </nav>
             </aside>
           </div>
         </div>
@@ -263,6 +266,6 @@
 
       <footer class="site-footer" aria-label="Footer"><div class="footer-shell"><a class="footer-brand" href="/" aria-label="Vision Without Borders home"><span class="footer-brand-mark" aria-hidden="true"></span><span>Vision Without Borders</span></a><nav class="footer-links" aria-label="Footer links"><a href="https://www.instagram.com/visionwithoutbordersmd/" target="_blank" rel="noreferrer">Instagram</a><a href="/mission">Mission</a><a href="/about">About</a><a href="/timeline">Timeline</a><a href="/news">News &amp; Research</a><a href="/sponsor">Sponsor</a><a href="/contact">Contact</a></nav></div></footer>
     </main>
-    <script type="module" src="/src/wordmark.js?v=52"></script>
+    <script type="module" src="/src/wordmark.js?v=55"></script>
   </body>
 </html>

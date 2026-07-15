@@ -612,7 +612,13 @@ if (timelineStream) {
     if (!timelineNavigator || !activeYear || !isDesktopTimelineNavigator()) return
     if (window.performance.now() < timelineNavigatorManualUntil) return
 
-    const targetTop = activeYear.offsetTop - (timelineNavigator.clientHeight - activeYear.offsetHeight) / 2
+    const navigatorRect = timelineNavigator.getBoundingClientRect()
+    const yearRect = activeYear.getBoundingClientRect()
+    const targetTop =
+      timelineNavigator.scrollTop +
+      yearRect.top -
+      navigatorRect.top -
+      (timelineNavigator.clientHeight - activeYear.offsetHeight) / 2
     timelineNavigator.scrollTo({
       top: Math.max(0, targetTop),
       behavior: prefersReduced ? 'auto' : 'smooth',
@@ -638,6 +644,7 @@ if (timelineStream) {
     for (const link of timelinePhaseLinks) {
       const isActive = link.dataset.timelinePhaseLink === activePhase
       link.classList.toggle('is-current', isActive)
+      link.closest('.timeline-nav-group')?.classList.toggle('is-current', isActive)
       if (isActive) link.setAttribute('aria-current', 'location')
       else link.removeAttribute('aria-current')
     }
@@ -645,7 +652,7 @@ if (timelineStream) {
     let activeYear = null
     for (const year of timelineYears) {
       const representedYears = (year.dataset.timelineNavYear || '').split('|')
-      const isActive = representedYears.includes(entry.dataset.timelineYear)
+      const isActive = year.dataset.timelineNavPhase === activePhase && representedYears.includes(entry.dataset.timelineYear)
       year.classList.toggle('is-active', isActive)
       if (isActive) activeYear = year
     }
