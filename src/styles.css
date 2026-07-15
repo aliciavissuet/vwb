@@ -212,10 +212,41 @@ textarea {
 }
 
 .logo-svg {
+  position: relative;
+  z-index: 2;
   display: block;
   width: min(100%, 1120px);
   height: auto;
   overflow: visible;
+}
+
+.hero-logo-stage {
+  position: relative;
+  width: min(100%, 1120px);
+  isolation: isolate;
+}
+
+.hero-topography {
+  position: absolute;
+  inset: -11% -7% -8%;
+  z-index: 0;
+  display: block;
+  width: 114%;
+  height: 119%;
+  opacity: 0.82;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, rgb(0 0 0 / 0.78) 72%, transparent 100%);
+  mask-image: radial-gradient(ellipse at center, #000 30%, rgb(0 0 0 / 0.78) 72%, transparent 100%);
+}
+
+@media (max-width: 680px) {
+  .hero-topography {
+    inset: -7% -3% -5%;
+    width: 106%;
+    height: 112%;
+    opacity: 0.66;
+  }
 }
 
 .logo-line {

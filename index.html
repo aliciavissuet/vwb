@@ -19,7 +19,7 @@
     </script>
     <link rel="icon" href="/assets/vwb-logo-mark.svg?v=1" type="image/svg+xml" />
     <link rel="shortcut icon" href="/assets/vwb-logo-mark.svg?v=1" type="image/svg+xml" />
-    <link rel="stylesheet" href="/src/styles.css?v=66" />
+    <link rel="stylesheet" href="/src/styles.css?v=85" />
   </head>
   <body class="home-page">
     <main class="site-shell">
@@ -48,7 +48,9 @@
         <div class="hero-copy">
           <p class="eyebrow">Sight restoring care, across borders</p>
           <h1 id="hero-title" class="sr-only">Vision Without Borders</h1>
-          <svg class="logo-svg" viewBox="0 0 1120 520" aria-hidden="true" focusable="false">
+          <div class="hero-logo-stage">
+            <canvas class="hero-topography" data-hero-topography aria-hidden="true"></canvas>
+            <svg class="logo-svg" viewBox="0 0 1120 520" aria-hidden="true" focusable="false">
             <defs>
               <clipPath id="logo-eye-clip">
                 <path d="M12 60C36 27 64 14 92 14s56 13 80 46c-24 33-52 46-80 46S36 93 12 60Z" />
@@ -87,7 +89,8 @@
               </g>
               <text x="528" y="484">RDERS</text>
             </g>
-          </svg>
+            </svg>
+          </div>
           <p class="hero-text">Blindness and vision loss shouldn't depend on where you're born.</p>
           <div class="hero-actions" aria-label="Primary actions">
             <a class="button button-primary" href="/mission">Explore our mission</a>
@@ -368,6 +371,6 @@
       <div class="blink-lid blink-lid-top"></div>
       <div class="blink-lid blink-lid-bottom"></div>
     </div>
-    <script type="module" src="/src/wordmark.js?v=47"></script>
+    <script type="module" src="/src/wordmark.js?v=54"></script>
   </body>
 </html>

@@ -20,6 +20,122 @@ const latitudes = [
 ]
 const sphereInstances = []
 
+function createTopographicContours(width, height) {
+  const contours = []
+  const fields = [
+    { x: 0.24, y: 0.44, rx: 0.23, ry: 0.34, count: 7, phase: 0.4 },
+    { x: 0.72, y: 0.52, rx: 0.27, ry: 0.39, count: 8, phase: 1.7 },
+    { x: 0.5, y: 0.49, rx: 0.48, ry: 0.55, count: 5, phase: 2.8 },
+  ]
+
+  for (const field of fields) {
+    for (let level = 1; level <= field.count; level += 1) {
+      const scale = level / field.count
+      const points = []
+      const pointCount = 180
+
+      for (let index = 0; index <= pointCount; index += 1) {
+        const angle = (index / pointCount) * Math.PI * 2
+        const irregularity =
+          1 +
+          Math.sin(angle * 3 + field.phase + level * 0.31) * 0.055 +
+          Math.sin(angle * 5 - field.phase * 0.7 + level * 0.19) * 0.026 +
+          Math.cos(angle * 2 + level * 0.43) * 0.018
+        const driftX = Math.sin(level * 1.31 + field.phase) * width * 0.006
+        const driftY = Math.cos(level * 1.17 - field.phase) * height * 0.008
+
+        points.push({
+          x: width * field.x + Math.cos(angle) * width * field.rx * scale * irregularity + driftX,
+          y: height * field.y + Math.sin(angle) * height * field.ry * scale * irregularity + driftY,
+        })
+      }
+
+      contours.push(points)
+    }
+  }
+
+  return contours
+}
+
+function initHeroTopography(canvas) {
+  const context = canvas.getContext('2d')
+  if (!context) return
+
+  let contours = []
+  let width = 0
+  let height = 0
+  let reveal = prefersReduced ? 1 : 0
+  let animationFrame = 0
+
+  const resize = () => {
+    const bounds = canvas.getBoundingClientRect()
+    const ratio = Math.min(window.devicePixelRatio || 1, 2)
+    width = Math.max(1, bounds.width)
+    height = Math.max(1, bounds.height)
+    canvas.width = Math.round(width * ratio)
+    canvas.height = Math.round(height * ratio)
+    context.setTransform(ratio, 0, 0, ratio, 0, 0)
+    contours = createTopographicContours(width, height)
+    draw()
+  }
+
+  const draw = () => {
+    context.clearRect(0, 0, width, height)
+    context.lineWidth = 0.9
+    context.lineCap = 'round'
+    context.lineJoin = 'round'
+
+    contours.forEach((points, contourIndex) => {
+      const stagger = contourIndex * 0.018
+      const contourProgress = Math.min(1, Math.max(0, (reveal - stagger) / 0.54))
+      const visiblePoints = Math.floor(points.length * contourProgress)
+      if (visiblePoints < 2) return
+
+      context.beginPath()
+      context.moveTo(points[0].x, points[0].y)
+      for (let pointIndex = 1; pointIndex < visiblePoints; pointIndex += 1) {
+        context.lineTo(points[pointIndex].x, points[pointIndex].y)
+      }
+      context.strokeStyle = contourIndex % 6 === 0 ? 'rgb(50 106 116 / 0.16)' : 'rgb(23 37 43 / 0.105)'
+      context.stroke()
+    })
+  }
+
+  const beginReveal = () => {
+    if (prefersReduced) {
+      reveal = 1
+      draw()
+      return
+    }
+
+    const startedAt = performance.now()
+    const animate = (now) => {
+      const elapsed = Math.min(1, (now - startedAt) / 3200)
+      reveal = 1 - Math.pow(1 - elapsed, 3)
+      draw()
+      if (elapsed < 1) animationFrame = requestAnimationFrame(animate)
+    }
+    animationFrame = requestAnimationFrame(animate)
+  }
+
+  resize()
+  const introIsShowing = document.documentElement.classList.contains('show-intro')
+  window.setTimeout(beginReveal, introIsShowing ? 4700 : 300)
+
+  if ('ResizeObserver' in window) {
+    const observer = new ResizeObserver(resize)
+    observer.observe(canvas)
+  } else {
+    window.addEventListener('resize', resize, { passive: true })
+  }
+
+  window.addEventListener('pagehide', () => cancelAnimationFrame(animationFrame), { once: true })
+}
+
+for (const canvas of document.querySelectorAll('[data-hero-topography]')) {
+  initHeroTopography(canvas)
+}
+
 function createCircle() {
   const circle = document.createElementNS(svgNS, 'circle')
   circle.setAttribute('class', 'sphere-outline')
