@@ -419,6 +419,61 @@ for (const processCycle of document.querySelectorAll('.process-cycle')) {
   })
 }
 
+for (const storyRail of document.querySelectorAll('[data-infinite-story-rail]')) {
+  const originalCards = Array.from(storyRail.children)
+  if (originalCards.length < 2) continue
+
+  const cloneCard = (card) => {
+    const clone = card.cloneNode(true)
+    clone.dataset.infiniteClone = ''
+    clone.setAttribute('aria-hidden', 'true')
+    clone.inert = true
+    for (const focusable of clone.querySelectorAll('a, button, input, select, textarea, [tabindex]')) {
+      focusable.setAttribute('tabindex', '-1')
+    }
+    return clone
+  }
+
+  const leadingCards = originalCards.map(cloneCard)
+  const trailingCards = originalCards.map(cloneCard)
+  storyRail.prepend(...leadingCards)
+  storyRail.append(...trailingCards)
+
+  let cycleWidth = 0
+  let middleStart = 0
+  let resizeFrame = null
+
+  const measureStoryRail = () => {
+    const paddingStart = Number.parseFloat(window.getComputedStyle(storyRail).paddingInlineStart) || 0
+    middleStart = originalCards[0].offsetLeft - paddingStart
+    cycleWidth = originalCards[0].offsetLeft - leadingCards[0].offsetLeft
+    storyRail.scrollLeft = middleStart
+  }
+
+  const keepStoryRailInfinite = () => {
+    if (!cycleWidth) return
+    const distanceFromMiddle = storyRail.scrollLeft - middleStart
+
+    if (distanceFromMiddle < cycleWidth * -0.55) {
+      storyRail.scrollLeft += cycleWidth
+    } else if (distanceFromMiddle > cycleWidth * 0.55) {
+      storyRail.scrollLeft -= cycleWidth
+    }
+  }
+
+  storyRail.addEventListener('scroll', keepStoryRailInfinite, { passive: true })
+  window.addEventListener('resize', () => {
+    if (resizeFrame !== null) window.cancelAnimationFrame(resizeFrame)
+    resizeFrame = window.requestAnimationFrame(() => {
+      resizeFrame = null
+      measureStoryRail()
+    })
+  })
+
+  window.requestAnimationFrame(measureStoryRail)
+  window.addEventListener('load', measureStoryRail, { once: true })
+}
+
 const timelineStream = document.querySelector('[data-timeline-stream]')
 
 if (timelineStream) {
