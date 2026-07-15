@@ -35,36 +35,37 @@ function createBorderlessGlobeScribbles(width, height) {
     return (randomState >>> 0) / 4294967296
   }
 
-  // Broad, imperfect marker strokes create a red field. The globe is revealed
-  // later by removing this field, in the same way a figure can be formed by
-  // the untouched space between hand-painted marks.
-  const brushStrokeCount = 18
+  // A dense back-and-forth marker gesture fills one field around the wordmark.
+  // Shorter strokes keep the motion from reading as ribbons across the page.
+  const brushStrokeCount = 24
+  const fieldWidth = Math.min(width * 0.78, globeRadius * 3.35)
+  const fieldHeight = Math.min(height * 0.82, globeRadius * 2.65)
+  const fieldLeft = centerX - fieldWidth / 2
+  const fieldTop = centerY - fieldHeight / 2
   for (let strokeIndex = 0; strokeIndex < brushStrokeCount; strokeIndex += 1) {
     const points = []
-    const baseY = ((strokeIndex + 0.35) / brushStrokeCount) * height
+    const baseY = fieldTop + ((strokeIndex + 0.5) / brushStrokeCount) * fieldHeight
     const phase = random() * fullTurn
-    const frequency = 1.3 + random() * 1.8
-    const amplitude = height * (0.009 + random() * 0.014)
-    const slope = height * (-0.075 + random() * 0.15)
+    const frequency = 1.5 + random() * 1.2
+    const amplitude = height * (0.004 + random() * 0.006)
     const reverse = strokeIndex % 2 === 1
 
-    for (let index = 0; index <= 110; index += 1) {
-      const progress = index / 110
+    for (let index = 0; index <= 90; index += 1) {
+      const progress = index / 90
       const direction = reverse ? 1 - progress : progress
-      const handJitter = Math.sin(index * 1.91 + phase) * height * 0.0027
+      const handJitter = Math.sin(index * 1.83 + phase) * height * 0.0018
       points.push({
-        x: -width * 0.06 + direction * width * 1.12,
+        x: fieldLeft + direction * fieldWidth + Math.sin(progress * Math.PI) * Math.sin(phase) * width * 0.008,
         y:
           baseY +
           Math.sin(progress * fullTurn * frequency + phase) * amplitude +
-          (progress - 0.5) * slope +
           handJitter,
       })
     }
     strokes.push({
       points,
-      color: strokeIndex % 4 === 0 ? 'rgb(232 93 74 / 0.2)' : 'rgb(232 93 74 / 0.14)',
-      width: height * (0.021 + random() * 0.014),
+      color: strokeIndex % 4 === 0 ? 'rgb(232 93 74 / 0.38)' : 'rgb(232 93 74 / 0.29)',
+      width: (fieldHeight / brushStrokeCount) * (0.72 + random() * 0.18),
     })
   }
 
@@ -74,9 +75,6 @@ function createBorderlessGlobeScribbles(width, height) {
 function initHeroTopography(canvas) {
   const context = canvas.getContext('2d')
   if (!context) return
-  const rubbingCanvas = document.createElement('canvas')
-  const rubbingContext = rubbingCanvas.getContext('2d')
-  if (!rubbingContext) return
 
   let scribbleStrokes = []
   let globe = { centerX: 0, centerY: 0, radius: 0 }
@@ -92,19 +90,16 @@ function initHeroTopography(canvas) {
     height = Math.max(1, bounds.height)
     canvas.width = Math.round(width * ratio)
     canvas.height = Math.round(height * ratio)
-    rubbingCanvas.width = canvas.width
-    rubbingCanvas.height = canvas.height
     context.setTransform(ratio, 0, 0, ratio, 0, 0)
-    rubbingContext.setTransform(ratio, 0, 0, ratio, 0, 0)
     const drawing = createBorderlessGlobeScribbles(width, height)
     scribbleStrokes = drawing.strokes
     globe = drawing.globe
     draw()
   }
 
-  const drawScribbles = (progress, targetContext = context, useSolidRed = false) => {
-    targetContext.lineCap = 'round'
-    targetContext.lineJoin = 'round'
+  const drawScribbles = (progress) => {
+    context.lineCap = 'round'
+    context.lineJoin = 'round'
 
     scribbleStrokes.forEach((stroke, strokeIndex) => {
       const stagger = (strokeIndex / Math.max(1, scribbleStrokes.length)) * 0.7
@@ -112,64 +107,56 @@ function initHeroTopography(canvas) {
       const visiblePoints = Math.floor(stroke.points.length * strokeProgress)
       if (visiblePoints < 2) return
 
-      targetContext.beginPath()
-      targetContext.moveTo(stroke.points[0].x, stroke.points[0].y)
+      context.beginPath()
+      context.moveTo(stroke.points[0].x, stroke.points[0].y)
       for (let pointIndex = 1; pointIndex < visiblePoints; pointIndex += 1) {
-        targetContext.lineTo(stroke.points[pointIndex].x, stroke.points[pointIndex].y)
+        context.lineTo(stroke.points[pointIndex].x, stroke.points[pointIndex].y)
       }
-      targetContext.lineWidth = stroke.width
-      targetContext.strokeStyle = useSolidRed ? 'rgb(232 93 74)' : stroke.color
-      targetContext.stroke()
+      context.lineWidth = stroke.width
+      context.strokeStyle = stroke.color
+      context.stroke()
     })
   }
 
-  const drawRubbingRelief = (targetContext) => {
+  const eraseGlobeRelief = () => {
     const { centerX, centerY, radius } = globe
     const fullTurn = Math.PI * 2
 
-    targetContext.save()
-    targetContext.globalCompositeOperation = 'destination-in'
-    targetContext.strokeStyle = '#000'
-    targetContext.lineCap = 'round'
-    targetContext.lineJoin = 'round'
+    context.save()
+    context.globalCompositeOperation = 'destination-out'
+    context.strokeStyle = '#000'
+    context.lineCap = 'round'
+    context.lineJoin = 'round'
 
     const rubEllipse = (radiusX, radiusY, phase, weight = 1) => {
-      targetContext.beginPath()
+      context.beginPath()
       for (let index = 0; index <= 180; index += 1) {
         const angle = (index / 180) * fullTurn - Math.PI / 2
-        const wobble = Math.sin(angle * 13 + phase) * height * 0.0015 + Math.sin(angle * 29 - phase) * height * 0.0006
+        const wobble = Math.sin(angle * 13 + phase) * height * 0.0018 + Math.sin(angle * 29 - phase) * height * 0.0008
         const x = centerX + Math.cos(angle) * (radiusX + wobble)
         const y = centerY + Math.sin(angle) * (radiusY + wobble)
-        if (index === 0) targetContext.moveTo(x, y)
-        else targetContext.lineTo(x, y)
+        if (index === 0) context.moveTo(x, y)
+        else context.lineTo(x, y)
       }
-      targetContext.lineWidth = Math.max(5, height * 0.009 * weight)
-      targetContext.stroke()
+      context.lineWidth = Math.max(7, height * 0.011 * weight)
+      context.stroke()
     }
 
-    rubEllipse(radius, radius, 0.4, 1.25)
-    rubEllipse(radius * 0.42, radius, 1.7)
-    rubEllipse(radius * 0.72, radius, 2.8)
-    rubEllipse(radius, radius * 0.34, 4.2)
-    rubEllipse(radius * 0.98, radius * 0.67, 5.1)
-    targetContext.restore()
+    rubEllipse(radius, radius, 0.4, 1.35)
+    rubEllipse(radius * 0.42, radius, 1.7, 0.82)
+    rubEllipse(radius * 0.72, radius, 2.8, 0.82)
+    rubEllipse(radius, radius * 0.34, 4.2, 0.82)
+    rubEllipse(radius * 0.98, radius * 0.67, 5.1, 0.82)
+    context.restore()
   }
 
   const draw = () => {
     context.clearRect(0, 0, width, height)
-    rubbingContext.clearRect(0, 0, width, height)
     const scribbleProgress = Math.min(1, reveal)
     drawScribbles(scribbleProgress)
-
-    // The same marker passes are filtered through the globe's raised relief.
-    // Because only the intersections remain, the sphere appears as the field is
-    // rubbed in instead of being drawn separately on top of it.
-    drawScribbles(scribbleProgress, rubbingContext, true)
-    drawRubbingRelief(rubbingContext)
-    context.save()
-    context.globalAlpha = 0.62
-    context.drawImage(rubbingCanvas, 0, 0, rubbingCanvas.width, rubbingCanvas.height, 0, 0, width, height)
-    context.restore()
+    // Each new marker pass is immediately rubbed away over the globe's raised
+    // edge and grid, so the outline is visibly left behind in negative space.
+    eraseGlobeRelief()
   }
 
   const beginReveal = () => {
@@ -181,7 +168,7 @@ function initHeroTopography(canvas) {
 
     const startedAt = performance.now()
     const animate = (now) => {
-      const elapsed = Math.min(1, (now - startedAt) / 3900)
+      const elapsed = Math.min(1, (now - startedAt) / 4200)
       reveal = elapsed
       draw()
       if (elapsed < 1) animationFrame = requestAnimationFrame(animate)
