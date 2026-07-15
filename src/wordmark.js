@@ -407,6 +407,13 @@ const menuToggle = document.querySelector('.menu-toggle')
 const introLoader = document.querySelector('.intro-loader')
 let transitionActive = false
 
+window.addEventListener('pageshow', (event) => {
+  if (!event.persisted) return
+  transitionActive = false
+  blinkTransition.classList.remove('is-active', 'is-closing', 'is-opening')
+  document.documentElement.classList.remove('page-entering')
+})
+
 if (
   introLoader &&
   (document.documentElement.classList.contains('show-intro') ||
@@ -418,11 +425,26 @@ if (
   }, 4750)
 }
 
+const isBlinkEntering = document.documentElement.classList.contains('page-entering')
+
 try {
   window.sessionStorage.setItem('vwb-site-seen', 'true')
-  window.sessionStorage.removeItem('vwb-blink-enter')
+  if (!isBlinkEntering) window.sessionStorage.removeItem('vwb-blink-enter')
 } catch {
   // Navigation still works when session storage is unavailable.
+}
+
+if (isBlinkEntering) {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.documentElement.classList.remove('page-entering')
+      try {
+        window.sessionStorage.removeItem('vwb-blink-enter')
+      } catch {
+        // The page can still reveal when storage is unavailable.
+      }
+    })
+  })
 }
 
 function setMenuOpen(isOpen) {
@@ -463,7 +485,13 @@ function navigateWithBlink(url) {
   }
 
   transitionActive = true
-  blinkTransition.classList.add('is-active')
+  blinkTransition.classList.add('is-closing')
+
+  try {
+    window.sessionStorage.setItem('vwb-blink-enter', 'true')
+  } catch {
+    // The close-only transition still prevents the outgoing page from flashing.
+  }
 
   let hasNavigated = false
   const finishNavigation = () => {
@@ -474,7 +502,7 @@ function navigateWithBlink(url) {
 
   const topLid = blinkTransition.querySelector('.blink-lid-top')
   topLid?.addEventListener('animationend', finishNavigation, { once: true })
-  window.setTimeout(finishNavigation, 900)
+  window.setTimeout(finishNavigation, 650)
 }
 
 for (const link of document.querySelectorAll('a[href^="#"]')) {

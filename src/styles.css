@@ -23,6 +23,18 @@ html {
   scroll-behavior: smooth;
 }
 
+html.page-entering {
+  background: var(--bg);
+}
+
+html.page-entering body {
+  visibility: hidden;
+}
+
+html.page-entering * {
+  animation-play-state: paused !important;
+}
+
 body {
   min-width: 320px;
   margin: 0;
