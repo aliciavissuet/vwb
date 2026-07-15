@@ -23,8 +23,8 @@ const sphereInstances = []
 function createBorderlessGlobeScribbles(width, height) {
   const strokes = []
   const centerX = width * 0.5
-  const centerY = height * 0.48
-  const globeRadius = Math.min(height * 0.31, width * 0.22)
+  const centerY = height * 0.5
+  const globeRadius = Math.min(height * 0.34, width * 0.2)
   const fullTurn = Math.PI * 2
   let randomState = 0x7f4a7c15
 
@@ -35,60 +35,36 @@ function createBorderlessGlobeScribbles(width, height) {
     return (randomState >>> 0) / 4294967296
   }
 
-  // Long restless pencil lines travel across the full hero rather than tracing a shape.
-  const horizontalStrokeCount = 22
-  for (let strokeIndex = 0; strokeIndex < horizontalStrokeCount; strokeIndex += 1) {
+  // Broad, imperfect marker strokes create a red field. The globe is revealed
+  // later by removing this field, in the same way a figure can be formed by
+  // the untouched space between hand-painted marks.
+  const brushStrokeCount = 14
+  for (let strokeIndex = 0; strokeIndex < brushStrokeCount; strokeIndex += 1) {
     const points = []
-    const baseY = ((strokeIndex + 0.5) / horizontalStrokeCount) * height
+    const baseY = ((strokeIndex + 0.35) / brushStrokeCount) * height
     const phase = random() * fullTurn
-    const frequency = 2.4 + random() * 3.8
-    const amplitude = height * (0.018 + random() * 0.032)
+    const frequency = 1.3 + random() * 1.8
+    const amplitude = height * (0.009 + random() * 0.014)
+    const slope = height * (-0.075 + random() * 0.15)
     const reverse = strokeIndex % 2 === 1
 
-    for (let index = 0; index <= 150; index += 1) {
-      const progress = index / 150
+    for (let index = 0; index <= 110; index += 1) {
+      const progress = index / 110
       const direction = reverse ? 1 - progress : progress
-      const pencil = Math.sin(index * 1.73 + phase) * height * 0.0018
+      const handJitter = Math.sin(index * 1.91 + phase) * height * 0.0027
       points.push({
-        x: -width * 0.04 + direction * width * 1.08,
+        x: -width * 0.06 + direction * width * 1.12,
         y:
           baseY +
           Math.sin(progress * fullTurn * frequency + phase) * amplitude +
-          Math.sin(progress * fullTurn * (frequency * 2.3) - phase) * amplitude * 0.28 +
-          pencil,
+          (progress - 0.5) * slope +
+          handJitter,
       })
     }
     strokes.push({
       points,
-      color: strokeIndex % 7 === 0 ? 'rgb(50 106 116 / 0.14)' : 'rgb(23 37 43 / 0.085)',
-      width: strokeIndex % 5 === 0 ? 1.05 : 0.72,
-    })
-  }
-
-  // Looped gestures break up the horizontal rhythm and make the field feel hand-scribbled.
-  const loopCount = 20
-  for (let loopIndex = 0; loopIndex < loopCount; loopIndex += 1) {
-    const points = []
-    const loopCenterX = random() * width
-    const loopCenterY = random() * height
-    const loopWidth = width * (0.045 + random() * 0.1)
-    const loopHeight = height * (0.025 + random() * 0.075)
-    const turns = 2.4 + random() * 3.2
-    const phase = random() * fullTurn
-
-    for (let index = 0; index <= 120; index += 1) {
-      const progress = index / 120
-      const angle = progress * fullTurn * turns + phase
-      const pulse = 0.62 + Math.sin(progress * Math.PI) * 0.38
-      points.push({
-        x: loopCenterX + Math.cos(angle) * loopWidth * pulse + (progress - 0.5) * loopWidth * 0.7,
-        y: loopCenterY + Math.sin(angle) * loopHeight * pulse,
-      })
-    }
-    strokes.push({
-      points,
-      color: loopIndex % 6 === 0 ? 'rgb(232 93 74 / 0.09)' : 'rgb(50 106 116 / 0.1)',
-      width: loopIndex % 4 === 0 ? 0.95 : 0.68,
+      color: strokeIndex % 4 === 0 ? 'rgb(232 93 74 / 0.34)' : 'rgb(232 93 74 / 0.26)',
+      width: height * (0.027 + random() * 0.018),
     })
   }
 
@@ -141,16 +117,42 @@ function initHeroTopography(canvas) {
     })
   }
 
+  const drawGlobe = (progress) => {
+    if (progress <= 0) return
+    const eased = 1 - Math.pow(1 - progress, 3)
+    const { centerX, centerY, radius } = globe
+
+    context.save()
+    context.strokeStyle = 'rgb(232 93 74 / 0.5)'
+    context.lineCap = 'round'
+    context.lineWidth = Math.max(1.6, height * 0.0026)
+
+    const drawEllipse = (radiusX, radiusY, delay = 0) => {
+      const lineProgress = Math.min(1, Math.max(0, (eased - delay) / Math.max(0.01, 1 - delay)))
+      if (lineProgress <= 0) return
+      context.beginPath()
+      context.ellipse(centerX, centerY, radiusX, radiusY, 0, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * lineProgress)
+      context.stroke()
+    }
+
+    drawEllipse(radius, radius, 0)
+    drawEllipse(radius * 0.42, radius, 0.12)
+    drawEllipse(radius * 0.72, radius, 0.2)
+    drawEllipse(radius, radius * 0.34, 0.28)
+    drawEllipse(radius * 0.98, radius * 0.67, 0.36)
+    context.restore()
+  }
+
   const draw = () => {
     context.clearRect(0, 0, width, height)
-    const scribbleProgress = Math.min(1, reveal / 0.67)
-    const flyProgress = Math.min(1, Math.max(0, (reveal - 0.67) / 0.33))
+    const scribbleProgress = Math.min(1, reveal / 0.55)
+    const flyProgress = Math.min(1, Math.max(0, (reveal - 0.55) / 0.45))
     drawScribbles(scribbleProgress)
 
     if (flyProgress <= 0) return
 
-    // Remove the circular field from the page. A matching scribbled disc is then
-    // redrawn above it and physically carried away, leaving only negative space.
+    // Remove the circular field, then carry its exact bundle of red strokes away.
+    // The remaining strokes define the globe's edge through negative space.
     context.save()
     context.globalCompositeOperation = 'destination-out'
     context.fillStyle = '#000'
@@ -169,10 +171,10 @@ function initHeroTopography(canvas) {
     context.beginPath()
     context.arc(globe.centerX, globe.centerY, globe.radius, 0, Math.PI * 2)
     context.clip()
-    context.fillStyle = 'rgb(255 250 242 / 0.82)'
-    context.fillRect(0, 0, width, height)
     drawScribbles(1)
     context.restore()
+
+    drawGlobe(Math.min(1, Math.max(0, (flyProgress - 0.16) / 0.84)))
   }
 
   const beginReveal = () => {
@@ -184,7 +186,7 @@ function initHeroTopography(canvas) {
 
     const startedAt = performance.now()
     const animate = (now) => {
-      const elapsed = Math.min(1, (now - startedAt) / 4700)
+      const elapsed = Math.min(1, (now - startedAt) / 3600)
       reveal = elapsed
       draw()
       if (elapsed < 1) animationFrame = requestAnimationFrame(animate)
