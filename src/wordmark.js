@@ -922,6 +922,7 @@ for (const sponsorFlow of document.querySelectorAll('[data-sponsor-flow]')) {
   const nextButton = sponsorFlow.querySelector('[data-sponsor-next]')
   const submitButton = sponsorFlow.querySelector('[data-sponsor-submit]')
   const status = sponsorFlow.querySelector('[data-sponsor-status]')
+  const form = sponsorFlow.querySelector('form')
   let currentStep = 0
 
   const showSponsorStep = (stepIndex) => {
@@ -940,7 +941,11 @@ for (const sponsorFlow of document.querySelectorAll('[data-sponsor-flow]')) {
 
     if (backButton) backButton.hidden = currentStep === 0
     if (nextButton) nextButton.hidden = currentStep === steps.length - 1
-    if (submitButton) submitButton.hidden = currentStep !== steps.length - 1
+    if (submitButton) {
+      const isFinalStep = currentStep === steps.length - 1
+      submitButton.hidden = !isFinalStep
+      submitButton.disabled = !isFinalStep
+    }
     if (status) status.textContent = ''
     steps[currentStep]?.querySelector('legend')?.focus?.()
   }
@@ -960,6 +965,11 @@ for (const sponsorFlow of document.querySelectorAll('[data-sponsor-flow]')) {
   })
 
   backButton?.addEventListener('click', () => showSponsorStep(currentStep - 1))
+  form?.addEventListener('submit', (event) => {
+    if (currentStep === steps.length - 1) return
+    event.preventDefault()
+    if (status) status.textContent = 'Please complete all four steps before sending your inquiry.'
+  })
   showSponsorStep(0)
 }
 
