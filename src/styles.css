@@ -2985,7 +2985,7 @@ textarea {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
-  margin: 0 0 clamp(68px, 8vw, 104px);
+  margin: clamp(36px, 5vw, 72px) 0 clamp(68px, 8vw, 104px);
   border-top: 1px solid rgb(23 37 43 / 0.18);
   border-bottom: 1px solid rgb(23 37 43 / 0.18);
   background: rgb(255 250 242 / 0.46);
@@ -3239,9 +3239,9 @@ textarea {
 .timeline-phase-heading h2 {
   max-width: 11ch;
   margin: 0;
-  font-size: clamp(2.8rem, 7vw, 6.6rem);
-  letter-spacing: -0.065em;
-  line-height: 0.86;
+  font-size: clamp(2.45rem, 5.6vw, 5.2rem);
+  letter-spacing: -0.055em;
+  line-height: 0.9;
 }
 
 .timeline-phase-heading > div > p {
@@ -3250,55 +3250,6 @@ textarea {
   color: var(--muted);
   font-size: clamp(0.94rem, 1.5vw, 1.08rem);
   line-height: 1.65;
-}
-
-.timeline-partner-band {
-  position: relative;
-  z-index: 1;
-  margin: 0 0 clamp(82px, 10vw, 120px);
-  border: 1px solid rgb(50 106 116 / 0.14);
-  border-radius: 4px 26px 6px 18px;
-  padding: 18px;
-  background: rgb(255 250 242 / 0.72);
-  box-shadow: 0 18px 50px rgb(23 37 43 / 0.05);
-}
-
-.timeline-partner-band > p {
-  margin: 0 0 12px;
-  color: var(--blue);
-  font-size: 0.62rem;
-  font-weight: 900;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-.timeline-logo-row {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 7px;
-}
-
-.timeline-logo-row-dense {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.timeline-logo-row figure {
-  display: grid;
-  min-width: 0;
-  min-height: 94px;
-  place-items: center;
-  margin: 0;
-  border: 1px solid rgb(23 37 43 / 0.08);
-  border-radius: 3px 14px 4px 10px;
-  padding: 12px;
-  background: #fff;
-}
-
-.timeline-logo-row img {
-  display: block;
-  width: 100%;
-  height: 68px;
-  object-fit: contain;
 }
 
 .timeline-year {
@@ -4877,14 +4828,6 @@ figcaption {
     grid-template-columns: minmax(95px, 0.2fr) minmax(0, 1fr);
   }
 
-  .timeline-logo-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .timeline-logo-row-dense {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
   .timeline-navigator {
     top: 74px;
     z-index: 3;
@@ -5337,25 +5280,6 @@ figcaption {
   .timeline-phase-heading h2 {
     max-width: 9ch;
     font-size: clamp(2.7rem, 15vw, 4.6rem);
-  }
-
-  .timeline-partner-band {
-    margin-bottom: 70px;
-    padding: 12px;
-  }
-
-  .timeline-logo-row,
-  .timeline-logo-row-dense {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .timeline-logo-row figure {
-    min-height: 82px;
-    padding: 8px;
-  }
-
-  .timeline-logo-row img {
-    height: 58px;
   }
 
   .timeline-entry::before {
