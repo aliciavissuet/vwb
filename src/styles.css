@@ -1987,6 +1987,10 @@ textarea {
   transform: rotate(3.2deg);
 }
 
+.about-hero-gallery .about-hero-photo-inset img {
+  object-position: center 76%;
+}
+
 /* Editorial inner-page system */
 .editorial-hero {
   display: grid;
