@@ -233,7 +233,7 @@ textarea {
   display: block;
   width: 114%;
   height: 119%;
-  opacity: 0.82;
+  opacity: 0.88;
   pointer-events: none;
   mix-blend-mode: multiply;
   -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, rgb(0 0 0 / 0.78) 72%, transparent 100%);
