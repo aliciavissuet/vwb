@@ -279,7 +279,7 @@ if (isBlinkEntering) {
   }
 
   blinkTransition.querySelector('.blink-lid-top')?.addEventListener('animationend', revealIncomingPage, { once: true })
-  window.setTimeout(revealIncomingPage, 700)
+  window.setTimeout(revealIncomingPage, 480)
 }
 
 function setMenuOpen(isOpen) {
@@ -305,12 +305,12 @@ function scrollWithBlink(target) {
 
   window.setTimeout(() => {
     target.scrollIntoView({ behavior: 'auto', block: 'start' })
-  }, 360)
+  }, 250)
 
   window.setTimeout(() => {
     blinkTransition.classList.remove('is-active')
     transitionActive = false
-  }, 820)
+  }, 600)
 }
 
 function navigateWithBlink(url) {
@@ -337,7 +337,7 @@ function navigateWithBlink(url) {
 
   const topLid = blinkTransition.querySelector('.blink-lid-top')
   topLid?.addEventListener('animationend', finishNavigation, { once: true })
-  window.setTimeout(finishNavigation, 650)
+  window.setTimeout(finishNavigation, 450)
 }
 
 for (const link of document.querySelectorAll('a[href^="#"]')) {
@@ -386,7 +386,7 @@ for (const link of document.querySelectorAll('a[href]')) {
 }
 
 const lineTargets = document.querySelectorAll(
-  '.bidirectional-model, .process-cycle, .mission-principle, .mission-narrative, .mission-field-image, .content-grid article, .publication-list article, .founder-bio, .founder-quote-bubble, .association-block, .press-list article, .news-card, .news-link-grid article, .research-list article',
+  '.bidirectional-model, .process-cycle, .mission-principle, .mission-narrative, .mission-field-image, .content-grid article, .publication-list article, .founder-bio, .founder-quote-bubble, .people-section, .association-block, .press-list article, .news-card, .news-link-grid article, .research-list article',
 )
 
 if (lineTargets.length) {

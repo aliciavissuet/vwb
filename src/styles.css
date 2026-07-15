@@ -1710,15 +1710,15 @@ textarea {
 }
 
 .blink-transition.is-active .blink-lid {
-  animation: pageBlink 0.78s cubic-bezier(0.8, 0, 0.2, 1);
+  animation: pageBlink 0.56s cubic-bezier(0.8, 0, 0.2, 1);
 }
 
 .blink-transition.is-closing .blink-lid {
-  animation: blinkClose 0.42s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+  animation: blinkClose 0.28s cubic-bezier(0.8, 0, 0.2, 1) forwards;
 }
 
 .blink-transition.is-opening .blink-lid {
-  animation: blinkOpen 0.42s cubic-bezier(0.8, 0, 0.2, 1) both;
+  animation: blinkOpen 0.28s cubic-bezier(0.8, 0, 0.2, 1) both;
 }
 
 /* Integrated editorial openings and mission story chapters */
