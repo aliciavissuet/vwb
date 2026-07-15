@@ -35,43 +35,55 @@ function createBorderlessGlobeScribbles(width, height) {
     return (randomState >>> 0) / 4294967296
   }
 
-  // Scattered marker gestures build the field from different directions. Their
-  // deterministic randomness keeps the composition stable without becoming a
-  // stack of horizontal ribbons.
-  const brushStrokeCount = 58
-  const fieldWidth = Math.min(width * 0.78, globeRadius * 3.35)
-  const fieldHeight = Math.min(height * 0.82, globeRadius * 2.65)
-  for (let strokeIndex = 0; strokeIndex < brushStrokeCount; strokeIndex += 1) {
-    const points = []
-    const phase = random() * fullTurn
-    const angle = -1.05 + random() * 2.1
-    const strokeLength = globeRadius * (0.7 + random() * 1.45)
-    const strokeCenterX = centerX + (random() - 0.5) * fieldWidth * 0.78
-    const strokeCenterY = centerY + (random() - 0.5) * fieldHeight * 0.78
-    const directionX = Math.cos(angle)
-    const directionY = Math.sin(angle)
-    const perpendicularX = -directionY
-    const perpendicularY = directionX
-    const bend = (random() - 0.5) * globeRadius * 0.22
-    const reverse = random() > 0.5
+  // One uninterrupted marker path moves across the field in overlapping loops,
+  // like a single hand steadily coloring a sheet of paper.
+  const points = []
+  const fieldWidth = width * 0.92
+  const fieldHeight = height * 0.86
+  const fieldLeft = centerX - fieldWidth / 2
+  const fieldTop = centerY - fieldHeight / 2
+  const rows = 9
+  const columns = 8
+  const waypoints = []
 
-    for (let index = 0; index <= 64; index += 1) {
-      const progress = index / 64
-      const direction = reverse ? 1 - progress : progress
-      const travel = (direction - 0.5) * strokeLength
-      const curve = Math.sin(direction * Math.PI) * bend
-      const handJitter = Math.sin(index * 1.77 + phase) * height * 0.0022
-      points.push({
-        x: strokeCenterX + travel * directionX + curve * perpendicularX + handJitter * perpendicularX,
-        y: strokeCenterY + travel * directionY + curve * perpendicularY + handJitter * perpendicularY,
+  for (let row = 0; row < rows; row += 1) {
+    for (let columnIndex = 0; columnIndex < columns; columnIndex += 1) {
+      const column = row % 2 === 0 ? columnIndex : columns - 1 - columnIndex
+      waypoints.push({
+        x: fieldLeft + (column / (columns - 1)) * fieldWidth + (random() - 0.5) * width * 0.018,
+        y: fieldTop + (row / (rows - 1)) * fieldHeight + (random() - 0.5) * height * 0.025,
       })
     }
-    strokes.push({
-      points,
-      color: strokeIndex % 5 === 0 ? 'rgb(232 93 74 / 0.34)' : 'rgb(232 93 74 / 0.23)',
-      width: height * (0.012 + random() * 0.012),
-    })
   }
+
+  points.push(waypoints[0])
+  for (let waypointIndex = 1; waypointIndex < waypoints.length; waypointIndex += 1) {
+    const start = waypoints[waypointIndex - 1]
+    const end = waypoints[waypointIndex]
+    const phase = random() * fullTurn
+    const loops = 2.4 + random() * 2.1
+    const loopRadiusX = height * (0.018 + random() * 0.016)
+    const loopRadiusY = height * (0.03 + random() * 0.016)
+    const segmentBend = (random() - 0.5) * height * 0.045
+
+    for (let index = 1; index <= 68; index += 1) {
+      const progress = index / 68
+      const loopAngle = progress * fullTurn * loops + phase
+      const loopEnvelope = Math.pow(Math.sin(progress * Math.PI), 0.4)
+      const baseX = start.x + (end.x - start.x) * progress
+      const baseY = start.y + (end.y - start.y) * progress + Math.sin(progress * Math.PI) * segmentBend
+      points.push({
+        x: baseX + Math.cos(loopAngle) * loopRadiusX * loopEnvelope,
+        y: baseY + Math.sin(loopAngle) * loopRadiusY * loopEnvelope,
+      })
+    }
+  }
+
+  strokes.push({
+    points,
+    color: 'rgb(232 93 74 / 0.33)',
+    width: height * 0.019,
+  })
 
   return { strokes, globe: { centerX, centerY, radius: globeRadius } }
 }
@@ -106,8 +118,9 @@ function initHeroTopography(canvas) {
     context.lineJoin = 'round'
 
     scribbleStrokes.forEach((stroke, strokeIndex) => {
-      const stagger = (strokeIndex / Math.max(1, scribbleStrokes.length)) * 0.7
-      const strokeProgress = Math.min(1, Math.max(0, (progress - stagger) / 0.3))
+      const isSingleGesture = scribbleStrokes.length === 1
+      const stagger = isSingleGesture ? 0 : (strokeIndex / Math.max(1, scribbleStrokes.length)) * 0.7
+      const strokeProgress = isSingleGesture ? progress : Math.min(1, Math.max(0, (progress - stagger) / 0.3))
       const visiblePoints = Math.floor(stroke.points.length * strokeProgress)
       if (visiblePoints < 2) return
 
@@ -172,7 +185,7 @@ function initHeroTopography(canvas) {
 
     const startedAt = performance.now()
     const animate = (now) => {
-      const elapsed = Math.min(1, (now - startedAt) / 4200)
+      const elapsed = Math.min(1, (now - startedAt) / 5600)
       reveal = elapsed
       draw()
       if (elapsed < 1) animationFrame = requestAnimationFrame(animate)
