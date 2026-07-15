@@ -1681,6 +1681,7 @@ textarea {
 
 .blink-transition.is-active,
 .blink-transition.is-closing,
+.blink-transition.is-opening-ready,
 .blink-transition.is-opening {
   visibility: visible;
 }
@@ -1717,8 +1718,12 @@ textarea {
   animation: blinkClose 0.28s cubic-bezier(0.8, 0, 0.2, 1) forwards;
 }
 
+.blink-transition.is-opening-ready .blink-lid {
+  transform: scaleY(1);
+}
+
 .blink-transition.is-opening .blink-lid {
-  animation: blinkOpen 0.28s cubic-bezier(0.8, 0, 0.2, 1) both;
+  animation: blinkOpen 0.36s cubic-bezier(0.8, 0, 0.2, 1) both;
 }
 
 /* Integrated editorial openings and mission story chapters */

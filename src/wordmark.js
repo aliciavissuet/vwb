@@ -236,7 +236,7 @@ let transitionActive = false
 window.addEventListener('pageshow', (event) => {
   if (!event.persisted) return
   transitionActive = false
-  blinkTransition.classList.remove('is-active', 'is-closing', 'is-opening')
+  blinkTransition.classList.remove('is-active', 'is-closing', 'is-opening-ready', 'is-opening')
   document.documentElement.classList.remove('page-entering')
 })
 
@@ -262,13 +262,13 @@ try {
 
 if (isBlinkEntering) {
   transitionActive = true
-  blinkTransition.classList.add('is-opening')
+  blinkTransition.classList.add('is-opening-ready')
 
   let hasRevealedIncomingPage = false
   const revealIncomingPage = () => {
     if (hasRevealedIncomingPage) return
     hasRevealedIncomingPage = true
-    blinkTransition.classList.remove('is-opening')
+    blinkTransition.classList.remove('is-opening-ready', 'is-opening')
     document.documentElement.classList.remove('page-entering')
     transitionActive = false
     try {
@@ -278,8 +278,16 @@ if (isBlinkEntering) {
     }
   }
 
+  // Paint the new page with the eye fully closed before animating it open.
+  // Two frames prevent fast loads from collapsing both visual states together.
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      if (!hasRevealedIncomingPage) blinkTransition.classList.add('is-opening')
+    })
+  })
+
   blinkTransition.querySelector('.blink-lid-top')?.addEventListener('animationend', revealIncomingPage, { once: true })
-  window.setTimeout(revealIncomingPage, 480)
+  window.setTimeout(revealIncomingPage, 700)
 }
 
 function setMenuOpen(isOpen) {
