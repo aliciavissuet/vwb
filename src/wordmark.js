@@ -425,6 +425,7 @@ if (timelineStream) {
   const timelineEntries = Array.from(timelineStream.querySelectorAll('[data-timeline-entry]'))
   const timelineProgress = timelineStream.querySelector('[data-timeline-progress]')
   const timelineLinks = Array.from(document.querySelectorAll('[data-timeline-link]'))
+  const timelinePhaseLinks = Array.from(document.querySelectorAll('[data-timeline-phase-link]'))
   const timelineYears = Array.from(document.querySelectorAll('[data-timeline-nav-year]'))
   const timelineGlobeCard = document.querySelector('[data-timeline-globe-card]')
   const timelineGlobePins = Array.from(document.querySelectorAll('[data-timeline-globe-pin]'))
@@ -444,6 +445,14 @@ if (timelineStream) {
       const isActive = link.dataset.timelineLink === entry.id
       link.classList.toggle('is-active', isActive)
       if (isActive) link.setAttribute('aria-current', 'true')
+      else link.removeAttribute('aria-current')
+    }
+
+    const activePhase = entry.closest('.timeline-phase')?.id
+    for (const link of timelinePhaseLinks) {
+      const isActive = link.dataset.timelinePhaseLink === activePhase
+      link.classList.toggle('is-current', isActive)
+      if (isActive) link.setAttribute('aria-current', 'location')
       else link.removeAttribute('aria-current')
     }
 
