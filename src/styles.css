@@ -1735,11 +1735,17 @@ textarea {
 }
 
 .page-hero-split > :first-child {
+  opacity: 0;
+  transform: translateX(-64px);
   animation: heroCopyCrossSlide 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+  will-change: opacity, transform;
 }
 
 .page-hero-photo {
+  opacity: 0;
+  transform: translateX(78px) rotate(4deg) scale(0.94);
   animation: heroPhotoCrossSlide 1.05s cubic-bezier(0.22, 1, 0.36, 1) 0.16s both;
+  will-change: opacity, transform;
 }
 
 .mission-hero-copy,
@@ -1823,6 +1829,14 @@ textarea {
   border-radius: 36px 8px 30px 6px;
   background: rgb(255 250 242 / 0.76);
   box-shadow: 0 28px 72px rgb(23 37 43 / 0.08);
+  opacity: 0;
+  transform: translateY(38px);
+  transition: opacity 0.7s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.mission-story-partnership .bidirectional-model.is-line-visible {
+  opacity: 1;
+  transform: none;
 }
 
 .mission-story-process .process-cycle {
@@ -1830,6 +1844,14 @@ textarea {
   gap: clamp(24px, 4vw, 48px);
   align-items: center;
   justify-items: stretch;
+  opacity: 0;
+  transform: translateY(42px);
+  transition: opacity 0.7s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.mission-story-process .process-cycle.is-line-visible {
+  opacity: 1;
+  transform: none;
 }
 
 .mission-story-process .cycle-wheel {
@@ -6476,6 +6498,8 @@ figcaption {
   .path-logo-grid > *,
   .advisor-cards::before,
   .mission-narrative,
+  .mission-story-partnership .bidirectional-model,
+  .mission-story-process .process-cycle,
   .mission-section .content-grid article {
     animation: none;
     transition: none;
