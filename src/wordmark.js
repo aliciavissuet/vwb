@@ -35,6 +35,13 @@ function createBorderlessGlobeScribbles(width, height) {
   const firstPassX = clusterLeft - diagonalRun
   const finalPassX = clusterRight
   const passCount = Math.ceil((finalPassX - firstPassX) / passStep) + 1
+  const baseStartY = clusterBottom + markerWidth * 0.28
+  const baseEndY = clusterTop - markerWidth * 0.28
+  const directionLength = Math.hypot(diagonalRun, baseEndY - baseStartY) || 1
+  const direction = {
+    x: diagonalRun / directionLength,
+    y: (baseEndY - baseStartY) / directionLength,
+  }
   let randomState = 0x6d2b79f5
 
   const random = () => {
@@ -46,13 +53,16 @@ function createBorderlessGlobeScribbles(width, height) {
 
   for (let passIndex = 0; passIndex < passCount; passIndex += 1) {
     const baseX = firstPassX + passIndex * passStep
+      + (random() - 0.5) * passStep * 0.18
+    const startEdgeJitter = (random() - 0.5) * markerWidth * 2.1
+    const endEdgeJitter = (random() - 0.5) * markerWidth * 2.1
     const start = {
-      x: baseX + (random() - 0.5) * markerWidth * 0.16,
-      y: clusterBottom + markerWidth * 0.36 + (random() - 0.5) * markerWidth * 0.22,
+      x: baseX + direction.x * startEdgeJitter,
+      y: baseStartY + direction.y * startEdgeJitter,
     }
     const end = {
-      x: baseX + diagonalRun + (random() - 0.5) * markerWidth * 0.16,
-      y: clusterTop - markerWidth * 0.36 + (random() - 0.5) * markerWidth * 0.22,
+      x: baseX + diagonalRun + direction.x * endEdgeJitter,
+      y: baseEndY + direction.y * endEdgeJitter,
     }
     const bow = (random() - 0.5) * markerWidth * 0.22
     const phase = random() * Math.PI * 2
@@ -83,7 +93,7 @@ function createBorderlessGlobeScribbles(width, height) {
 
     strokes.push({
       points,
-      width: markerWidth * (0.92 + random() * 0.16),
+      width: markerWidth * (0.84 + random() * 0.26),
       fibers,
       normal,
       intensity: 0.92 + random() * 0.2,
