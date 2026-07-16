@@ -46,8 +46,8 @@ function createBorderlessGlobeScribbles(width, height) {
   const markerWidth = Math.max(32, Math.min(56, height * 0.1))
   const clusterLeft = width * 0.08
   const clusterRight = width * 0.92
-  const clusterTop = height * 0.15
-  const clusterBottom = height * 0.85
+  const clusterTop = height * 0.2
+  const clusterBottom = height * 0.8
   const diagonalRun = height * 0.52
   const passStep = markerWidth * 0.5
   const firstPassX = clusterLeft
@@ -195,6 +195,12 @@ function initHeroTopography(canvas) {
     context.strokeStyle = '#000'
     context.lineCap = 'round'
     context.lineJoin = 'round'
+    context.lineWidth = Math.max(5, height * 0.008)
+
+    context.beginPath()
+    context.arc(centerX, centerY, globeRadius * 1.08, 0, Math.PI * 2)
+    context.lineWidth = Math.max(8, height * 0.013)
+    context.stroke()
     context.lineWidth = Math.max(5, height * 0.008)
 
     const layouts = [
