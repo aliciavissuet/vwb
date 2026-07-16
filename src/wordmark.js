@@ -26,11 +26,11 @@ function createBorderlessGlobeScribbles(width, height) {
   const centerY = height * 0.5
   const globeRadius = Math.min(height * 0.34, width * 0.2)
   const markerWidth = Math.max(32, Math.min(56, height * 0.1))
-  const clusterLeft = width * 0.045
-  const clusterRight = width * 0.955
-  const clusterTop = height * 0.08
-  const clusterBottom = height * 0.92
-  const diagonalRun = height * 0.62
+  const clusterLeft = width * 0.15
+  const clusterRight = width * 0.85
+  const clusterTop = height * 0.15
+  const clusterBottom = height * 0.85
+  const diagonalRun = height * 0.52
   const passStep = markerWidth * 0.5
   const firstPassX = clusterLeft - diagonalRun
   const finalPassX = clusterRight
