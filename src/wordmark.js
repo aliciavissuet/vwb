@@ -26,14 +26,14 @@ function createBorderlessGlobeScribbles(width, height) {
   const centerY = height * 0.5
   const globeRadius = Math.min(height * 0.34, width * 0.2)
   const markerWidth = Math.max(32, Math.min(56, height * 0.1))
-  const clusterLeft = width * 0.15
-  const clusterRight = width * 0.85
+  const clusterLeft = width * 0.08
+  const clusterRight = width * 0.92
   const clusterTop = height * 0.15
   const clusterBottom = height * 0.85
   const diagonalRun = height * 0.52
   const passStep = markerWidth * 0.5
-  const firstPassX = clusterLeft - diagonalRun
-  const finalPassX = clusterRight
+  const firstPassX = clusterLeft
+  const finalPassX = clusterRight - diagonalRun
   const passCount = Math.ceil((finalPassX - firstPassX) / passStep) + 1
   const baseStartY = clusterBottom + markerWidth * 0.28
   const baseEndY = clusterTop - markerWidth * 0.28
@@ -54,8 +54,8 @@ function createBorderlessGlobeScribbles(width, height) {
   for (let passIndex = 0; passIndex < passCount; passIndex += 1) {
     const baseX = firstPassX + passIndex * passStep
       + (random() - 0.5) * passStep * 0.18
-    const startEdgeJitter = (random() - 0.5) * markerWidth * 2.1
-    const endEdgeJitter = (random() - 0.5) * markerWidth * 2.1
+    const startEdgeJitter = (random() - 0.5) * markerWidth * 3.2
+    const endEdgeJitter = (random() - 0.5) * markerWidth * 3.2
     const start = {
       x: baseX + direction.x * startEdgeJitter,
       y: baseStartY + direction.y * startEdgeJitter,
@@ -64,7 +64,7 @@ function createBorderlessGlobeScribbles(width, height) {
       x: baseX + diagonalRun + direction.x * endEdgeJitter,
       y: baseEndY + direction.y * endEdgeJitter,
     }
-    const bow = (random() - 0.5) * markerWidth * 0.22
+    const bow = (random() - 0.5) * markerWidth * 0.34
     const phase = random() * Math.PI * 2
     const pointCount = 46
     const points = []
@@ -93,7 +93,7 @@ function createBorderlessGlobeScribbles(width, height) {
 
     strokes.push({
       points,
-      width: markerWidth * (0.84 + random() * 0.26),
+      width: markerWidth * (0.76 + random() * 0.38),
       fibers,
       normal,
       intensity: 0.92 + random() * 0.2,
