@@ -87,15 +87,37 @@ textarea {
 }
 
 .brand {
+  position: relative;
   display: inline-flex;
   min-width: 0;
   align-items: center;
   gap: 9px;
   color: rgb(16 16 16 / 0.82);
+  isolation: isolate;
   text-decoration: none;
 }
 
+.brand::before {
+  position: absolute;
+  top: 50%;
+  left: -5px;
+  z-index: 0;
+  width: 39px;
+  height: 27px;
+  background: repeating-linear-gradient(
+    164deg,
+    rgb(232 68 52 / 0.2) 0 4px,
+    rgb(232 68 52 / 0.3) 4px 7px,
+    transparent 7px 8.5px
+  );
+  clip-path: polygon(2% 25%, 15% 11%, 33% 17%, 51% 4%, 70% 15%, 96% 7%, 91% 30%, 100% 49%, 90% 67%, 94% 88%, 73% 81%, 57% 96%, 38% 84%, 20% 94%, 5% 79%, 10% 56%, 0 42%);
+  content: "";
+  transform: translateY(-50%) rotate(-4deg);
+}
+
 .brand-mark {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 28px;
   height: 19px;
@@ -106,6 +128,8 @@ textarea {
 }
 
 .brand-name {
+  position: relative;
+  z-index: 1;
   color: inherit;
   font-size: 0.78rem;
   font-weight: 800;
