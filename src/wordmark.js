@@ -350,7 +350,7 @@ function createBrandMarkerStrokes(width, height, seed) {
       fibers: Array.from({ length: 2 }, () => ({
         offset: (random() - 0.5) * markerWidth * 0.62,
         width: markerWidth * (0.035 + random() * 0.05),
-        alpha: 0.04 + random() * 0.04,
+        alpha: 0.08 + random() * 0.06,
       })),
     })
   }
@@ -405,8 +405,8 @@ function initBrandMarker(brand, brandIndex) {
       if (remainingPoints <= 0) break
       const visiblePoints = Math.min(stroke.points.length, remainingPoints)
       context.lineCap = 'butt'
-      trace(stroke, visiblePoints, 0, stroke.width, `rgb(232 68 52 / ${0.24 * stroke.intensity})`)
-      trace(stroke, visiblePoints, 0, stroke.width * 0.72, `rgb(232 68 52 / ${0.1 * stroke.intensity})`)
+      trace(stroke, visiblePoints, 0, stroke.width, `rgb(184 34 39 / ${0.5 * stroke.intensity})`)
+      trace(stroke, visiblePoints, 0, stroke.width * 0.72, `rgb(184 34 39 / ${0.2 * stroke.intensity})`)
       context.lineCap = 'round'
       for (const fiber of stroke.fibers) {
         trace(stroke, visiblePoints, fiber.offset, fiber.width, `rgb(232 68 52 / ${fiber.alpha})`)
@@ -435,6 +435,7 @@ function initBrandMarker(brand, brandIndex) {
     const startedAt = performance.now()
     const animate = (now) => {
       reveal = Math.min(1, (now - startedAt) / 820)
+      if (reveal > 0.14) brand.classList.add('has-marker')
       draw()
       if (reveal < 1) animationFrame = requestAnimationFrame(animate)
     }
@@ -443,6 +444,7 @@ function initBrandMarker(brand, brandIndex) {
 
   const replay = () => {
     canvas.classList.add('is-resetting')
+    brand.classList.remove('has-marker')
     resetTimer = window.setTimeout(() => {
       canvas.classList.remove('is-resetting')
       play()
@@ -450,7 +452,9 @@ function initBrandMarker(brand, brandIndex) {
   }
 
   resize()
-  if (!prefersReduced) {
+  if (prefersReduced) {
+    brand.classList.add('has-marker')
+  } else {
     const introIsShowing = document.documentElement.classList.contains('show-intro')
     startTimer = window.setTimeout(() => {
       play()
