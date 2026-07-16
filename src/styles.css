@@ -91,7 +91,7 @@ textarea {
   display: inline-flex;
   min-width: 0;
   align-items: center;
-  gap: 0;
+  gap: 9px;
   color: rgb(16 16 16 / 0.82);
   isolation: isolate;
   text-decoration: none;
@@ -134,7 +134,6 @@ textarea {
 .brand-name {
   position: relative;
   z-index: 1;
-  margin-left: -3px;
   color: inherit;
   font-size: 0.78rem;
   font-weight: 800;

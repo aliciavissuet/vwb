@@ -1,5 +1,6 @@
 const svgNS = 'http://www.w3.org/2000/svg'
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+const BRAND_MARKER_ENABLED = false
 const center = { x: 60, y: 60 }
 const radius = 45
 const meridians = [
@@ -472,8 +473,10 @@ function initBrandMarker(brand, brandIndex) {
   }, { once: true })
 }
 
-for (const [brandIndex, brand] of document.querySelectorAll('.brand').entries()) {
-  initBrandMarker(brand, brandIndex)
+if (BRAND_MARKER_ENABLED) {
+  for (const [brandIndex, brand] of document.querySelectorAll('.brand').entries()) {
+    initBrandMarker(brand, brandIndex)
+  }
 }
 
 function createCircle() {
