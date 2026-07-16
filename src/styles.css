@@ -209,6 +209,24 @@ textarea {
   justify-items: center;
 }
 
+.hero-topography {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0.72;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+@media (max-width: 680px) {
+  .hero-topography {
+    opacity: 0.6;
+  }
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

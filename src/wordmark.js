@@ -20,6 +20,203 @@ const latitudes = [
 ]
 const sphereInstances = []
 
+function createBorderlessGlobeScribbles(width, height) {
+  const strokes = []
+  const centerX = width * 0.5
+  const centerY = height * 0.5
+  const globeRadius = Math.min(height * 0.34, width * 0.2)
+  const markerWidth = Math.max(28, Math.min(52, height * 0.056))
+  const passStep = markerWidth * 0.52
+  const fieldTop = -markerWidth
+  const fieldBottom = height + markerWidth
+  const fieldLeft = -markerWidth
+  const fieldRight = width + markerWidth
+  const passCount = Math.ceil((fieldRight - fieldLeft) / passStep) + 1
+  let randomState = 0x6d2b79f5
+
+  const random = () => {
+    randomState ^= randomState << 13
+    randomState ^= randomState >>> 17
+    randomState ^= randomState << 5
+    return (randomState >>> 0) / 4294967296
+  }
+
+  for (let passIndex = 0; passIndex < passCount; passIndex += 1) {
+    const topToBottom = passIndex % 2 === 0
+    const startY = topToBottom ? fieldTop : fieldBottom
+    const endY = topToBottom ? fieldBottom : fieldTop
+    const baseX = fieldLeft + passIndex * passStep + (random() - 0.5) * markerWidth * 0.48
+    const endLean = (random() - 0.5) * markerWidth * 1.55
+    const bow = (random() - 0.5) * markerWidth * 0.8
+    const phase = random() * Math.PI * 2
+    const pointCount = 56
+    const points = []
+
+    for (let pointIndex = 0; pointIndex < pointCount; pointIndex += 1) {
+      const progress = pointIndex / (pointCount - 1)
+      const edgeWobble = Math.sin(progress * Math.PI * 5 + phase) * markerWidth * 0.055
+      const handJitter = (random() - 0.5) * markerWidth * 0.075
+      points.push({
+        x: baseX + endLean * progress + Math.sin(progress * Math.PI) * bow + edgeWobble + handJitter,
+        y: startY + (endY - startY) * progress,
+      })
+    }
+
+    const fibers = Array.from({ length: 5 }, () => ({
+      offset: (random() - 0.5) * markerWidth * 0.76,
+      width: markerWidth * (0.035 + random() * 0.055),
+      alpha: 0.045 + random() * 0.055,
+    }))
+
+    strokes.push({
+      points,
+      width: markerWidth * (0.9 + random() * 0.18),
+      fibers,
+    })
+  }
+
+  return { strokes, globe: { centerX, centerY, radius: globeRadius } }
+}
+
+function initHeroTopography(canvas) {
+  const context = canvas.getContext('2d')
+  if (!context) return
+
+  let markerStrokes = []
+  let globe = { centerX: 0, centerY: 0, radius: 0 }
+  let totalPoints = 0
+  let width = 0
+  let height = 0
+  let reveal = prefersReduced ? 1 : 0
+  let animationFrame = 0
+
+  const traceStroke = (points, visiblePoints, offsetX, lineWidth, strokeStyle) => {
+    if (visiblePoints < 2) return
+    context.beginPath()
+    context.moveTo(points[0].x + offsetX, points[0].y)
+    for (let pointIndex = 1; pointIndex < visiblePoints; pointIndex += 1) {
+      context.lineTo(points[pointIndex].x + offsetX, points[pointIndex].y)
+    }
+    context.lineWidth = lineWidth
+    context.strokeStyle = strokeStyle
+    context.stroke()
+  }
+
+  const drawMarkerFill = (progress) => {
+    context.save()
+    context.lineCap = 'round'
+    context.lineJoin = 'round'
+
+    let remainingPoints = Math.floor(totalPoints * progress)
+    for (const stroke of markerStrokes) {
+      if (remainingPoints <= 0) break
+      const visiblePoints = Math.min(stroke.points.length, remainingPoints)
+
+      traceStroke(stroke.points, visiblePoints, 0, stroke.width, 'rgb(232 93 74 / 0.14)')
+      traceStroke(stroke.points, visiblePoints, 0, stroke.width * 0.72, 'rgb(232 93 74 / 0.055)')
+      for (const fiber of stroke.fibers) {
+        traceStroke(
+          stroke.points,
+          visiblePoints,
+          fiber.offset,
+          fiber.width,
+          `rgb(232 93 74 / ${fiber.alpha})`,
+        )
+      }
+
+      remainingPoints -= stroke.points.length
+    }
+    context.restore()
+  }
+
+  const eraseGlobeRelief = () => {
+    const { centerX, centerY, radius: globeRadius } = globe
+    const fullTurn = Math.PI * 2
+
+    context.save()
+    context.globalCompositeOperation = 'destination-out'
+    context.strokeStyle = '#000'
+    context.lineCap = 'round'
+    context.lineJoin = 'round'
+
+    const rubEllipse = (radiusX, radiusY, phase, weight = 1) => {
+      context.beginPath()
+      for (let pointIndex = 0; pointIndex <= 180; pointIndex += 1) {
+        const angle = (pointIndex / 180) * fullTurn - Math.PI / 2
+        const wobble = Math.sin(angle * 13 + phase) * height * 0.0018
+          + Math.sin(angle * 29 - phase) * height * 0.0008
+        const x = centerX + Math.cos(angle) * (radiusX + wobble)
+        const y = centerY + Math.sin(angle) * (radiusY + wobble)
+        if (pointIndex === 0) context.moveTo(x, y)
+        else context.lineTo(x, y)
+      }
+      context.lineWidth = Math.max(7, height * 0.011 * weight)
+      context.stroke()
+    }
+
+    rubEllipse(globeRadius, globeRadius, 0.4, 1.35)
+    rubEllipse(globeRadius * 0.42, globeRadius, 1.7, 0.82)
+    rubEllipse(globeRadius * 0.72, globeRadius, 2.8, 0.82)
+    rubEllipse(globeRadius, globeRadius * 0.34, 4.2, 0.82)
+    rubEllipse(globeRadius * 0.98, globeRadius * 0.67, 5.1, 0.82)
+    context.restore()
+  }
+
+  const draw = () => {
+    context.clearRect(0, 0, width, height)
+    drawMarkerFill(Math.min(1, reveal))
+    eraseGlobeRelief()
+  }
+
+  const resize = () => {
+    const bounds = canvas.getBoundingClientRect()
+    const ratio = Math.min(window.devicePixelRatio || 1, 2)
+    width = Math.max(1, bounds.width)
+    height = Math.max(1, bounds.height)
+    canvas.width = Math.round(width * ratio)
+    canvas.height = Math.round(height * ratio)
+    context.setTransform(ratio, 0, 0, ratio, 0, 0)
+    const drawing = createBorderlessGlobeScribbles(width, height)
+    markerStrokes = drawing.strokes
+    globe = drawing.globe
+    totalPoints = markerStrokes.reduce((sum, stroke) => sum + stroke.points.length, 0)
+    draw()
+  }
+
+  const beginReveal = () => {
+    if (prefersReduced) {
+      reveal = 1
+      draw()
+      return
+    }
+
+    const startedAt = performance.now()
+    const animate = (now) => {
+      reveal = Math.min(1, (now - startedAt) / 5200)
+      draw()
+      if (reveal < 1) animationFrame = requestAnimationFrame(animate)
+    }
+    animationFrame = requestAnimationFrame(animate)
+  }
+
+  resize()
+  const introIsShowing = document.documentElement.classList.contains('show-intro')
+  window.setTimeout(beginReveal, introIsShowing ? 4700 : 250)
+
+  if ('ResizeObserver' in window) {
+    const observer = new ResizeObserver(resize)
+    observer.observe(canvas)
+  } else {
+    window.addEventListener('resize', resize, { passive: true })
+  }
+
+  window.addEventListener('pagehide', () => cancelAnimationFrame(animationFrame), { once: true })
+}
+
+for (const canvas of document.querySelectorAll('[data-hero-topography]')) {
+  initHeroTopography(canvas)
+}
+
 function createCircle() {
   const circle = document.createElementNS(svgNS, 'circle')
   circle.setAttribute('class', 'sphere-outline')
