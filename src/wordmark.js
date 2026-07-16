@@ -161,7 +161,7 @@ function initHeroTopography(canvas) {
         0,
         0,
         stroke.width,
-        `rgb(240 78 58 / ${0.24 * stroke.intensity})`,
+        `rgb(232 68 52 / ${0.24 * stroke.intensity})`,
       )
       traceStroke(
         stroke.points,
@@ -169,7 +169,7 @@ function initHeroTopography(canvas) {
         0,
         0,
         stroke.width * 0.72,
-        `rgb(240 78 58 / ${0.1 * stroke.intensity})`,
+        `rgb(232 68 52 / ${0.1 * stroke.intensity})`,
       )
       for (const fiber of stroke.fibers) {
         traceStroke(
@@ -178,7 +178,7 @@ function initHeroTopography(canvas) {
           stroke.normal.x * fiber.offset,
           stroke.normal.y * fiber.offset,
           fiber.width,
-          `rgb(240 78 58 / ${fiber.alpha})`,
+          `rgb(232 68 52 / ${fiber.alpha})`,
         )
       }
 
