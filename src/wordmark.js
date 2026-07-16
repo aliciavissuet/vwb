@@ -27,11 +27,13 @@ function createBorderlessGlobeScribbles(width, height) {
   const globeRadius = Math.min(height * 0.34, width * 0.2)
   const markerWidth = Math.max(28, Math.min(52, height * 0.056))
   const passStep = markerWidth * 0.52
-  const fieldTop = -markerWidth
-  const fieldBottom = height + markerWidth
-  const fieldLeft = -markerWidth
-  const fieldRight = width + markerWidth
-  const passCount = Math.ceil((fieldRight - fieldLeft) / passStep) + 1
+  const baseAngle = Math.PI * 0.24
+  const baseDirection = { x: Math.cos(baseAngle), y: -Math.sin(baseAngle) }
+  const baseNormal = { x: -baseDirection.y, y: baseDirection.x }
+  const projectionSpan = width * Math.abs(baseNormal.x) + height * Math.abs(baseNormal.y)
+  const passCount = Math.ceil(projectionSpan / passStep) + 5
+  const lineLength = Math.hypot(width, height) * 1.45
+  const centerOffsetStart = -(passCount - 1) * passStep * 0.5
   let randomState = 0x6d2b79f5
 
   const random = () => {
@@ -42,11 +44,19 @@ function createBorderlessGlobeScribbles(width, height) {
   }
 
   for (let passIndex = 0; passIndex < passCount; passIndex += 1) {
-    const topToBottom = passIndex % 2 === 0
-    const startY = topToBottom ? fieldTop : fieldBottom
-    const endY = topToBottom ? fieldBottom : fieldTop
-    const baseX = fieldLeft + passIndex * passStep + (random() - 0.5) * markerWidth * 0.48
-    const endLean = (random() - 0.5) * markerWidth * 1.55
+    const angle = baseAngle + (random() - 0.5) * 0.14
+    const direction = { x: Math.cos(angle), y: -Math.sin(angle) }
+    const normal = { x: -direction.y, y: direction.x }
+    const passOffset = centerOffsetStart + passIndex * passStep
+      + (random() - 0.5) * markerWidth * 0.48
+    const passCenter = {
+      x: centerX + baseNormal.x * passOffset,
+      y: centerY + baseNormal.y * passOffset,
+    }
+    const startX = passCenter.x - direction.x * lineLength * 0.5
+    const startY = passCenter.y - direction.y * lineLength * 0.5
+    const endX = passCenter.x + direction.x * lineLength * 0.5
+    const endY = passCenter.y + direction.y * lineLength * 0.5
     const bow = (random() - 0.5) * markerWidth * 0.8
     const phase = random() * Math.PI * 2
     const pointCount = 56
@@ -56,9 +66,10 @@ function createBorderlessGlobeScribbles(width, height) {
       const progress = pointIndex / (pointCount - 1)
       const edgeWobble = Math.sin(progress * Math.PI * 5 + phase) * markerWidth * 0.055
       const handJitter = (random() - 0.5) * markerWidth * 0.075
+      const perpendicularShift = Math.sin(progress * Math.PI) * bow + edgeWobble + handJitter
       points.push({
-        x: baseX + endLean * progress + Math.sin(progress * Math.PI) * bow + edgeWobble + handJitter,
-        y: startY + (endY - startY) * progress,
+        x: startX + (endX - startX) * progress + normal.x * perpendicularShift,
+        y: startY + (endY - startY) * progress + normal.y * perpendicularShift,
       })
     }
 
@@ -72,6 +83,7 @@ function createBorderlessGlobeScribbles(width, height) {
       points,
       width: markerWidth * (0.9 + random() * 0.18),
       fibers,
+      normal,
     })
   }
 
@@ -90,12 +102,12 @@ function initHeroTopography(canvas) {
   let reveal = prefersReduced ? 1 : 0
   let animationFrame = 0
 
-  const traceStroke = (points, visiblePoints, offsetX, lineWidth, strokeStyle) => {
+  const traceStroke = (points, visiblePoints, offsetX, offsetY, lineWidth, strokeStyle) => {
     if (visiblePoints < 2) return
     context.beginPath()
-    context.moveTo(points[0].x + offsetX, points[0].y)
+    context.moveTo(points[0].x + offsetX, points[0].y + offsetY)
     for (let pointIndex = 1; pointIndex < visiblePoints; pointIndex += 1) {
-      context.lineTo(points[pointIndex].x + offsetX, points[pointIndex].y)
+      context.lineTo(points[pointIndex].x + offsetX, points[pointIndex].y + offsetY)
     }
     context.lineWidth = lineWidth
     context.strokeStyle = strokeStyle
@@ -112,13 +124,14 @@ function initHeroTopography(canvas) {
       if (remainingPoints <= 0) break
       const visiblePoints = Math.min(stroke.points.length, remainingPoints)
 
-      traceStroke(stroke.points, visiblePoints, 0, stroke.width, 'rgb(232 93 74 / 0.14)')
-      traceStroke(stroke.points, visiblePoints, 0, stroke.width * 0.72, 'rgb(232 93 74 / 0.055)')
+      traceStroke(stroke.points, visiblePoints, 0, 0, stroke.width, 'rgb(232 93 74 / 0.14)')
+      traceStroke(stroke.points, visiblePoints, 0, 0, stroke.width * 0.72, 'rgb(232 93 74 / 0.055)')
       for (const fiber of stroke.fibers) {
         traceStroke(
           stroke.points,
           visiblePoints,
-          fiber.offset,
+          stroke.normal.x * fiber.offset,
+          stroke.normal.y * fiber.offset,
           fiber.width,
           `rgb(232 93 74 / ${fiber.alpha})`,
         )
