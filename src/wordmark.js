@@ -268,7 +268,7 @@ function initHeroTopography(canvas) {
 
   resize()
   const introIsShowing = document.documentElement.classList.contains('show-intro')
-  window.setTimeout(beginReveal, introIsShowing ? 4700 : 250)
+  window.setTimeout(beginReveal, introIsShowing ? 3700 : 250)
 
   if ('ResizeObserver' in window) {
     const observer = new ResizeObserver(resize)
@@ -512,7 +512,7 @@ if (
   window.setTimeout(() => {
     document.documentElement.classList.remove('show-intro')
     document.body.classList.remove('show-intro')
-  }, 4750)
+  }, 3750)
 }
 
 const isBlinkEntering = document.documentElement.classList.contains('page-entering')

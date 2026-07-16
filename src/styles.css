@@ -1651,7 +1651,7 @@ textarea {
     radial-gradient(circle at 58% 48%, rgb(227 6 19 / 0.07), transparent 26rem),
     #fff;
   pointer-events: none;
-  animation: introLoaderExit 4.6s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+  animation: introLoaderExit 3.6s cubic-bezier(0.8, 0, 0.2, 1) forwards;
 }
 
 .show-intro .intro-loader {
@@ -1665,7 +1665,7 @@ textarea {
   overflow: visible;
   transform-box: fill-box;
   transform-origin: center;
-  animation: introLogoSettle 4.6s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+  animation: introLogoSettle 3.6s cubic-bezier(0.8, 0, 0.2, 1) forwards;
 }
 
 .intro-word {
@@ -1696,21 +1696,21 @@ textarea {
 }
 
 .intro-word-vision {
-  animation: introVisionReveal 4.6s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+  animation: introVisionReveal 3.6s cubic-bezier(0.8, 0, 0.2, 1) forwards;
 }
 
 .intro-word-without {
-  animation: introWithoutReveal 4.6s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+  animation: introWithoutReveal 3.6s cubic-bezier(0.8, 0, 0.2, 1) forwards;
 }
 
 .intro-word-borders {
-  animation: introBordersReveal 4.6s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+  animation: introBordersReveal 3.6s cubic-bezier(0.8, 0, 0.2, 1) forwards;
 }
 
 .intro-feature-globe {
   color: var(--ink);
   opacity: 0;
-  animation: introFeatureGlobeReveal 4.6s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+  animation: introFeatureGlobeReveal 3.6s cubic-bezier(0.8, 0, 0.2, 1) forwards;
 }
 
 .intro-feature-globe .sphere-outline {
@@ -1727,15 +1727,15 @@ textarea {
   transform-box: fill-box;
   transform-origin: center;
   filter: drop-shadow(0 1px 4px rgb(227 6 19 / 0.32));
-  animation: introPinPlace 0.72s cubic-bezier(0.8, 0, 0.2, 1) 1.35s forwards;
+  animation: introPinPlace 0.56s cubic-bezier(0.8, 0, 0.2, 1) 1.05s forwards;
 }
 
 .intro-pin-2 {
-  animation-delay: 2.55s;
+  animation-delay: 2s;
 }
 
 .intro-pin-3 {
-  animation-delay: 3.7s;
+  animation-delay: 2.9s;
 }
 
 .blink-transition {
