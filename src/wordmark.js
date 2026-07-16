@@ -25,9 +25,13 @@ function createBorderlessGlobeScribbles(width, height) {
   const centerX = width * 0.5
   const centerY = height * 0.5
   const globeRadius = Math.min(height * 0.34, width * 0.2)
-  const markerWidth = Math.max(38, Math.min(82, height * 0.105))
-  const passStep = markerWidth * 0.74
-  const passCount = Math.ceil(height / passStep) + 2
+  const markerWidth = Math.max(28, Math.min(48, height * 0.082))
+  const passCount = 10
+  const clusterLeft = width * 0.055
+  const clusterRight = width * 0.945
+  const clusterTop = height * 0.11
+  const clusterBottom = height * 0.89
+  const passStep = (clusterBottom - clusterTop) / (passCount - 1)
   let randomState = 0x6d2b79f5
 
   const random = () => {
@@ -38,28 +42,21 @@ function createBorderlessGlobeScribbles(width, height) {
   }
 
   for (let passIndex = 0; passIndex < passCount; passIndex += 1) {
-    const reachesLeftEdge = passIndex % 4 === 0 || random() < 0.28
-    const reachesRightEdge = passIndex % 5 === 0 || random() < 0.28
-    const leftX = reachesLeftEdge
-      ? -markerWidth * (0.08 + random() * 0.5)
-      : markerWidth * (0.08 + random() * 0.95)
-    const rightX = reachesRightEdge
-      ? width + markerWidth * (0.08 + random() * 0.5)
-      : width - markerWidth * (0.08 + random() * 0.95)
-    const baseY = -markerWidth * 0.08 + passIndex * passStep
-      + (random() - 0.5) * markerWidth * 0.4
-    const rightLift = markerWidth * (0.08 + random() * 0.5)
+    const leftX = clusterLeft + width * (0.005 + random() * 0.1)
+    const rightX = clusterRight - width * (0.005 + random() * 0.13)
+    const baseY = clusterTop + passIndex * passStep
+      + (random() - 0.5) * markerWidth * 0.42
+    const rightLift = markerWidth * (0.22 + random() * 0.62)
     const leftY = baseY
     const rightY = baseY - rightLift
-    const bow = (random() - 0.5) * markerWidth * 0.75
+    const bow = (random() - 0.5) * markerWidth * 0.65
     const phase = random() * Math.PI * 2
-    const pointCount = 64
+    const pointCount = 58
     const points = []
-    const travelsLeftToRight = passIndex % 2 === 0
-    const startX = travelsLeftToRight ? leftX : rightX
-    const startY = travelsLeftToRight ? leftY : rightY
-    const endX = travelsLeftToRight ? rightX : leftX
-    const endY = travelsLeftToRight ? rightY : leftY
+    const startX = leftX
+    const startY = leftY
+    const endX = rightX
+    const endY = rightY
     const directionLength = Math.hypot(endX - startX, endY - startY) || 1
     const normal = {
       x: -(endY - startY) / directionLength,
@@ -68,8 +65,8 @@ function createBorderlessGlobeScribbles(width, height) {
 
     for (let pointIndex = 0; pointIndex < pointCount; pointIndex += 1) {
       const progress = pointIndex / (pointCount - 1)
-      const edgeWobble = Math.sin(progress * Math.PI * 4 + phase) * markerWidth * 0.065
-      const handJitter = (random() - 0.5) * markerWidth * 0.09
+      const edgeWobble = Math.sin(progress * Math.PI * 3 + phase) * markerWidth * 0.045
+      const handJitter = (random() - 0.5) * markerWidth * 0.055
       const perpendicularShift = Math.sin(progress * Math.PI) * bow + edgeWobble + handJitter
       points.push({
         x: startX + (endX - startX) * progress + normal.x * perpendicularShift,
@@ -77,18 +74,18 @@ function createBorderlessGlobeScribbles(width, height) {
       })
     }
 
-    const fibers = Array.from({ length: 5 }, () => ({
-      offset: (random() - 0.5) * markerWidth * 0.76,
-      width: markerWidth * (0.035 + random() * 0.055),
-      alpha: 0.045 + random() * 0.055,
+    const fibers = Array.from({ length: 3 }, () => ({
+      offset: (random() - 0.5) * markerWidth * 0.66,
+      width: markerWidth * (0.025 + random() * 0.045),
+      alpha: 0.035 + random() * 0.045,
     }))
 
     strokes.push({
       points,
-      width: markerWidth * (0.88 + random() * 0.22),
+      width: markerWidth * (0.92 + random() * 0.16),
       fibers,
       normal,
-      intensity: 0.9 + random() * 0.28,
+      intensity: 0.92 + random() * 0.2,
     })
   }
 
@@ -135,7 +132,7 @@ function initHeroTopography(canvas) {
         0,
         0,
         stroke.width,
-        `rgb(240 78 58 / ${0.16 * stroke.intensity})`,
+        `rgb(240 78 58 / ${0.24 * stroke.intensity})`,
       )
       traceStroke(
         stroke.points,
@@ -143,7 +140,7 @@ function initHeroTopography(canvas) {
         0,
         0,
         stroke.width * 0.72,
-        `rgb(240 78 58 / ${0.07 * stroke.intensity})`,
+        `rgb(240 78 58 / ${0.1 * stroke.intensity})`,
       )
       for (const fiber of stroke.fibers) {
         traceStroke(
