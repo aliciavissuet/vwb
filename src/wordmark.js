@@ -883,7 +883,7 @@ for (const link of document.querySelectorAll('a[href]')) {
 }
 
 const lineTargets = document.querySelectorAll(
-  '.bidirectional-model, .process-cycle, .mission-principle, .mission-narrative, .mission-field-image, .content-grid article, .publication-list article, .founder-bio, .founder-quote-bubble, .people-section, .association-block, .press-list article, .news-card, .news-link-grid article, .research-list article',
+  '.bidirectional-model, .mission-partnership-model, .process-cycle, .mission-principle, .mission-narrative, .mission-field-image, .content-grid article, .publication-list article, .founder-bio, .founder-quote-bubble, .people-section, .association-block, .press-list article, .news-card, .news-link-grid article, .research-list article',
 )
 
 if (lineTargets.length) {
