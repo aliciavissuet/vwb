@@ -753,13 +753,13 @@ if (isBlinkEntering) {
   transitionActive = true
   blinkTransition.classList.add('is-opening-ready')
 
-  let hasRevealedIncomingPage = false
-  const revealIncomingPage = () => {
-    if (hasRevealedIncomingPage) return
-    hasRevealedIncomingPage = true
-    blinkTransition.classList.remove('is-opening-ready', 'is-opening')
+  let hasPreparedIncomingPage = false
+  let hasFinishedIncomingBlink = false
+
+  const prepareIncomingPage = () => {
+    if (hasPreparedIncomingPage) return
+    hasPreparedIncomingPage = true
     document.documentElement.classList.remove('page-entering')
-    transitionActive = false
     try {
       window.sessionStorage.removeItem('vwb-blink-enter')
     } catch {
@@ -767,16 +767,26 @@ if (isBlinkEntering) {
     }
   }
 
+  const finishIncomingBlink = () => {
+    if (hasFinishedIncomingBlink) return
+    hasFinishedIncomingBlink = true
+    prepareIncomingPage()
+    blinkTransition.classList.remove('is-opening-ready', 'is-opening')
+    transitionActive = false
+  }
+
   // Paint the new page with the eye fully closed before animating it open.
-  // Two frames prevent fast loads from collapsing both visual states together.
+  // The content is revealed behind the closed lids so it cannot flash first.
   window.requestAnimationFrame(() => {
     window.requestAnimationFrame(() => {
-      if (!hasRevealedIncomingPage) blinkTransition.classList.add('is-opening')
+      if (hasFinishedIncomingBlink) return
+      prepareIncomingPage()
+      blinkTransition.classList.add('is-opening')
     })
   })
 
-  blinkTransition.querySelector('.blink-lid-top')?.addEventListener('animationend', revealIncomingPage, { once: true })
-  window.setTimeout(revealIncomingPage, 700)
+  blinkTransition.querySelector('.blink-lid-top')?.addEventListener('animationend', finishIncomingBlink, { once: true })
+  window.setTimeout(finishIncomingBlink, 500)
 }
 
 function setMenuOpen(isOpen) {
@@ -834,7 +844,7 @@ function navigateWithBlink(url) {
 
   const topLid = blinkTransition.querySelector('.blink-lid-top')
   topLid?.addEventListener('animationend', finishNavigation, { once: true })
-  window.setTimeout(finishNavigation, 450)
+  window.setTimeout(finishNavigation, 320)
 }
 
 for (const link of document.querySelectorAll('a[href^="#"]')) {
