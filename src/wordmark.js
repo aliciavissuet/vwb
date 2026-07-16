@@ -124,8 +124,8 @@ function initHeroTopography(canvas) {
       if (remainingPoints <= 0) break
       const visiblePoints = Math.min(stroke.points.length, remainingPoints)
 
-      traceStroke(stroke.points, visiblePoints, 0, 0, stroke.width, 'rgb(232 93 74 / 0.14)')
-      traceStroke(stroke.points, visiblePoints, 0, 0, stroke.width * 0.72, 'rgb(232 93 74 / 0.055)')
+      traceStroke(stroke.points, visiblePoints, 0, 0, stroke.width, 'rgb(240 78 58 / 0.17)')
+      traceStroke(stroke.points, visiblePoints, 0, 0, stroke.width * 0.72, 'rgb(240 78 58 / 0.065)')
       for (const fiber of stroke.fibers) {
         traceStroke(
           stroke.points,
@@ -133,7 +133,7 @@ function initHeroTopography(canvas) {
           stroke.normal.x * fiber.offset,
           stroke.normal.y * fiber.offset,
           fiber.width,
-          `rgb(232 93 74 / ${fiber.alpha})`,
+          `rgb(240 78 58 / ${fiber.alpha})`,
         )
       }
 
@@ -152,26 +152,68 @@ function initHeroTopography(canvas) {
     context.lineCap = 'round'
     context.lineJoin = 'round'
 
-    const rubEllipse = (radiusX, radiusY, phase, weight = 1) => {
+    context.beginPath()
+    context.arc(centerX, centerY, globeRadius, 0, fullTurn)
+    context.lineWidth = Math.max(8, height * 0.014)
+    context.stroke()
+
+    context.beginPath()
+    context.arc(centerX, centerY, globeRadius - context.lineWidth * 0.35, 0, fullTurn)
+    context.clip()
+
+    const drawContour = (contourX, contourY, radiusX, radiusY, phase) => {
       context.beginPath()
-      for (let pointIndex = 0; pointIndex <= 180; pointIndex += 1) {
-        const angle = (pointIndex / 180) * fullTurn - Math.PI / 2
-        const wobble = Math.sin(angle * 13 + phase) * height * 0.0018
-          + Math.sin(angle * 29 - phase) * height * 0.0008
-        const x = centerX + Math.cos(angle) * (radiusX + wobble)
-        const y = centerY + Math.sin(angle) * (radiusY + wobble)
+      for (let pointIndex = 0; pointIndex <= 120; pointIndex += 1) {
+        const angle = (pointIndex / 120) * fullTurn - Math.PI / 2
+        const contourShape = 1
+          + Math.sin(angle * 3 + phase) * 0.065
+          + Math.sin(angle * 5 - phase * 0.7) * 0.032
+        const x = contourX + Math.cos(angle) * radiusX * contourShape
+        const y = contourY + Math.sin(angle) * radiusY * contourShape
         if (pointIndex === 0) context.moveTo(x, y)
         else context.lineTo(x, y)
       }
-      context.lineWidth = Math.max(7, height * 0.011 * weight)
+      context.closePath()
+      context.lineWidth = Math.max(4, height * 0.0065)
       context.stroke()
     }
 
-    rubEllipse(globeRadius, globeRadius, 0.4, 1.35)
-    rubEllipse(globeRadius * 0.42, globeRadius, 1.7, 0.82)
-    rubEllipse(globeRadius * 0.72, globeRadius, 2.8, 0.82)
-    rubEllipse(globeRadius, globeRadius * 0.34, 4.2, 0.82)
-    rubEllipse(globeRadius * 0.98, globeRadius * 0.67, 5.1, 0.82)
+    const primaryX = centerX - globeRadius * 0.15
+    const primaryY = centerY - globeRadius * 0.08
+    const primaryLevels = [0.16, 0.27, 0.39, 0.52, 0.66, 0.81]
+    for (const [levelIndex, level] of primaryLevels.entries()) {
+      drawContour(
+        primaryX,
+        primaryY,
+        globeRadius * level,
+        globeRadius * level * (0.72 + levelIndex * 0.025),
+        0.65 + levelIndex * 0.42,
+      )
+    }
+
+    const secondaryX = centerX + globeRadius * 0.42
+    const secondaryY = centerY + globeRadius * 0.28
+    for (const [levelIndex, level] of [0.13, 0.23, 0.34].entries()) {
+      drawContour(
+        secondaryX,
+        secondaryY,
+        globeRadius * level,
+        globeRadius * level * 0.78,
+        2.1 + levelIndex * 0.5,
+      )
+    }
+
+    const ridgeX = centerX + globeRadius * 0.34
+    const ridgeY = centerY - globeRadius * 0.42
+    for (const [levelIndex, level] of [0.1, 0.18, 0.27].entries()) {
+      drawContour(
+        ridgeX,
+        ridgeY,
+        globeRadius * level,
+        globeRadius * level * 0.62,
+        4.15 + levelIndex * 0.38,
+      )
+    }
     context.restore()
   }
 
