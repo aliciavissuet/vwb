@@ -1,6 +1,33 @@
 const svgNS = 'http://www.w3.org/2000/svg'
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 const BRAND_MARKER_ENABLED = false
+
+const footerSupportCardMarkup = `
+  <div class="footer-social-support">
+    <div class="footer-support-copy">
+      <p class="footer-support-kicker">Every action helps</p>
+      <h2>Support doesn’t have to mean donating.</h2>
+      <p class="footer-support-detail">Following, liking, commenting, or sharing our work helps more people find the cause—and can make a meaningful difference.</p>
+    </div>
+    <div class="footer-instagram-cta">
+      <a href="https://www.instagram.com/visionwithoutbordersmd/" target="_blank" rel="noreferrer">
+        <span>Follow on Instagram</span>
+        <span class="footer-support-arrow diagonal-arrow" aria-hidden="true"></span>
+      </a>
+      <div class="footer-instagram-qr">
+        <span class="footer-instagram-qr-frame"><img src="/assets/vwb-qr-code.png" alt="QR code for Vision Without Borders on Instagram" loading="lazy" /></span>
+        <span>Scan to follow</span>
+      </div>
+    </div>
+  </div>
+`
+
+for (const footer of document.querySelectorAll('.site-footer')) {
+  if (!footer.querySelector('.footer-social-support')) {
+    footer.insertAdjacentHTML('afterbegin', footerSupportCardMarkup)
+  }
+}
+
 const center = { x: 60, y: 60 }
 const radius = 45
 const meridians = [
@@ -125,6 +152,7 @@ function createBorderlessGlobeScribbles(width, height) {
 function initHeroTopography(canvas) {
   const context = canvas.getContext('2d')
   if (!context) return
+  const hero = canvas.closest('.contact-logo-hero')
 
   let markerStrokes = []
   let globe = { centerX: 0, centerY: 0, radius: 0 }
@@ -256,14 +284,16 @@ function initHeroTopography(canvas) {
     if (prefersReduced) {
       reveal = 1
       draw()
+      hero?.classList.add('is-marker-complete')
       return
     }
 
     const startedAt = performance.now()
     const animate = (now) => {
-      reveal = Math.min(1, (now - startedAt) / 5200)
+      reveal = Math.min(1, (now - startedAt) / 4000)
       draw()
       if (reveal < 1) animationFrame = requestAnimationFrame(animate)
+      else hero?.classList.add('is-marker-complete')
     }
     animationFrame = requestAnimationFrame(animate)
   }
