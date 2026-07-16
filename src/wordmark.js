@@ -285,6 +285,193 @@ for (const canvas of document.querySelectorAll('[data-hero-topography]')) {
   initHeroTopography(canvas)
 }
 
+function createBrandMarkerStrokes(width, height, seed) {
+  const strokes = []
+  const markerWidth = height * 0.18
+  const passStep = markerWidth * 0.48
+  const diagonalRun = height * 0.56
+  const firstPassX = width * 0.1
+  const finalPassX = width * 0.9 - diagonalRun
+  const passCount = Math.max(5, Math.ceil((finalPassX - firstPassX) / passStep) + 1)
+  const baseStartY = height * 0.82
+  const baseEndY = height * 0.18
+  const directionLength = Math.hypot(diagonalRun, baseEndY - baseStartY) || 1
+  const direction = {
+    x: diagonalRun / directionLength,
+    y: (baseEndY - baseStartY) / directionLength,
+  }
+  let randomState = seed
+
+  const random = () => {
+    randomState ^= randomState << 13
+    randomState ^= randomState >>> 17
+    randomState ^= randomState << 5
+    return (randomState >>> 0) / 4294967296
+  }
+
+  for (let passIndex = 0; passIndex < passCount; passIndex += 1) {
+    const baseX = firstPassX + passIndex * passStep
+      + (random() - 0.5) * passStep * 0.2
+    const startJitter = (random() - 0.5) * markerWidth * 1.7
+    const endJitter = (random() - 0.5) * markerWidth * 1.7
+    const start = {
+      x: baseX + direction.x * startJitter,
+      y: baseStartY + direction.y * startJitter,
+    }
+    const end = {
+      x: baseX + diagonalRun + direction.x * endJitter,
+      y: baseEndY + direction.y * endJitter,
+    }
+    const length = Math.hypot(end.x - start.x, end.y - start.y) || 1
+    const normal = {
+      x: -(end.y - start.y) / length,
+      y: (end.x - start.x) / length,
+    }
+    const bow = (random() - 0.5) * markerWidth * 0.32
+    const phase = random() * Math.PI * 2
+    const points = []
+
+    for (let pointIndex = 0; pointIndex < 20; pointIndex += 1) {
+      const progress = pointIndex / 19
+      const perpendicularShift = Math.sin(progress * Math.PI) * bow
+        + Math.sin(progress * Math.PI * 2.5 + phase) * markerWidth * 0.025
+        + (random() - 0.5) * markerWidth * 0.035
+      points.push({
+        x: start.x + (end.x - start.x) * progress + normal.x * perpendicularShift,
+        y: start.y + (end.y - start.y) * progress + normal.y * perpendicularShift,
+      })
+    }
+
+    strokes.push({
+      points,
+      normal,
+      width: markerWidth * (0.76 + random() * 0.38),
+      intensity: 0.92 + random() * 0.2,
+      fibers: Array.from({ length: 2 }, () => ({
+        offset: (random() - 0.5) * markerWidth * 0.62,
+        width: markerWidth * (0.035 + random() * 0.05),
+        alpha: 0.04 + random() * 0.04,
+      })),
+    })
+  }
+
+  return strokes
+}
+
+function initBrandMarker(brand, brandIndex) {
+  const canvas = document.createElement('canvas')
+  canvas.className = 'brand-marker'
+  canvas.setAttribute('aria-hidden', 'true')
+  brand.prepend(canvas)
+
+  const context = canvas.getContext('2d')
+  if (!context) return
+
+  let width = 0
+  let height = 0
+  let strokes = []
+  let totalPoints = 0
+  let reveal = prefersReduced ? 1 : 0
+  let animationFrame = 0
+  let startTimer = 0
+  let resetTimer = 0
+  let replayTimer = 0
+
+  const trace = (stroke, visiblePoints, offset, lineWidth, color) => {
+    if (visiblePoints < 2) return
+    context.beginPath()
+    context.moveTo(
+      stroke.points[0].x + stroke.normal.x * offset,
+      stroke.points[0].y + stroke.normal.y * offset,
+    )
+    for (let pointIndex = 1; pointIndex < visiblePoints; pointIndex += 1) {
+      context.lineTo(
+        stroke.points[pointIndex].x + stroke.normal.x * offset,
+        stroke.points[pointIndex].y + stroke.normal.y * offset,
+      )
+    }
+    context.lineWidth = lineWidth
+    context.strokeStyle = color
+    context.stroke()
+  }
+
+  const draw = () => {
+    context.clearRect(0, 0, width, height)
+    context.save()
+    context.lineJoin = 'round'
+    let remainingPoints = Math.floor(totalPoints * reveal)
+
+    for (const stroke of strokes) {
+      if (remainingPoints <= 0) break
+      const visiblePoints = Math.min(stroke.points.length, remainingPoints)
+      context.lineCap = 'butt'
+      trace(stroke, visiblePoints, 0, stroke.width, `rgb(232 68 52 / ${0.24 * stroke.intensity})`)
+      trace(stroke, visiblePoints, 0, stroke.width * 0.72, `rgb(232 68 52 / ${0.1 * stroke.intensity})`)
+      context.lineCap = 'round'
+      for (const fiber of stroke.fibers) {
+        trace(stroke, visiblePoints, fiber.offset, fiber.width, `rgb(232 68 52 / ${fiber.alpha})`)
+      }
+      remainingPoints -= stroke.points.length
+    }
+    context.restore()
+  }
+
+  const resize = () => {
+    const bounds = canvas.getBoundingClientRect()
+    const ratio = Math.min(window.devicePixelRatio || 1, 2)
+    width = Math.max(1, bounds.width)
+    height = Math.max(1, bounds.height)
+    canvas.width = Math.round(width * ratio)
+    canvas.height = Math.round(height * ratio)
+    context.setTransform(ratio, 0, 0, ratio, 0, 0)
+    strokes = createBrandMarkerStrokes(width, height, 0x6d2b79f5 + brandIndex * 97)
+    totalPoints = strokes.reduce((sum, stroke) => sum + stroke.points.length, 0)
+    draw()
+  }
+
+  const play = () => {
+    cancelAnimationFrame(animationFrame)
+    reveal = 0
+    const startedAt = performance.now()
+    const animate = (now) => {
+      reveal = Math.min(1, (now - startedAt) / 820)
+      draw()
+      if (reveal < 1) animationFrame = requestAnimationFrame(animate)
+    }
+    animationFrame = requestAnimationFrame(animate)
+  }
+
+  const replay = () => {
+    canvas.classList.add('is-resetting')
+    resetTimer = window.setTimeout(() => {
+      canvas.classList.remove('is-resetting')
+      play()
+    }, 220)
+  }
+
+  resize()
+  if (!prefersReduced) {
+    const introIsShowing = document.documentElement.classList.contains('show-intro')
+    startTimer = window.setTimeout(() => {
+      play()
+      replayTimer = window.setInterval(replay, 12000)
+    }, introIsShowing ? 3700 : 280)
+  }
+
+  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(canvas)
+
+  window.addEventListener('pagehide', () => {
+    cancelAnimationFrame(animationFrame)
+    window.clearTimeout(startTimer)
+    window.clearTimeout(resetTimer)
+    window.clearInterval(replayTimer)
+  }, { once: true })
+}
+
+for (const [brandIndex, brand] of document.querySelectorAll('.brand').entries()) {
+  initBrandMarker(brand, brandIndex)
+}
+
 function createCircle() {
   const circle = document.createElementNS(svgNS, 'circle')
   circle.setAttribute('class', 'sphere-outline')
