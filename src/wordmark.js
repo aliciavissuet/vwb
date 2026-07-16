@@ -25,13 +25,12 @@ function createBorderlessGlobeScribbles(width, height) {
   const centerX = width * 0.5
   const centerY = height * 0.5
   const globeRadius = Math.min(height * 0.34, width * 0.2)
-  const markerWidth = Math.max(28, Math.min(48, height * 0.082))
-  const passCount = 10
-  const clusterLeft = width * 0.055
-  const clusterRight = width * 0.945
-  const clusterTop = height * 0.11
-  const clusterBottom = height * 0.89
-  const passStep = (clusterBottom - clusterTop) / (passCount - 1)
+  const markerWidth = Math.max(30, Math.min(50, height * 0.088))
+  const segmentCount = 14
+  const clusterLeft = width * 0.08
+  const clusterRight = width * 0.92
+  const clusterTop = height * 0.13
+  const clusterBottom = height * 0.87
   let randomState = 0x6d2b79f5
 
   const random = () => {
@@ -41,36 +40,34 @@ function createBorderlessGlobeScribbles(width, height) {
     return (randomState >>> 0) / 4294967296
   }
 
-  for (let passIndex = 0; passIndex < passCount; passIndex += 1) {
-    const leftX = clusterLeft + width * (0.005 + random() * 0.1)
-    const rightX = clusterRight - width * (0.005 + random() * 0.13)
-    const baseY = clusterTop + passIndex * passStep
-      + (random() - 0.5) * markerWidth * 0.42
-    const rightLift = markerWidth * (0.22 + random() * 0.62)
-    const leftY = baseY
-    const rightY = baseY - rightLift
-    const bow = (random() - 0.5) * markerWidth * 0.65
+  const turns = Array.from({ length: segmentCount + 1 }, (_, turnIndex) => ({
+    x: clusterLeft + ((clusterRight - clusterLeft) * turnIndex) / segmentCount
+      + (random() - 0.5) * markerWidth * 0.42,
+    y: (turnIndex % 2 === 0 ? clusterBottom : clusterTop)
+      + (random() - 0.5) * markerWidth * 0.5,
+  }))
+
+  for (let segmentIndex = 0; segmentIndex < segmentCount; segmentIndex += 1) {
+    const start = turns[segmentIndex]
+    const end = turns[segmentIndex + 1]
+    const bow = (random() - 0.5) * markerWidth * 0.6
     const phase = random() * Math.PI * 2
-    const pointCount = 58
+    const pointCount = 38
     const points = []
-    const startX = leftX
-    const startY = leftY
-    const endX = rightX
-    const endY = rightY
-    const directionLength = Math.hypot(endX - startX, endY - startY) || 1
+    const directionLength = Math.hypot(end.x - start.x, end.y - start.y) || 1
     const normal = {
-      x: -(endY - startY) / directionLength,
-      y: (endX - startX) / directionLength,
+      x: -(end.y - start.y) / directionLength,
+      y: (end.x - start.x) / directionLength,
     }
 
     for (let pointIndex = 0; pointIndex < pointCount; pointIndex += 1) {
       const progress = pointIndex / (pointCount - 1)
-      const edgeWobble = Math.sin(progress * Math.PI * 3 + phase) * markerWidth * 0.045
-      const handJitter = (random() - 0.5) * markerWidth * 0.055
+      const edgeWobble = Math.sin(progress * Math.PI * 2.5 + phase) * markerWidth * 0.04
+      const handJitter = (random() - 0.5) * markerWidth * 0.06
       const perpendicularShift = Math.sin(progress * Math.PI) * bow + edgeWobble + handJitter
       points.push({
-        x: startX + (endX - startX) * progress + normal.x * perpendicularShift,
-        y: startY + (endY - startY) * progress + normal.y * perpendicularShift,
+        x: start.x + (end.x - start.x) * progress + normal.x * perpendicularShift,
+        y: start.y + (end.y - start.y) * progress + normal.y * perpendicularShift,
       })
     }
 
