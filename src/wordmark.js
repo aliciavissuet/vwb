@@ -405,8 +405,8 @@ function initBrandMarker(brand, brandIndex) {
       if (remainingPoints <= 0) break
       const visiblePoints = Math.min(stroke.points.length, remainingPoints)
       context.lineCap = 'butt'
-      trace(stroke, visiblePoints, 0, stroke.width, `rgb(184 34 39 / ${0.5 * stroke.intensity})`)
-      trace(stroke, visiblePoints, 0, stroke.width * 0.72, `rgb(184 34 39 / ${0.2 * stroke.intensity})`)
+      trace(stroke, visiblePoints, 0, stroke.width, `rgb(232 93 74 / ${0.62 * stroke.intensity})`)
+      trace(stroke, visiblePoints, 0, stroke.width * 0.72, `rgb(232 93 74 / ${0.28 * stroke.intensity})`)
       context.lineCap = 'round'
       for (const fiber of stroke.fibers) {
         trace(stroke, visiblePoints, fiber.offset, fiber.width, `rgb(232 68 52 / ${fiber.alpha})`)

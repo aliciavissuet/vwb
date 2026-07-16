@@ -91,7 +91,7 @@ textarea {
   display: inline-flex;
   min-width: 0;
   align-items: center;
-  gap: 5px;
+  gap: 1px;
   color: rgb(16 16 16 / 0.82);
   isolation: isolate;
   text-decoration: none;
