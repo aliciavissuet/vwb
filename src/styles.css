@@ -2517,6 +2517,16 @@ textarea {
   text-transform: uppercase;
 }
 
+@media (min-width: 821px) {
+  .mission-opening-band {
+    align-items: start;
+  }
+
+  .mission-opening-copy {
+    padding-top: clamp(34px, 4vw, 64px);
+  }
+}
+
 .mission-hero-photo {
   width: calc(100% + clamp(20px, 5vw, 76px));
   aspect-ratio: 0.94 / 1;
@@ -2794,7 +2804,7 @@ textarea {
   border: 1px solid rgb(50 106 116 / 0.14);
   border-radius: 999px;
   padding: 8px 14px 8px 8px;
-  background: rgb(255 250 242 / 0.78);
+  background: rgb(255 250 242 / 0.64);
   color: var(--ink);
   text-decoration: none;
   transition: border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
@@ -4960,7 +4970,7 @@ textarea {
 
 .person-photo {
   display: grid;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1.1 / 1;
   place-items: center;
   overflow: hidden;
   background: linear-gradient(145deg, #f0ede8, #fff);
@@ -4971,6 +4981,10 @@ textarea {
   height: 100%;
   object-fit: cover;
   object-position: center 25%;
+}
+
+.person-photo.person-photo-noah img {
+  object-position: center 50%;
 }
 
 .person-photo-placeholder {
@@ -5255,13 +5269,13 @@ textarea {
   right: 18px;
   left: auto;
   width: clamp(96px, 24%, 148px);
-  border: 1px solid rgb(255 250 242 / 0.7);
-  border-radius: 50%;
+  border: 0;
+  border-radius: 0;
   padding: 8px;
-  background: rgb(255 250 242 / 0.88);
-  box-shadow: 0 12px 28px rgb(23 37 43 / 0.18);
+  background: transparent;
+  box-shadow: none;
   transform: none;
-  backdrop-filter: blur(8px);
+  backdrop-filter: none;
 }
 
 .ambassador-photo-placeholder.has-location-photo .ambassador-globe-wrap > p {
@@ -5414,8 +5428,27 @@ textarea {
   border: 1px solid rgb(23 37 43 / 0.07);
   border-radius: 5px 20px 6px 16px;
   padding: 24px 26px;
-  background: rgb(255 250 242 / 0.94);
+  background: rgb(255 250 242 / 0.64);
+  backdrop-filter: blur(12px);
   box-shadow: 0 18px 46px rgb(23 37 43 / 0.08);
+}
+
+@media (min-width: 821px) {
+  .ambassador-photo-placeholder.has-location-photo {
+    isolation: auto;
+  }
+
+  .ambassador-photo-placeholder.has-location-photo .ambassador-globe-wrap {
+    top: auto;
+    right: 42px;
+    bottom: 36px;
+    z-index: 3;
+    width: clamp(86px, 9vw, 112px);
+  }
+
+  .ambassador-photo-panel .ambassador-map-detail {
+    padding-right: clamp(148px, 14vw, 184px);
+  }
 }
 
 /* Sponsor inquiry */
@@ -6408,10 +6441,6 @@ figcaption {
 }
 
 @media (max-width: 520px) {
-  .person-photo-noah img {
-    object-position: center 40%;
-  }
-
   .ambassador-explorer {
     gap: 16px;
   }
