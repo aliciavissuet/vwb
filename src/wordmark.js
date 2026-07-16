@@ -147,7 +147,6 @@ function initHeroTopography(canvas) {
 
   const drawMarkerFill = (progress) => {
     context.save()
-    context.lineCap = 'round'
     context.lineJoin = 'round'
 
     let remainingPoints = Math.floor(totalPoints * progress)
@@ -155,6 +154,7 @@ function initHeroTopography(canvas) {
       if (remainingPoints <= 0) break
       const visiblePoints = Math.min(stroke.points.length, remainingPoints)
 
+      context.lineCap = 'butt'
       traceStroke(
         stroke.points,
         visiblePoints,
@@ -171,6 +171,7 @@ function initHeroTopography(canvas) {
         stroke.width * 0.72,
         `rgb(232 68 52 / ${0.1 * stroke.intensity})`,
       )
+      context.lineCap = 'round'
       for (const fiber of stroke.fibers) {
         traceStroke(
           stroke.points,
