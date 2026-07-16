@@ -25,12 +25,16 @@ function createBorderlessGlobeScribbles(width, height) {
   const centerX = width * 0.5
   const centerY = height * 0.5
   const globeRadius = Math.min(height * 0.34, width * 0.2)
-  const markerWidth = Math.max(30, Math.min(50, height * 0.088))
-  const segmentCount = 14
-  const clusterLeft = width * 0.08
-  const clusterRight = width * 0.92
-  const clusterTop = height * 0.13
-  const clusterBottom = height * 0.87
+  const markerWidth = Math.max(32, Math.min(56, height * 0.1))
+  const clusterLeft = width * 0.045
+  const clusterRight = width * 0.955
+  const clusterTop = height * 0.08
+  const clusterBottom = height * 0.92
+  const diagonalRun = height * 0.62
+  const passStep = markerWidth * 0.5
+  const firstPassX = clusterLeft - diagonalRun
+  const finalPassX = clusterRight
+  const passCount = Math.ceil((finalPassX - firstPassX) / passStep) + 1
   let randomState = 0x6d2b79f5
 
   const random = () => {
@@ -40,19 +44,19 @@ function createBorderlessGlobeScribbles(width, height) {
     return (randomState >>> 0) / 4294967296
   }
 
-  const turns = Array.from({ length: segmentCount + 1 }, (_, turnIndex) => ({
-    x: clusterLeft + ((clusterRight - clusterLeft) * turnIndex) / segmentCount
-      + (random() - 0.5) * markerWidth * 0.42,
-    y: (turnIndex % 2 === 0 ? clusterBottom : clusterTop)
-      + (random() - 0.5) * markerWidth * 0.5,
-  }))
-
-  for (let segmentIndex = 0; segmentIndex < segmentCount; segmentIndex += 1) {
-    const start = turns[segmentIndex]
-    const end = turns[segmentIndex + 1]
-    const bow = (random() - 0.5) * markerWidth * 0.6
+  for (let passIndex = 0; passIndex < passCount; passIndex += 1) {
+    const baseX = firstPassX + passIndex * passStep
+    const start = {
+      x: baseX + (random() - 0.5) * markerWidth * 0.16,
+      y: clusterBottom + markerWidth * 0.36 + (random() - 0.5) * markerWidth * 0.22,
+    }
+    const end = {
+      x: baseX + diagonalRun + (random() - 0.5) * markerWidth * 0.16,
+      y: clusterTop - markerWidth * 0.36 + (random() - 0.5) * markerWidth * 0.22,
+    }
+    const bow = (random() - 0.5) * markerWidth * 0.22
     const phase = random() * Math.PI * 2
-    const pointCount = 38
+    const pointCount = 46
     const points = []
     const directionLength = Math.hypot(end.x - start.x, end.y - start.y) || 1
     const normal = {
@@ -62,8 +66,8 @@ function createBorderlessGlobeScribbles(width, height) {
 
     for (let pointIndex = 0; pointIndex < pointCount; pointIndex += 1) {
       const progress = pointIndex / (pointCount - 1)
-      const edgeWobble = Math.sin(progress * Math.PI * 2.5 + phase) * markerWidth * 0.04
-      const handJitter = (random() - 0.5) * markerWidth * 0.06
+      const edgeWobble = Math.sin(progress * Math.PI * 2.5 + phase) * markerWidth * 0.025
+      const handJitter = (random() - 0.5) * markerWidth * 0.035
       const perpendicularShift = Math.sin(progress * Math.PI) * bow + edgeWobble + handJitter
       points.push({
         x: start.x + (end.x - start.x) * progress + normal.x * perpendicularShift,
