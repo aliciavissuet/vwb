@@ -1,0 +1,46 @@
+backend:
+  name: git-gateway
+  branch: main
+
+local_backend: true
+media_folder: assets/uploads
+public_folder: /assets/uploads
+
+collections:
+  - name: timeline
+    label: Timeline & Photo Board
+    files:
+      - name: timeline_cards
+        label: Timeline cards
+        file: content/timeline.json
+        fields:
+          - label: Cards
+            name: cards
+            widget: list
+            summary: "{{fields.year}} · {{fields.month}} — {{fields.title}}"
+            fields:
+              - { label: ID, name: id, widget: string, hint: "Lowercase and hyphenated; do not change after publishing." }
+              - { label: Year, name: year, widget: string }
+              - { label: Month or period, name: month, widget: string }
+              - { label: Sort date, name: sortDate, widget: datetime, date_format: "YYYY-MM-DD", time_format: false }
+              - label: Timeline chapter
+                name: phase
+                widget: select
+                options:
+                  - { label: Established work, value: established }
+                  - { label: During formation, value: formation }
+                  - { label: Before the nonprofit, value: pre-founding }
+              - { label: Title, name: title, widget: string }
+              - { label: Description, name: description, widget: text }
+              - { label: Image, name: image, widget: image }
+              - { label: Image description, name: imageAlt, widget: string }
+              - { label: External link, name: externalUrl, widget: string }
+              - { label: Location, name: location, widget: string, required: false }
+              - { label: Map pin key, name: pin, widget: string, required: false }
+              - label: Categories
+                name: categories
+                widget: select
+                multiple: true
+                options: [Clinical care, Community, Education, Fundraising, Global health, Organization, Partnerships, Policy, Research, Storytelling, Technology]
+              - { label: Show in timeline, name: showInTimeline, widget: boolean, default: true }
+              - { label: Show on photo board, name: showOnBoard, widget: boolean, default: true }

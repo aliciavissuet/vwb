@@ -1162,6 +1162,267 @@ if (timelineStream) {
   updateTimelineProgress()
 }
 
+for (const photo of document.querySelectorAll('.timeline-entry-photo')) {
+  if (prefersReduced) continue
+  photo.addEventListener('pointermove', (event) => {
+    const rect = photo.getBoundingClientRect()
+    const x = (event.clientX - rect.left) / rect.width - 0.5
+    const y = (event.clientY - rect.top) / rect.height - 0.5
+    photo.style.setProperty('--timeline-photo-x', `${(x * 7).toFixed(2)}deg`)
+    photo.style.setProperty('--timeline-photo-y', `${(-y * 6).toFixed(2)}deg`)
+    photo.style.setProperty('--timeline-photo-shift', `${(x * 5).toFixed(2)}px`)
+  })
+  photo.addEventListener('pointerleave', () => {
+    photo.style.removeProperty('--timeline-photo-x')
+    photo.style.removeProperty('--timeline-photo-y')
+    photo.style.removeProperty('--timeline-photo-shift')
+  })
+}
+
+const timelineViewButtons = Array.from(document.querySelectorAll('[data-timeline-view]'))
+const timelineViewPanels = Array.from(document.querySelectorAll('[data-timeline-panel]'))
+const photoBoard = document.querySelector('[data-photo-board]')
+
+if (timelineViewButtons.length && photoBoard) {
+  const filterGroups = Array.from(document.querySelectorAll('[data-board-filter]'))
+  const resetButton = document.querySelector('[data-board-reset]')
+  const filterOpenButton = document.querySelector('[data-board-filter-open]')
+  const filterCloseButton = document.querySelector('[data-board-filter-close]')
+  const filterDoneButton = document.querySelector('[data-board-filter-done]')
+  const filterDrawer = document.querySelector('[data-board-filter-drawer]')
+  const filterCount = document.querySelector('[data-board-filter-count]')
+  const emptyMessage = document.querySelector('[data-photo-board-empty]')
+  const timelineStartLink = document.querySelector('.timeline-start')
+  let boardCards = []
+
+  const setTimelineView = (view) => {
+    for (const button of timelineViewButtons) {
+      const active = button.dataset.timelineView === view
+      button.classList.toggle('is-active', active)
+      button.setAttribute('aria-pressed', String(active))
+    }
+    for (const panel of timelineViewPanels) {
+      panel.hidden = panel.dataset.timelinePanel !== view
+    }
+    filterOpenButton.hidden = view !== 'board'
+    if (timelineStartLink) {
+      timelineStartLink.href = view === 'board' ? '#photo-board-title' : '#established'
+      timelineStartLink.innerHTML = view === 'board'
+        ? 'Explore the board <span aria-hidden="true">↓</span>'
+        : 'Explore the work <span aria-hidden="true">↓</span>'
+    }
+    try { window.sessionStorage.setItem('vwb-timeline-view', view) } catch {}
+  }
+
+  const syncTimelineCard = (card) => {
+    let entry = document.getElementById(card.id)
+    if (!entry && card.showInTimeline) {
+      const phase = document.getElementById(card.phase)
+      const yearGroup = phase?.querySelector('.timeline-year')
+      if (!yearGroup) return
+      entry = document.createElement('article')
+      entry.id = card.id
+      entry.className = 'timeline-entry timeline-entry-left is-timeline-visible'
+      entry.dataset.timelineEntry = ''
+      entry.innerHTML = '<div class="timeline-dot" aria-hidden="true"></div><div class="timeline-entry-card"><div class="timeline-date"><span></span><strong></strong></div><h2></h2><p></p></div>'
+      yearGroup.append(entry)
+    }
+    if (!entry) return
+    entry.hidden = !card.showInTimeline
+    entry.dataset.timelineYear = card.year
+    entry.dataset.timelineLabel = card.month
+    entry.dataset.timelinePin = card.pin || ''
+    entry.dataset.timelineLocation = card.location || ''
+    const content = entry.querySelector('.timeline-entry-card')
+    const date = content?.querySelector('.timeline-date')
+    if (date) {
+      date.querySelector('span').textContent = card.month
+      date.querySelector('strong').textContent = card.year
+    }
+    if (content?.querySelector('h2')) content.querySelector('h2').textContent = card.title
+    if (content?.querySelector(':scope > p')) content.querySelector(':scope > p').textContent = card.description
+    let external = content?.querySelector('.timeline-entry-external')
+    if (!external && content) {
+      external = document.createElement('a')
+      external.className = 'timeline-entry-external'
+      external.target = '_blank'
+      external.rel = 'noreferrer'
+      external.innerHTML = 'Explore related work <span aria-hidden="true">↗</span>'
+      content.append(external)
+    }
+    if (external) external.href = card.externalUrl
+  }
+
+  const expandYearTokens = (yearValue) => {
+    const yearMatch = String(yearValue || '').match(/^(\d{4})(?:[–—-](\d{2}|\d{4}))?$/)
+    if (!yearMatch) return []
+    const start = Number(yearMatch[1])
+    if (!yearMatch[2]) return [String(start)]
+    const end = Number(yearMatch[2].length === 2 ? `${yearMatch[1].slice(0, 2)}${yearMatch[2]}` : yearMatch[2])
+    if (end < start || end - start > 10) return [String(start)]
+    return Array.from({ length: end - start + 1 }, (_, offset) => String(start + offset))
+  }
+
+  const createBoardCard = (card, index) => {
+    const monthNames = new Set([
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December',
+    ])
+    const monthTokens = (card.month || '')
+      .split(/[–—]/)
+      .map((value) => value.trim())
+      .filter((value) => monthNames.has(value))
+    const yearTokens = expandYearTokens(card.year)
+    const locationTokens = (card.location || '')
+      .split('·')
+      .map((value) => value.trim())
+      .filter(Boolean)
+    const dateTokens = monthTokens.length
+      ? monthTokens.map((month, index) => {
+          const year = yearTokens.length === 1
+            ? yearTokens[0]
+            : yearTokens[Math.min(index, yearTokens.length - 1)]
+          return [month, year].filter(Boolean).join(' ')
+        })
+      : yearTokens
+    const dateTokenMarkup = dateTokens
+      .map((value) => `<span class="photo-board-date">${value}</span>`)
+      .join('')
+    const locationTokenMarkup = locationTokens
+      .map((value) => `<span class="photo-board-location">${value}</span>`)
+      .join('')
+    const article = document.createElement('article')
+    article.className = 'photo-board-card'
+    article.id = `board-${card.id}`
+    article.dataset.year = card.year
+    article.dataset.years = yearTokens.join('|')
+    article.dataset.month = card.month
+    article.dataset.categories = (card.categories || []).join('|')
+    article.style.setProperty('--board-rotation', `${[-2.4, 1.7, -1.1, 2.5, -1.8, 0.9][index % 6]}deg`)
+    article.innerHTML = `
+      <a href="${card.externalUrl}" target="_blank" rel="noreferrer" aria-label="${card.title} — opens related work">
+        <figure class="photo-board-image"><img src="${card.image}" alt="${card.imageAlt || ''}" loading="lazy" decoding="async" /></figure>
+        <div class="photo-board-overlay">
+          <div class="photo-board-tokens"><div class="photo-board-date-tokens">${dateTokenMarkup}</div><div class="photo-board-location-tokens">${locationTokenMarkup}</div></div>
+          <h3>${card.title}</h3>
+        </div>
+      </a>`
+    if (!prefersReduced) {
+      article.addEventListener('pointermove', (event) => {
+        const rect = article.getBoundingClientRect()
+        const x = (event.clientX - rect.left) / rect.width - 0.5
+        const y = (event.clientY - rect.top) / rect.height - 0.5
+        article.style.setProperty('--board-tilt-x', `${(-y * 8).toFixed(2)}deg`)
+        article.style.setProperty('--board-tilt-y', `${(x * 9).toFixed(2)}deg`)
+        article.style.setProperty('--board-shift-x', `${(-x * 12).toFixed(2)}px`)
+        article.style.setProperty('--board-shift-y', `${(-y * 10).toFixed(2)}px`)
+        article.style.setProperty('--tape-shift', `${(x * 5).toFixed(2)}px`)
+      })
+      article.addEventListener('pointerleave', () => {
+        article.style.removeProperty('--board-tilt-x')
+        article.style.removeProperty('--board-tilt-y')
+        article.style.removeProperty('--board-shift-x')
+        article.style.removeProperty('--board-shift-y')
+        article.style.removeProperty('--tape-shift')
+      })
+    }
+    return article
+  }
+
+  const selectedFilterValues = (name) => new Set(
+    Array.from(document.querySelectorAll(`[data-board-filter="${name}"] input:checked`)).map((input) => input.value),
+  )
+
+  const updateFilterSummaries = () => {
+    const count = selectedFilterValues('year').size + selectedFilterValues('category').size
+    filterCount.textContent = String(count)
+    filterCount.hidden = count === 0
+    filterOpenButton.classList.toggle('has-selection', count > 0)
+  }
+
+  const applyBoardFilters = () => {
+    const years = selectedFilterValues('year')
+    const categories = selectedFilterValues('category')
+    let visible = 0
+    for (const card of photoBoard.querySelectorAll('.photo-board-card')) {
+      const cardCategories = (card.dataset.categories || '').split('|')
+      const cardYears = (card.dataset.years || '').split('|')
+      const matchesYear = years.size === 0 || cardYears.some((year) => years.has(year))
+      const matchesCategory = categories.size === 0 || cardCategories.some((category) => categories.has(category))
+      const matches = matchesYear && matchesCategory
+      card.hidden = !matches
+      if (matches) visible += 1
+    }
+    updateFilterSummaries()
+    emptyMessage.hidden = visible !== 0
+  }
+
+  const buildFilter = (group, values) => {
+    const options = group.querySelector('[data-board-filter-options]')
+    const name = group.dataset.boardFilter
+    for (const value of values) {
+      const label = document.createElement('label')
+      const id = `board-${name}-${value.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}`
+      label.htmlFor = id
+      label.innerHTML = `<input id="${id}" type="checkbox" value="${value}" /><span>${value}</span>`
+      options.append(label)
+    }
+    options.addEventListener('change', applyBoardFilters)
+  }
+
+  const setFilterDrawer = (open) => {
+    filterDrawer.hidden = !open
+    filterOpenButton.setAttribute('aria-expanded', String(open))
+    document.body.classList.toggle('has-filter-drawer', open)
+    if (open) filterCloseButton.focus()
+    else filterOpenButton.focus()
+  }
+
+  fetch('/content/timeline.json')
+    .then((response) => {
+      if (!response.ok) throw new Error('Timeline content could not be loaded')
+      return response.json()
+    })
+    .then(({ cards }) => {
+      boardCards = cards.filter((card) => card.showOnBoard).sort((a, b) => b.sortDate.localeCompare(a.sortDate))
+      for (const card of cards) syncTimelineCard(card)
+
+      const representedYears = boardCards.flatMap((card) => expandYearTokens(card.year)).map(Number)
+      const newestYear = Math.max(...representedYears)
+      const oldestYear = Math.min(...representedYears)
+      const years = Array.from(
+        { length: newestYear - oldestYear + 1 },
+        (_, offset) => String(newestYear - offset),
+      )
+      const categories = [...new Set(boardCards.flatMap((card) => card.categories || []))].sort()
+      buildFilter(document.querySelector('[data-board-filter="year"]'), years)
+      buildFilter(document.querySelector('[data-board-filter="category"]'), categories)
+      boardCards.forEach((card, index) => photoBoard.append(createBoardCard(card, index)))
+
+      resetButton.addEventListener('click', () => {
+        for (const input of document.querySelectorAll('[data-board-filter] input')) input.checked = false
+        applyBoardFilters()
+      })
+    })
+    .catch(() => {
+      photoBoard.innerHTML = '<p class="photo-board-load-error">The photo board could not be loaded.</p>'
+    })
+
+  for (const button of timelineViewButtons) {
+    button.addEventListener('click', () => setTimelineView(button.dataset.timelineView))
+  }
+  filterOpenButton.addEventListener('click', () => setFilterDrawer(true))
+  filterCloseButton.addEventListener('click', () => setFilterDrawer(false))
+  filterDoneButton.addEventListener('click', () => setFilterDrawer(false))
+  filterDrawer.addEventListener('pointerdown', (event) => {
+    if (event.target === filterDrawer) setFilterDrawer(false)
+  })
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !filterDrawer.hidden) setFilterDrawer(false)
+  })
+  setTimelineView('board')
+}
+
 for (const explorer of document.querySelectorAll('[data-ambassador-explorer]')) {
   const countries = Array.from(explorer.querySelectorAll('[data-ambassador-country]'))
   const pins = Array.from(explorer.querySelectorAll('[data-ambassador-pin]'))

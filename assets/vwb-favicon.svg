@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="25 25 190 110" role="img" aria-labelledby="title desc">
+  <title id="title">Vision Without Borders</title>
+  <desc id="desc">An eye mark with globe lines inside the iris.</desc>
+  <defs>
+    <clipPath id="iris-clip">
+      <circle cx="120" cy="80" r="38"/>
+    </clipPath>
+  </defs>
+  <path d="M34 80C64 48 92 36 120 36s56 12 86 44M34 80C64 112 92 124 120 124s56-12 86-44" fill="none" stroke="#101010" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <g clip-path="url(#iris-clip)" fill="none" stroke="#101010" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="120" cy="80" r="32" stroke-width="7.8"/>
+    <path d="M86 80h68" stroke-width="4.3"/>
+    <path d="M120 48c-16 13-16 51 0 64" stroke-width="4.3"/>
+    <path d="M120 48c16 13 16 51 0 64" stroke-width="4.3"/>
+  </g>
+</svg>
