@@ -2198,6 +2198,15 @@ textarea {
   margin: 0;
 }
 
+.footer-disclaimer {
+  width: min(100%, 1200px);
+  margin: clamp(24px, 3vw, 34px) auto 0;
+  color: rgb(16 16 16 / 0.58);
+  font-family: var(--font-context);
+  font-size: clamp(0.72rem, 1vw, 0.82rem);
+  line-height: 1.6;
+}
+
 .footer-links {
   display: flex;
   align-items: center;

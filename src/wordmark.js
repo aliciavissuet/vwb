@@ -22,9 +22,17 @@ const footerSupportCardMarkup = `
   </div>
 `
 
+const footerDisclaimerMarkup = `
+  <p class="footer-disclaimer">Vision With Borders is a nonprofit organization with a pending application for recognition as a tax-exempt public charity under Section 501(c)(3) of the Internal Revenue Code.</p>
+`
+
 for (const footer of document.querySelectorAll('.site-footer')) {
   if (!footer.querySelector('.footer-social-support')) {
     footer.insertAdjacentHTML('afterbegin', footerSupportCardMarkup)
+  }
+
+  if (!footer.querySelector('.footer-disclaimer')) {
+    footer.insertAdjacentHTML('beforeend', footerDisclaimerMarkup)
   }
 }
 
