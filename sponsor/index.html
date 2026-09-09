@@ -24,8 +24,9 @@
 
           <div class="sponsor-form-wrap" data-sponsor-flow>
             <div class="sponsor-progress" aria-label="Form progress"><span class="is-active" data-sponsor-progress="0">01</span><i></i><span data-sponsor-progress="1">02</span><i></i><span data-sponsor-progress="2">03</span><i></i><span data-sponsor-progress="3">04</span></div>
-            <form class="sponsor-form" name="sponsor-inquiry" method="POST" action="/sponsor/thanks/" data-netlify="true">
+            <form class="sponsor-form" name="sponsor-inquiry" method="POST" action="/sponsor/thanks/" data-netlify="true" data-netlify-honeypot="bot-field">
               <input type="hidden" name="form-name" value="sponsor-inquiry" />
+              <p class="netlify-honeypot" aria-hidden="true"><label>Do not fill this out if you are human: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
 
               <fieldset class="sponsor-step is-active" data-sponsor-step="0">
                 <legend><span>Step 1 of 4</span>Who you are</legend>

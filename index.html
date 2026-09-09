@@ -328,8 +328,11 @@
             <h2 id="contact-title">Start a conversation.</h2>
             <p class="lead">Partnerships, press, and general outreach.</p>
           </div>
-          <form class="contact-form" name="contact" method="POST" data-netlify="true">
+          <form class="contact-form" name="contact" method="POST" action="/contact/thanks/" data-netlify="true" data-netlify-honeypot="bot-field">
             <input type="hidden" name="form-name" value="contact" />
+            <p class="netlify-honeypot" aria-hidden="true">
+              <label>Do not fill this out if you are human: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+            </p>
             <label>
               <span>Name</span>
               <input name="name" autocomplete="name" required />
