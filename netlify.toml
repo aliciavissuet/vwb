@@ -7,6 +7,50 @@
 [build.processing.html]
   pretty_urls = true
 
+# Keep the primary domain on HTTPS and redirect every alias to it while
+# preserving the requested path and query string.
+[[redirects]]
+  from = "http://visionwithoutbordersmd.org/*"
+  to = "https://visionwithoutbordersmd.org/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.visionwithoutbordersmd.org/*"
+  to = "https://visionwithoutbordersmd.org/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.visionwithoutbordersmd.org/*"
+  to = "https://visionwithoutbordersmd.org/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://visionwoborders.org/*"
+  to = "https://visionwithoutbordersmd.org/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://visionwoborders.org/*"
+  to = "https://visionwithoutbordersmd.org/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.visionwoborders.org/*"
+  to = "https://visionwithoutbordersmd.org/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.visionwoborders.org/*"
+  to = "https://visionwithoutbordersmd.org/:splat"
+  status = 301
+  force = true
+
 # Legacy URLs live here instead of as duplicate root HTML files. Keeping
 # about.html beside about/index.html, for example, creates a route collision
 # when Netlify applies its pretty-URL processing.
