@@ -1,7 +1,15 @@
 # Donation checkout plan
 
 **Reviewed:** 2026-11-16
-**Status:** UI preview built; Stripe Checkout Sessions selected; account onboarding and live payments pending
+**Status:** Local Stripe test checkout and browser tests built; live payments, webhooks, ledger, and receipts pending
+
+## Local test implementation (2026-11-16)
+
+The `/2020/` and `/donate/` review buttons enable only when the local Netlify Function reports test checkout ready. Both `VWB_ENABLE_TEST_CHECKOUT=1` and an `sk_test_` secret key are required. `netlify/functions/donation-checkout.mjs` validates the USD amount (currently $1–$20,000), frequency, campaign, JSON input, and request origin on the server, then creates a Stripe hosted test Checkout Session. Monthly gifts use subscription mode. The browser receives only the hosted Checkout URL. `donate/success/` verifies a returned test Session server-side and displays its payment status without updating the public campaign thermometer. The test flow deliberately refuses live keys.
+
+Use `npm ci`, then `npm run dev:stripe-test` to enter the test key privately and open port 8888. `npm test` checks server validation and Stripe request mapping; `npm run test:e2e` covers the homepage-to-Checkout handoff and return screen with mocked provider responses. A manual Stripe test-card run is still required to validate the real hosted page and return status. The current local Python static preview cannot serve these Netlify Functions. No test credential is stored in this repository.
+
+This is a local test path only. There is no signed webhook consumer, idempotent donation ledger, receipt workflow, refund handling, or live checkout activation. A successful return page alone does not qualify a gift for the public total. Approve the amount cap before any production checkout work.
 
 ## Provider finding
 
@@ -34,4 +42,4 @@ Do not send an EIN, representative ID, bank details, or Stripe secret keys in ch
 - Approve gift amount limits, suggested amounts, receipt text, and any tax-deductibility language after verifying current organization status.
 - Decide how donor records, refunds, recurring gift changes, and support inquiries will be handled.
 
-The local `/donate/` route is a reviewable UI preview. Its final checkout button is disabled, so it cannot collect a payment.
+Without the local test flag and test key, the final `/donate/` and `/2020/` checkout buttons remain disabled.

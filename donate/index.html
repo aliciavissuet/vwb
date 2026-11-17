@@ -37,6 +37,7 @@
           </div>
 
           <form class="donate-card" data-donation-form novalidate>
+            <p class="donate-setup-note" data-donation-cancelled role="status" hidden>Stripe test checkout was cancelled. No payment was made; you can choose another gift below.</p>
             <div class="donate-card-heading"><span class="donate-card-step" data-donation-step-label>01 / Your gift</span><h3 data-donation-step-title tabindex="-1">Set your donation</h3><p data-donation-step-description>Select a frequency and amount to preview your gift.</p></div>
 
             <div data-donation-selection>
@@ -46,15 +47,16 @@
             <fieldset class="donate-amount"><legend>Choose an amount in US dollars</legend><div class="donate-amount-options"><label><input type="radio" name="amount" value="25" /><span>$25</span></label><label><input type="radio" name="amount" value="50" checked /><span>$50</span></label><label><input type="radio" name="amount" value="100" /><span>$100</span></label><label><input type="radio" name="amount" value="250" /><span>$250</span></label><label><input type="radio" name="amount" value="500" /><span>$500</span></label></div><label class="donate-custom"><span>Or enter another amount</span><span class="donate-custom-field"><span aria-hidden="true">$</span><input type="number" name="custom-amount" min="1" step="0.01" inputmode="decimal" autocomplete="off" placeholder="Other amount" aria-describedby="donate-custom-hint" /></span></label><small id="donate-custom-hint">Enter at least $1 if you choose another amount.</small></fieldset>
 
               <div class="donate-summary" aria-live="polite"><span>Your selection</span><div class="donate-summary-value"><output data-donation-summary>50</output><small data-donation-frequency>USD · One time</small></div></div>
-              <p class="donate-error" data-donation-error role="alert" hidden>Enter an amount of at least $1, with no more than two decimal places.</p>
+              <p class="donate-error" data-donation-error role="alert" hidden>Enter $1 to $20,000, with no more than two decimal places.</p>
               <button class="button button-primary donate-review-button" type="button" data-donation-review-button>Review your gift</button>
             </div>
 
             <div class="donate-review" data-donation-review hidden>
               <p class="donate-review-intro">Here’s the gift you selected. You can go back to adjust it.</p>
               <div class="donate-summary"><span>Donation</span><div class="donate-summary-value"><output data-donation-review-summary>50</output><small data-donation-review-frequency>USD · One time</small></div></div>
-              <p class="donate-setup-note" id="donate-setup-note">Secure checkout is being set up. This preview cannot take a payment.</p>
-              <button class="button button-primary donate-checkout" type="button" disabled aria-describedby="donate-setup-note">Continue to secure checkout</button>
+              <p class="donate-setup-note" id="donate-setup-note" data-donation-checkout-note>Secure checkout is being set up. This preview cannot take a payment.</p>
+              <p class="donate-error" data-donation-checkout-error role="alert" hidden></p>
+              <button class="button button-primary donate-checkout" type="button" disabled aria-describedby="donate-setup-note" data-donation-checkout>Continue to secure checkout</button>
               <button class="donate-edit-button" type="button" data-donation-back>Edit your gift</button>
             </div>
             <p class="donate-card-foot">Once connected, payment details will be entered on the provider’s secure checkout page. For questions about giving, <a href="/contact">contact us</a>.</p>
@@ -67,6 +69,6 @@
       <footer class="site-footer" aria-label="Footer"><div class="footer-shell"><a class="footer-brand" href="/" aria-label="Vision Without Borders home"><span class="footer-brand-mark" aria-hidden="true"></span><span>Vision Without Borders</span></a><nav class="footer-links" aria-label="Footer links"><a href="https://www.instagram.com/visionwithoutbordersmd/" target="_blank" rel="noreferrer">Instagram</a><a href="/mission">Mission</a><a href="/about">About</a><a href="/timeline">Timeline</a><a href="/news">News &amp; Research</a><a href="/sponsor">Partnerships</a><a href="/donate">Donate</a><a href="/contact">Contact</a></nav></div></footer>
     </main>
     <script type="module" src="/src/wordmark.js?v=107"></script>
-    <script type="module" src="/src/donate.js?v=3"></script>
+    <script type="module" src="/src/donate.js?v=4"></script>
   </body>
 </html>

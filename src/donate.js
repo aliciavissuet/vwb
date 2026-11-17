@@ -14,8 +14,15 @@ if (form) {
   const stepLabel = form.querySelector('[data-donation-step-label]')
   const stepTitle = form.querySelector('[data-donation-step-title]')
   const stepDescription = form.querySelector('[data-donation-step-description]')
+  const checkoutButton = form.querySelector('[data-donation-checkout]')
+  const checkoutNote = form.querySelector('[data-donation-checkout-note]')
+  const checkoutError = form.querySelector('[data-donation-checkout-error]')
   const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 })
   const params = new URLSearchParams(window.location.search)
+  if (params.get('test_checkout') === 'cancelled') {
+    const cancelled = form.querySelector('[data-donation-cancelled]')
+    if (cancelled) cancelled.hidden = false
+  }
   const suggestedAmount = params.get('amount')
   if (params.get('campaign') === '2020') {
     const campaignNote = document.querySelector('[data-campaign-donation-note]')
@@ -50,7 +57,7 @@ if (form) {
 
   form.querySelector('[data-donation-review-button]').addEventListener('click', () => {
     const amount = custom.value.trim() ? Number(custom.value) : Number(amountOptions.find((option) => option.checked)?.value)
-    if (!Number.isFinite(amount) || amount < 1 || (custom.value.trim() && !custom.checkValidity())) {
+    if (!Number.isFinite(amount) || amount < 1 || amount > 20_000 || (custom.value.trim() && !custom.checkValidity())) {
       error.hidden = false
       custom.focus()
       return
@@ -75,6 +82,49 @@ if (form) {
     form.querySelector('[data-donation-review-button]').focus()
   })
 
+  async function checkTestCheckout() {
+    try {
+      const response = await fetch('/.netlify/functions/donation-checkout', { cache: 'no-store' })
+      const config = await response.json()
+      if (response.ok && config.enabled === true && config.mode === 'test') {
+        checkoutButton.disabled = false
+        checkoutNote.textContent = 'Stripe test mode is ready. No real money will be charged.'
+      }
+    } catch { /* Static previews do not serve Netlify Functions. */ }
+  }
+
+  checkoutButton.addEventListener('click', async () => {
+    const amount = custom.value.trim() ? Number(custom.value) : Number(amountOptions.find((option) => option.checked)?.value)
+    if (!Number.isFinite(amount) || amount < 1 || amount > 20_000 || (custom.value.trim() && !custom.checkValidity())) {
+      checkoutError.textContent = 'Choose an amount from $1 to $20,000 with no more than two decimal places.'
+      checkoutError.hidden = false
+      return
+    }
+    checkoutButton.disabled = true
+    checkoutButton.textContent = 'Opening Stripe test checkout…'
+    checkoutError.hidden = true
+    try {
+      const response = await fetch('/.netlify/functions/donation-checkout', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          amountCents: Math.round(amount * 100),
+          frequency: frequencyOptions.find((option) => option.checked)?.value,
+          campaign: window.location.pathname.startsWith('/2020') ? '2020' : 'general',
+        }),
+      })
+      const result = await response.json()
+      if (!response.ok || !result.url) throw new Error(result.error || 'Could not start test checkout.')
+      window.location.assign(result.url)
+    } catch (failure) {
+      checkoutError.textContent = failure.message || 'Could not start test checkout.'
+      checkoutError.hidden = false
+      checkoutButton.disabled = false
+      checkoutButton.textContent = 'Continue to secure checkout'
+    }
+  })
+
   form.addEventListener('submit', (event) => event.preventDefault())
   updateSummary()
+  checkTestCheckout()
 }

@@ -9178,6 +9178,7 @@ figcaption {
 }
 
 .donate-checkout { width: 100%; justify-content: center; opacity: 0.58; cursor: not-allowed; }
+.donate-checkout:not(:disabled) { opacity: 1; cursor: pointer; }
 .donate-card-foot { margin-top: 19px; }
 .donate-card-foot a { color: var(--blue); font-weight: 800; text-underline-offset: 3px; }
 

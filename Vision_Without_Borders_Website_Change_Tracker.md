@@ -2,9 +2,9 @@
 
 **Prepared:** 2026-11-16
 
-**Current release:** Review branch only; not deployed
+**Current release:** Local Stripe test checkout branch; not deployed
 
-**Branch:** `codex/vwb-website-changes`
+**Branch:** `codex/stripe-test-checkout` (based on `main` at `63dad20`)
 **Companion specification:** `Vision_Without_Borders_Website_Change_Spec.md`
 
 ## Status legend
@@ -19,12 +19,12 @@
 | VWB-04 | About | Officers & Leadership; Alicia and Kat profiles | High | Blocked / awaiting input | Alicia and Kat cards use user-supplied portraits and subject-area labels; approve profile copy and confirm formal VWB roles before using titles |
 | VWB-05 | About | Donor recognition | High | Superseded | Donor remains anonymous; no donor page, name or logo to publish |
 | VWB-06 | Timeline | Default timeline, milestones, no repeated photos | High | Blocked / awaiting input | Verify consulting milestone copy; replacement images and image permissions |
-| VWB-07 | Donate | Partnerships navigation and hosted donation page | High | Blocked / awaiting input | Donate UI now offers $25–$500 presets and custom amount; Stripe Checkout Sessions selected; account onboarding, payout, nonprofit/tax wording, sandbox checkout still pending |
+| VWB-07 | Donate | Partnerships navigation and hosted donation page | High | In progress | Local test-only Checkout function and E2E tests added; real Stripe test-key run, webhooks, ledger, receipts, and live activation pending |
 | VWB-08 | Partnerships | Inquiry routing, lead tracking, alerts | High | Blocked / awaiting input | Confirm Jaime/Jamie address, notification settings, tracking platform and SLA; form remains on Netlify Forms |
 | VWB-09 | Contact | Approximately 2× sketch speed | Medium | Ready for review | Reduced-motion and wider device review |
 | VWB-10 | Release | QA, changelog, rollback, approval | High | In progress | Full QA, approvals and production deployment |
 | VWB-11 | Home | 20/20 Vision feature and two audience CTAs | High | Ready for review | Editorial approval; mobile and keyboard review |
-| VWB-12 | /2020 and Donate | Community goal, six giving choices, sponsor status | High | Blocked / awaiting input | User confirms $10,000 founding gift and requests anonymity; reconcile receipt/ledger before release; Stripe checkout and founder copy approval pending |
+| VWB-12 | /2020 and Donate | Community goal, six giving choices, sponsor status | High | Blocked / awaiting input | Local Stripe test handoff added; reconcile founding gift receipt/ledger, test real Stripe checkout, and approve founder copy before release |
 | VWB-13 | Partnerships | Founding sponsor package and private inquiry | High | Blocked / awaiting input | One unified form; Netlify notifications selected; deploy, configure recipient and test delivery; approve benefit terms |
 | VWB-14 | Operations | Independent recognition model and 12-month reminder rule | High | Blocked / awaiting input | Private record store and timed reminder delivery; Netlify form alerts cover inquiries only |
 
@@ -168,6 +168,28 @@ Approvals / outstanding questions: Stripe Checkout Sessions is selected. VWB mus
 Date deployed: —
 Production verification: —
 Rollback commit / instructions: Revert 8170d01 to remove the Donate UI and link; revert 7b3e1dd separately to restore the Sponsor label if desired.
+```
+
+**VWB-07 / VWB-12 local test checkout update (2026-11-16):** On `codex/stripe-test-checkout`, added test-key-only Netlify Checkout Session creation and status verification functions, an enabled review button when the local test configuration is present, a test return page, and a clear cancelled-checkout message. The server checks amount, frequency, campaign, origin, and JSON before contacting Stripe. A live key cannot enable this flow. The browser never receives a secret key. The $1–$20,000 limit is a local test policy awaiting approval for production. The public campaign total remains independent of test transactions.
+
+```yaml
+Change ID: VWB-07 / VWB-12 local test checkout
+Owner: Codex / VWB finance reviewer
+Status: In progress; local test path ready, live payments blocked
+Date started: 2026-11-16
+Description of implementation: Built a server-side Stripe test Checkout handoff for one-time and monthly donations on /donate/ and /2020/. Added server-side test Session verification for the return page, cancellation message, and a private key prompt in the local start script. No live checkout, webhook ledger, or receipt workflow is enabled.
+Files / routes modified: donate/index.html, donate/success/index.html, 2020/index.html, src/donate.js, src/donation-success.js, src/styles.css, netlify/functions/donation-checkout.mjs, netlify/functions/donation-status.mjs, tests/donation-checkout.test.mjs, e2e/donation.spec.mjs, playwright.config.mjs, scripts/start-stripe-test.zsh, package.json, package-lock.json, .gitignore, README.md, DONATION_CHECKOUT_PLAN.md
+Before screenshot or URL: http://127.0.0.1:5178/donate/ (disabled static preview)
+After screenshot or preview URL: http://127.0.0.1:8888/2020/ and /donate/ when npm run dev:stripe-test is running with a private sk_test_ key
+Commit / PR link: Pending local commit on codex/stripe-test-checkout; no PR or deployment
+Automated tests: npm test passed 9/9; npm run test:e2e passed 5/5 in Chrome against local Netlify Dev (Stripe responses mocked; optional real handoff skipped); local Netlify endpoint returned enabled test configuration and rejected an invalid amount with HTTP 400.
+Manual desktop test: Local Netlify Dev served /2020/ and the test endpoint. Real hosted Stripe checkout awaits a privately supplied test key.
+Manual mobile test: Pending real-key test and narrow-viewport review.
+Accessibility test: Browser tests exercised named amount/frequency controls and visible review/cancellation status; full keyboard and screen-reader review pending.
+Approvals / outstanding questions: Enter test key only through local prompt, run real Stripe test-card checkout, verify success/cancel and subscription behavior; approve amount cap. Implement signed webhooks, idempotent ledger, receipts, refund handling, tax copy, and production release controls before live payments.
+Date deployed: —
+Production verification: —
+Rollback commit / instructions: Revert the forthcoming test-checkout commit; existing static donation preview remains on main.
 ```
 
 ```yaml
@@ -393,4 +415,4 @@ The VWB-10 documentation commits record the local review and promotion history. 
 
 ## Notes
 
-This tracker records local `main` work, not live-site changes. Do not store bank details, payment credentials, email secrets or private form submissions here. The local preview is available only while a server runs in the VWB repository; start one with `python3 -m http.server 5178` if needed.
+This tracker records local work, not live-site changes. The latest Stripe test checkout work is isolated on `codex/stripe-test-checkout`; `main` and `origin/main` were aligned at `63dad20` when that branch was created. Do not store bank details, payment credentials, email secrets or private form submissions here. For the disabled static preview, start `python3 -m http.server 5178`; for the test checkout, use `npm run dev:stripe-test` and a private Stripe test key.

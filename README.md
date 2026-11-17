@@ -12,6 +12,12 @@ python3 -m http.server 5176
 
 Then open `http://127.0.0.1:5176/`.
 
+### Local Stripe test checkout
+
+Install dependencies with `npm ci`, then run `npm run dev:stripe-test`. The script prompts for a Stripe **test** secret key without displaying or saving it. Open `http://127.0.0.1:8888/2020/` or `http://127.0.0.1:8888/donate/`. Select an amount, review it, and continue to Stripe's hosted test checkout. The static Python preview on port 5176/5178 cannot run the checkout functions. Use Stripe's test card `4242 4242 4242 4242`, any future expiration and any three-digit CVC. The return page checks the Checkout session with Stripe and labels it as a test; it does not record a donation in the public campaign total.
+
+Run `npm test` for server-side checks and `npm run test:e2e` for browser tests. The standard browser tests mock Stripe responses. To run the optional real test-mode handoff check, leave `npm run dev:stripe-test` running in one terminal and run `VWB_RUN_STRIPE_HANDOFF=1 npm run test:e2e` in another. That check confirms redirection to Stripe but does not submit a test card. The test checkout requires both `VWB_ENABLE_TEST_CHECKOUT=1` and an `sk_test_` key. A live key is refused. Do not commit or paste a key into the repository. Production checkout, webhook verification, receipts, and donation ledger reconciliation remain separate work.
+
 ## Notes
 
 - `index.html` is the basic homepage with the animated wordmark identity.
