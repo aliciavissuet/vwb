@@ -16,7 +16,7 @@
 | VWB-01 | Home | Preserve current home page | Low | Ready for review | Desktop/mobile home views inspected; navigation label changed under VWB-07 |
 | VWB-02 | Mission | Exact quote and reordered model/photos | High | Ready for review | Editorial visual approval |
 | VWB-03 | About | Bio, ORCID, publication, 2026 work | High | Blocked / awaiting input | Current CV and final bio/title approval; confirm ORCID with Blake |
-| VWB-04 | About | Officers & Leadership; Alicia and Kat profiles | High | Blocked / awaiting input | Kat draft and user-supplied portrait added; confirm VWB role and Alicia appointment/profile |
+| VWB-04 | About | Officers & Leadership; Alicia and Kat profiles | High | Blocked / awaiting input | Alicia and Kat cards use user-supplied portraits and subject-area labels; approve profile copy and confirm formal VWB roles before using titles |
 | VWB-05 | About | WHH Foundation donor recognition | High | Blocked / awaiting input | Legal name, mission, donation attribution, official logo and permission, donor approval |
 | VWB-06 | Timeline | Default timeline, milestones, no repeated photos | High | Blocked / awaiting input | Verify consulting milestone copy; replacement images and image permissions |
 | VWB-07 | Donate | Partnerships navigation and hosted donation page | High | Blocked / awaiting input | Processor selection, eligibility, bank payout, nonprofit/tax wording, sandbox checkout; Partnerships label done |
@@ -91,19 +91,19 @@ Change ID: VWB-04
 Owner: Codex / VWB leadership
 Status: Blocked / awaiting input
 Date started: 2026-11-16
-Description of implementation: Board of Directors preserved. Added a Leadership Team card for Katherine (Kat) Leviste using professional details from her personal site, KATRX (https://katrx.com/). Replaced the initial KATRX team photo with the standalone portrait supplied by the user. The card uses a subject-area label rather than an unapproved formal VWB title. No Alicia profile was added.
-Files / routes modified: about/index.html, src/styles.css, assets/kat-leviste-headshot.png; /about/
-Before screenshot or URL: Git parent 412ab95; /about/
+Description of implementation: Board of Directors preserved. Added a Leadership Team card for Katherine (Kat) Leviste using professional details from her personal site, KATRX (https://katrx.com/), then replaced the initial KATRX team photo with the standalone portrait supplied by the user. Added Alicia Otto's card with a subject-area label and limited website/technology description from the specification. Cropped the user-supplied group photo to Alicia on the right, excluding every other person. The final website asset is a pixel-preserving crop of the original photo, not the generated edit. No formal officer title is asserted for Alicia or Kat.
+Files / routes modified: about/index.html, src/styles.css (prior Kat card), assets/kat-leviste-headshot.png, assets/alicia-otto-portrait.webp; /about/
+Before screenshot or URL: Git parent 412ab95 (Kat card), da06f05 (before Alicia card); /about/
 After screenshot or preview URL: http://127.0.0.1:5178/about/
-Commit / PR link: 983adcd (profile), 3b9d4f1 (user-supplied headshot swap); no PR
-Automated tests: HTML duplicate IDs and local image paths pass; git diff whitespace check passes.
-Manual desktop test: Local browser accessibility tree and 1280 px screenshot show Kat card, biography, source link, and standalone portrait. Portrait crop checked visually.
-Manual mobile test: Responsive CSS provides a one-column card at 760 px and below; visual mobile review pending.
-Accessibility test: Named section heading, descriptive image alt text, and named external source link checked in browser accessibility tree; keyboard/contrast audit pending.
-Approvals / outstanding questions: Confirm Katherine's VWB appointment and title and approve biography. User supplied the portrait for this change; source image is 600 × 600 px, so assess sharpness on large displays. Confirm Alicia's appointment, title, approved bio and headshot before adding her card.
+Commit / PR link: 983adcd (Kat profile), 3b9d4f1 (Kat headshot), 9ad636c (Alicia portrait and card); no PR
+Automated tests: Local Alicia image loaded at its natural 600 × 850 px dimensions; 390 px mobile viewport had no horizontal overflow; git diff whitespace check passed.
+Manual desktop test: Local browser preview shows both leadership cards. Alicia's crop was visually checked against the 2048 × 1536 px user upload; no other person remains in frame, and the face and clothing retain the source pixels.
+Manual mobile test: 390 px browser preview shows the Alicia card in one column, with image and copy visible.
+Accessibility test: Named Leadership Team section and descriptive Alicia/Kat image alt text checked in the browser accessibility tree; full keyboard/contrast audit pending.
+Approvals / outstanding questions: User selected the group photo for Alicia and requested this crop. Confirm Alicia's formal appointment/title and approve the concise website/technology description before release. Confirm Katherine's VWB appointment/title and approve her biography. Kat's supplied source portrait is 600 × 600 px, so assess sharpness on large displays.
 Date deployed: —
 Production verification: —
-Rollback commit / instructions: Revert 3b9d4f1 to restore the team photo, or revert both 3b9d4f1 and 983adcd to remove Kat's card.
+Rollback commit / instructions: Revert 9ad636c to remove Alicia's card and cropped asset. Revert 3b9d4f1 to restore Kat's prior team photo, or revert both 3b9d4f1 and 983adcd to remove Kat's card.
 ```
 
 ```yaml
@@ -267,6 +267,7 @@ The current home photo wall is preserved. Several photos therefore also appear o
 | `india-clinical-teaching.webp` | Home and News | News | Yes | Distinct teaching image, portrait at least 1200 × 1600 px |
 | `IMG_1788.jpg` | News and Timeline | Timeline | Yes | Distinct Ethiopia research/news image, landscape at least 1600 × 1200 px |
 | Kat standalone headshot | User-supplied 600 × 600 px portrait | Leadership profile draft | No VWB reuse found | Visual approval; higher-resolution original if available for large displays |
+| Alicia portrait crop | User-supplied 2048 × 1536 px group photo; crop saved at `assets/alicia-otto-portrait.webp` (600 × 850 px) | Leadership profile draft | No VWB reuse found | User selected source and requested removal of other people; approve profile copy and formal role before release |
 | WHH Foundation logo | Not supplied | Donor page | — | Official SVG or high-resolution transparent PNG; usage permission |
 
 Other repeated headshots and logos are intentional identity/attribution elements pending editorial review. Raw `IMG_` and screenshot files require crop, context and consent review before use.
@@ -275,13 +276,13 @@ Other repeated headshots and logos are intentional identity/attribution elements
 
 ### Selective promotion to main
 
-Each implemented website change has its own commit. Cherry-pick only the approved IDs, then run the checks and update this tracker for the selected release. VWB-01 is a regression check; VWB-05 has no code yet. VWB-04 is a Kat profile draft, with no formal title or Alicia profile. VWB-07 only changes the existing Sponsor navigation label to Partnerships; it does not add a Donate page. VWB-08 only removes the unapproved response-time promise; form delivery and alerts remain blocked. The shared `src/wordmark.js` file has separate, non-overlapping edits in VWB-06 and VWB-09.
+Each implemented website change has its own commit. Cherry-pick only the approved IDs, then run the checks and update this tracker for the selected release. VWB-01 is a regression check; VWB-05 has no code yet. VWB-04 has separate commits for Kat's draft profile, Kat's supplied headshot, and Alicia's card with her supplied, cropped portrait; neither card uses an unapproved formal title. VWB-07 only changes the existing Sponsor navigation label to Partnerships; it does not add a Donate page. VWB-08 only removes the unapproved response-time promise; form delivery and alerts remain blocked. The shared `src/wordmark.js` file has separate, non-overlapping edits in VWB-06 and VWB-09.
 
 | Change | Commit | Scope |
 | --- | --- | --- |
 | VWB-02 | `771e016` | Mission content and mission CSS cache version |
 | VWB-03 | `bd0cd7b` | About bio, ORCID, and News research citation |
-| VWB-04 | `983adcd` + `3b9d4f1` | Kat leadership card and sourced biography; user-supplied portrait replaces initial team photo |
+| VWB-04 | `983adcd` + `3b9d4f1` + `9ad636c` | Kat leadership card and supplied headshot; Alicia technology card and supplied photo cropped to her alone |
 | VWB-06 | `2d454c8` | Timeline content, default view, and CMS fields |
 | VWB-07 | `7b3e1dd` | Partnerships navigation label |
 | VWB-08 | `412ab95` | Sponsor response wording |
