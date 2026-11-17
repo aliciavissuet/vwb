@@ -1,0 +1,20 @@
+{
+  "community_goal_cents": 2000000,
+  "verified_community_cash_cents": 0,
+  "as_of": "2026-11-16",
+  "initial_foundation_contribution": {
+    "source": "WHH Foundation",
+    "amount_cents": null,
+    "verified": false,
+    "campaign_eligible": false,
+    "recognition_consent": false
+  },
+  "founding_sponsor_match": {
+    "commitment_cents": 2000000,
+    "agreement_status": "none",
+    "signed_at": null,
+    "match_eligibility": false,
+    "match_deadline": null,
+    "verified_received_cents": 0
+  }
+}

@@ -15,6 +15,18 @@ if (form) {
   const stepTitle = form.querySelector('[data-donation-step-title]')
   const stepDescription = form.querySelector('[data-donation-step-description]')
   const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 })
+  const params = new URLSearchParams(window.location.search)
+  const suggestedAmount = params.get('amount')
+  if (params.get('campaign') === '2020') {
+    const campaignNote = document.querySelector('[data-campaign-donation-note]')
+    if (campaignNote) campaignNote.hidden = false
+    const suggestedOption = amountOptions.find((option) => option.value === suggestedAmount)
+    if (suggestedOption) {
+      suggestedOption.checked = true
+    } else if (suggestedAmount === 'custom') {
+      amountOptions.forEach((option) => { option.checked = false })
+    }
+  }
 
   function updateSummary() {
     const amount = custom.value.trim() ? Number(custom.value) : Number(amountOptions.find((option) => option.checked)?.value)
@@ -64,4 +76,5 @@ if (form) {
   })
 
   form.addEventListener('submit', (event) => event.preventDefault())
+  updateSummary()
 }
