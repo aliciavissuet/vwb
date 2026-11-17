@@ -116,10 +116,10 @@ Owner: VWB
 Status: Superseded
 Date started: —
 Description of implementation: No donor page or logo published. The user's anonymity instruction supersedes the earlier recognition request.
-Files / routes modified: None.
+Files / routes modified: Vision_Without_Borders_Website_Change_Spec.md; no website route.
 Before screenshot or URL: —
 After screenshot or preview URL: —
-Commit / PR link: —
+Commit / PR link: d27feab; no PR
 Automated tests: —
 Manual desktop test: —
 Manual mobile test: —
@@ -379,6 +379,7 @@ Each implemented website change has its own commit. Cherry-pick only the approve
 | VWB-08 | `412ab95` | Sponsor response wording |
 | VWB-09 | `97c01be` | Contact sketch speed and shared script revalidation |
 | VWB-11 | `c671d0a` + `6dd130f` | Homepage campaign feature and card fit |
+| VWB-05 | `d27feab` | Superseded named donor recognition in publicly served specification; keep donor anonymous |
 | VWB-12 | `1e8b3de` + `036ffc1` + `e0244c9` + `aff0348` + `76ddd8a` | /2020/, public snapshot, anonymous $10,000 founding gift, community giving options, signed-match guard and sourced founder story; depends on VWB-07 Donate UI |
 | VWB-13 | `3bc6282` + `855f354` | Founding sponsor proposal, private inquiry form and notification preparation |
 | VWB-14 | `bd92b51` + `bc6d0b4` | Private recognition schema, date/reminder rules and operations guide |
@@ -388,7 +389,7 @@ The VWB-10 documentation commit records the full review branch, so update its st
 
 | Release date | Version | Change IDs | PR / commit | Preview | QA result | Approved by | Rollback |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| — | Draft | 01–14 | `codex/vwb-website-changes` (through `76ddd8a`, plus tracker) | Local `http://127.0.0.1:5178/2020/` | Partial; see evidence log | — | `cd9fe81` |
+| — | Draft | 01–14 | `codex/vwb-website-changes` (through `d27feab`, plus tracker) | Local `http://127.0.0.1:5178/2020/` | Partial; see evidence log | — | `cd9fe81` |
 
 ## Notes
 
