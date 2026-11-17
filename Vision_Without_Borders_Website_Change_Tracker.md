@@ -215,19 +215,19 @@ Change ID: VWB-10
 Owner: Codex / VWB release approver
 Status: In progress
 Date started: 2026-11-16
-Description of implementation: Review branch and change log created; added separate 20/20 campaign change IDs and implementation evidence. No production deployment.
+Description of implementation: Review branch and change log created; added separate 20/20 campaign change IDs and implementation evidence. On 2026-11-16, fast-forwarded local `main` to include all review-branch commits while preserving their separate history. `origin/main` was not pushed and no production deployment occurred. Stripe is still a disabled UI preview, with no Checkout Session endpoint or webhook handler.
 Files / routes modified: This tracker and companion specification; code files listed above.
 Before screenshot or URL: Git parent cd9fe81.
 After screenshot or preview URL: http://127.0.0.1:5178/2020/ (local preview only)
 Commit / PR link: This tracker/specification commit and change commits listed below; no PR
-Automated tests: JS syntax, campaign public JSON and recognition schema parse, 4 campaign/recognition unit tests, new-route HTML duplicate IDs/local asset paths, and git diff whitespace checks pass. No package.json, build, lint or type command exists.
+Automated tests: JS syntax, campaign public JSON and recognition schema parse, 4 campaign/recognition unit tests, new-route HTML duplicate IDs/local asset paths, and git diff whitespace checks pass. Before local-main promotion, all four tests passed and key HTML pages had unique IDs. No package.json, build, lint or type command exists.
 Manual desktop test: Home, Mission, About, News and Timeline inspected previously; 20/20, Sponsor and Donate campaign path inspected in local browser. Full page and form delivery audit pending.
 Manual mobile test: Home, Mission, Timeline and Contact inspected at 390 px; other routes pending.
 Accessibility test: Partial browser accessibility-tree checks; keyboard, contrast, reduced-motion and full alt text review pending.
-Approvals / outstanding questions: Editorial copy, assets, anonymous gift reconciliation, payments, form routing, private reminder integration and release approvals. No sandbox checkout or live form test possible before configuration.
+Approvals / outstanding questions: Editorial copy, assets, anonymous gift reconciliation, Stripe Checkout Session and webhook implementation, sandbox payments, Netlify form notification delivery, private reminder integration and production release. No sandbox checkout or live form test is possible with the current disabled UI.
 Date deployed: —
 Production verification: —
-Rollback commit / instructions: Before deployment, reset the review branch to cd9fe81 or revert selected change commits. After deployment, redeploy the prior known-good Netlify commit; verify forms and redirects.
+Rollback commit / instructions: Local `main` can return to cd9fe81 before remote publication, or individual commits can be reverted. After deployment, redeploy the prior known-good Netlify commit; verify forms and redirects.
 ```
 
 ```yaml
@@ -365,9 +365,9 @@ Other repeated headshots and logos are intentional identity/attribution elements
 
 ## Release history
 
-### Selective promotion to main
+### Separate commits on local main
 
-Each implemented website change has its own commit. Cherry-pick only the approved IDs, then run the checks and update this tracker for the selected release. VWB-01 is a regression check; VWB-05 has no code yet. VWB-04 has separate commits for Kat's draft profile, Kat's supplied headshot, Alicia's card, and Alicia's replacement balcony crop; neither card uses an unapproved formal title. VWB-07 has separate Partnerships-label and Donate-UI commits; the Donate UI commit must not be promoted as a live payment flow until hosted checkout is connected and tested. VWB-08 only removes the unapproved response-time promise; form delivery and alerts remain blocked. VWB-11 through VWB-14 add the campaign in separate homepage, campaign page, sponsor page and operations commits; VWB-12 also updates the Donate selector and requires VWB-07. The shared `src/wordmark.js` file has separate, non-overlapping edits in VWB-06 and VWB-09.
+Each implemented website change retains its own commit on local `main` after a fast-forward from `codex/vwb-website-changes`. The remote `origin/main` remains at `cd9fe81`. For a later production release, select or revert commits as approved, then run the checks and update this tracker. VWB-01 is a regression check; VWB-05 has no code yet. VWB-04 has separate commits for Kat's draft profile, Kat's supplied headshot, Alicia's card, and Alicia's replacement balcony crop; neither card uses an unapproved formal title. VWB-07 has separate Partnerships-label and Donate-UI commits; the Donate UI commit must not be promoted as a live payment flow until hosted checkout is connected and tested. VWB-08 only removes the unapproved response-time promise; form delivery and alerts remain blocked. VWB-11 through VWB-14 add the campaign in separate homepage, campaign page, sponsor page and operations commits; VWB-12 also updates the Donate selector and requires VWB-07. The shared `src/wordmark.js` file has separate, non-overlapping edits in VWB-06 and VWB-09.
 
 | Change | Commit | Scope |
 | --- | --- | --- |
@@ -384,13 +384,13 @@ Each implemented website change has its own commit. Cherry-pick only the approve
 | VWB-13 | `3bc6282` + `855f354` + `53fd72e` | Founding sponsor proposal and one private partnership form with an interest choice; notification preparation |
 | VWB-14 | `bd92b51` + `bc6d0b4` | Private recognition schema, date/reminder rules and operations guide |
 
-The VWB-10 documentation commit records the full review branch, so update its status and evidence when promoting a subset.
+The VWB-10 documentation commits record the local review and promotion history. Moving commits to local `main` is not a production release.
 
 
 | Release date | Version | Change IDs | PR / commit | Preview | QA result | Approved by | Rollback |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| — | Draft | 01–14 | `codex/vwb-website-changes` (through `5977c0e`, plus tracker) | Local `http://127.0.0.1:5178/?skipIntro=1` and `/2020/` | Partial; see evidence log | — | `cd9fe81` |
+| — | Local main draft | 01–14 | `main` through `49681c6` before this tracker update; `origin/main` remains `cd9fe81` | Local `http://127.0.0.1:5178/?skipIntro=1` and `/2020/` | Partial; 4 unit tests pass; Stripe and release checks pending | Local promotion requested by user on 2026-11-16 | `cd9fe81` |
 
 ## Notes
 
-This tracker records review-branch work, not live-site changes. Do not store bank details, payment credentials, email secrets or private form submissions here. The local preview is available only while a server runs in the VWB repository; start one with `python3 -m http.server 5178` if needed.
+This tracker records local `main` work, not live-site changes. Do not store bank details, payment credentials, email secrets or private form submissions here. The local preview is available only while a server runs in the VWB repository; start one with `python3 -m http.server 5178` if needed.
