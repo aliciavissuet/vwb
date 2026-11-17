@@ -17,7 +17,7 @@
 | VWB-02 | Mission | Exact quote and reordered model/photos | High | Ready for review | Editorial visual approval |
 | VWB-03 | About | Bio, ORCID, publication, 2026 work | High | Blocked / awaiting input | Current CV and final bio/title approval; confirm ORCID with Blake |
 | VWB-04 | About | Officers & Leadership; Alicia and Kat profiles | High | Blocked / awaiting input | Alicia and Kat cards use user-supplied portraits and subject-area labels; approve profile copy and confirm formal VWB roles before using titles |
-| VWB-05 | About | Donor recognition | High | Superseded | Donor remains anonymous; no donor page, name or logo to publish |
+| VWB-05 | About | Dedicated donor recognition page | High | Superseded | No donor page or logo; homepage acknowledgement is tracked separately as VWB-16 |
 | VWB-06 | Timeline | Default timeline, milestones, no repeated photos | High | Blocked / awaiting input | Verify consulting milestone copy; replacement images and image permissions |
 | VWB-07 | Donate | Partnerships navigation and hosted donation page | High | In progress | Local test-only Checkout function and E2E tests added; real Stripe test-key run, webhooks, ledger, receipts, and live activation pending |
 | VWB-08 | Partnerships | Inquiry routing, lead tracking, alerts | High | Blocked / awaiting input | Confirm Jaime/Jamie address, notification settings, tracking platform and SLA; form remains on Netlify Forms |
@@ -27,6 +27,10 @@
 | VWB-12 | /2020 and Donate | Community goal, six giving choices, sponsor status | High | Blocked / awaiting input | Local Stripe test handoff added; reconcile founding gift receipt/ledger, test real Stripe checkout, and approve founder copy before release |
 | VWB-13 | Partnerships | Founding sponsor package and private inquiry | High | Blocked / awaiting input | One unified form; Netlify notifications selected; deploy, configure recipient and test delivery; approve benefit terms |
 | VWB-14 | Operations | Independent recognition model and 12-month reminder rule | High | Blocked / awaiting input | Private record store and timed reminder delivery; Netlify form alerts cover inquiries only |
+| VWB-15 | Shared navigation | Order and spacing | Medium | Ready for review | Desktop and mobile checks passed; production review pending |
+| VWB-16 | Home | $10,000 WHH Foundation thank-you | High | Ready for review | Public naming requested by user; /2020 snapshot remains anonymous under this change's scope |
+| VWB-17 | About | Match Kat and Alicia photo dimensions to Board portraits | Medium | Ready for review | Desktop and mobile crop review pending |
+| VWB-18 | Donate | Giving options first | High | Ready for review | Checkout remains test-only; live activation remains separate |
 
 ## Implementation evidence log
 
@@ -332,6 +336,19 @@ Production verification: —
 Rollback commit / instructions: Revert bc6d0b4 and bd92b51.
 ```
 
+## Final four local updates (2026-11-16)
+
+These are four independent website commits on `codex/stripe-test-checkout`. They are ready for review and have not been deployed. Local preview: `http://127.0.0.1:5178/` while the static preview server is running. No production Stripe key is stored in the repository, and these commits do not enable live payments.
+
+| ID | Commit | Actual change and preview | Checks | Remaining review |
+| --- | --- | --- | --- | --- |
+| VWB-15 | `b7ba92a` | Primary and footer navigation now place Partnerships, Donate, News & Research, Contact Us after the unchanged earlier links; compact, consistent primary-nav gap. Preview: `/`, `/about/`, `/donate/` and all other routes. | Browser verified the eight primary links and no overlap at 1440, 1000, 768 and 390 px across nine routes; mobile menu opened. | Review visual spacing on production devices. |
+| VWB-16 | `519304e` | Added the requested $10,000 WHH Foundation thank-you beside the homepage 20/20 goal. Preview: `/?skipIntro=1`. | Browser confirmed exact text and placement in campaign section; $10,000 equals the current published community cash snapshot. | This new request supersedes the earlier anonymity preference for homepage copy only; `/2020/` still shows an anonymous founding gift because other page content was to stay as is. Confirm whether that separate page should later name WHH. |
+| VWB-17 | `91ebc2c` | Kat and Alicia portraits now use the Board's 1.1:1 display ratio and matching column width, with face positions adjusted. Preview: `/about/#leadership-title`. | Browser measured Board/Kat/Alicia frames as 338/339/339 px at 1440, 275/276/276 at 1000, 326/327/327 at 768, and 341/341/341 at 390; desktop and phone crops inspected. Images retain `object-fit: cover`. | Approve final framing. |
+| VWB-18 | `a5a9965` | Donate title and “Choose what works for you” now lead the page with the unchanged giving form; introductory text and logo follow; redundant scroll button removed. Preview: `/donate/`. | Browser checked section order, visible title and form at desktop/phone widths; selected $100, reviewed it and returned to edit; nine unit tests passed. | Live Stripe checkout, webhooks, ledger, receipts, and production approval remain separate from this layout change. |
+
+`SITE_HANDOFF.md` is an existing untracked file and was not included in these commits.
+
 ## Decisions to record
 
 ### Publication source check
@@ -358,7 +375,7 @@ The [publisher's article page](https://www.dovepress.com/worksite-vision-screeni
 | Kat title | Director of Clinical Innovation | Pending | — |
 | Donor page URL | `/about/donors/` | Pending | — |
 | Donation processor | Stripe Checkout Sessions for the custom VWB selector | Selected for integration; activation pending | User / 2026-11-16 |
-| Anonymous initial campaign gift | $10,000 starting gift | User confirms receipt and requests anonymity; included in local preview, receipt/ledger review pending before release | User / 2026-11-16 |
+| Initial campaign gift recognition | $10,000 starting gift | User now requests public WHH Foundation acknowledgement on the homepage; `/2020/` remains anonymous until separately changed; receipt/ledger review pending before release | User / 2026-11-16 |
 | Sponsor matching terms | One $20,000 commitment | Signed agreement, eligible gifts and deadline pending; status Seeking Sponsor | — |
 | Sponsor recognition | Proposed 12 months from agreed start | Benefits and consent pending; timed reminder delivery not connected | — |
 | Inquiry notification | Netlify Forms email | Selected; new form must be deployed/discovered and recipient configured/tested | User / 2026-11-16 |
