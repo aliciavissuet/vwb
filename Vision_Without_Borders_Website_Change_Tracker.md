@@ -235,11 +235,11 @@ Change ID: VWB-11
 Owner: Codex / VWB reviewer
 Status: Ready for review
 Date started: 2026-11-16
-Description of implementation: Added a 20/20 Vision homepage feature below the existing hero with the requested goal/opportunity line, two distinct CTAs, and a link to /2020/. Following user review, styled the donation link as a filled teal button with a heart icon and the sponsor link as an underlined action with an arrow. Replaced the card's two zeroes with brand-colored eye marks that blink at staggered intervals, then reshaped them as tall oval zeroes after a second visual review; animation is disabled for reduced motion.
+Description of implementation: Added a 20/20 Vision homepage feature below the existing hero with the requested goal/opportunity line, two distinct CTAs, and a link to /2020/. Following user review, styled the donation link as a filled teal button with a heart icon and the sponsor link as an underlined action with an arrow. The donation action now goes to the in-page giving form at `/2020/#community-giving`. Replaced the card's two zeroes with brand-colored eye marks that blink at staggered intervals, then reshaped them as tall oval zeroes after a second visual review; animation is disabled for reduced motion.
 Files / routes modified: index.html, src/styles.css; /
 Before screenshot or URL: Local home page before c671d0a.
 After screenshot or preview URL: http://127.0.0.1:5178/?skipIntro=1
-Commit / PR link: c671d0a, 6dd130f, 71ba53b (actions), f5edff7 (eye card), 1197041 (zero shape); no PR
+Commit / PR link: c671d0a, 6dd130f, 71ba53b (actions), f5edff7 (eye card), 1197041 (zero shape), 876eb80 (campaign form link); no PR
 Automated tests: HTML parse confirms both eye marks and the three campaign links; four campaign/recognition tests and git diff whitespace check pass.
 Manual desktop test: Home page accessibility tree confirms both CTAs and the /2020/ link; local screenshots confirm distinct action treatments, zero-shaped eye marks and card fit.
 Manual mobile test: Pending narrow-viewport check.
@@ -255,19 +255,19 @@ Change ID: VWB-12
 Owner: Codex / VWB finance and editorial reviewers
 Status: Blocked / awaiting input
 Date started: 2026-11-16
-Description of implementation: Built /2020/ with a $20,000 community thermometer, six suggested/custom giving links, a separately labeled $20,000 founding sponsor proposal, potential $40,000 outcome, match status, and founder story. The public snapshot now includes the $10,000 founding gift confirmed by the user, with no donor identity or recognition consent in public data. No match is signed. Added a $500 Donate preset and campaign-prefilled links. The two hero actions now use distinct donation and sponsor treatments, with the unintended sponsor border removed. Match status requires signed terms; fulfilled requires $20,000 verified sponsor receipts.
+Description of implementation: Built /2020/ with a $20,000 community thermometer, six suggested/custom giving choices, a separately labeled $20,000 founding sponsor proposal, potential $40,000 outcome, match status, and founder story. The public snapshot now includes the $10,000 founding gift confirmed by the user, with no donor identity or recognition consent in public data. No match is signed. Added a $500 Donate preset. The two hero actions now use distinct donation and sponsor treatments, with the unintended sponsor border removed. The campaign page now contains its own amount/frequency form and review step; selecting or reviewing a gift does not navigate to Donate. The old static hero poster is replaced by an animated VWB eye and progress ring driven by the same approved public cash snapshot as the thermometer, with reduced-motion support. Match status requires signed terms; fulfilled requires $20,000 verified sponsor receipts.
 Files / routes modified: 2020/index.html, content/campaign-2020-public.json, src/campaign.js, src/campaign-status.mjs, src/campaign-status.test.mjs, donate/index.html, src/donate.js, src/styles.css, netlify.toml; /2020/ and /donate/
 Before screenshot or URL: No /2020/ route; Donate page before 1e8b3de.
 After screenshot or preview URL: http://127.0.0.1:5178/2020/
-Commit / PR link: 1e8b3de, 036ffc1, e0244c9, aff0348, 76ddd8a, 1abcb12 (hero actions); no PR
-Automated tests: Match-status tests pass; JS syntax, public JSON parse, anonymous public snapshot check, and git diff whitespace check pass.
-Manual desktop test: Refreshed /2020/ accessibility tree shows $10,000 in the progress indicator and total, “Anonymous founding gift,” six giving choices, Seeking Sponsor and conditional $40,000 outcome. Local screenshot confirms a filled donation button and underlined sponsor action without the extra border. The $500 link previously opened Donate with $500 selected; gift review showed 500 and checkout remained disabled.
+Commit / PR link: 1e8b3de, 036ffc1, e0244c9, aff0348, 76ddd8a, 1abcb12 (hero actions), 876eb80 (in-page gift flow), 42d85ce (progress visual); no PR
+Automated tests: Four match-status and recognition tests pass; campaign JS syntax and git diff whitespace checks pass. Public JSON parse and anonymous snapshot checks passed earlier. Structural HTML check confirmed one donation form, unique IDs and no amount links to Donate.
+Manual desktop test: Refreshed /2020/ accessibility tree shows $10,000 in the progress indicator and total, “Anonymous founding gift,” six giving choices, Seeking Sponsor and conditional $40,000 outcome. Local screenshot confirms a filled donation button and underlined sponsor action without the extra border. On `/2020/?preview=flow-v1`, selecting $100 and reviewing the gift kept the campaign URL and displayed 100; checkout remained disabled. On `/2020/?preview=visual-v2`, the hero ring showed 50% and $10,000 of $20,000 from the approved public snapshot, with no poster or sponsor action border.
 Manual mobile test: Pending narrow-viewport check.
-Accessibility test: Named progress indicator, heading order, and giving link names checked in browser accessibility tree; keyboard/contrast review pending.
+Accessibility test: Named progress indicator, heading order, and form control names checked in browser accessibility tree; the decorative hero graphic is hidden from assistive technology and respects reduced motion. Keyboard/contrast review pending.
 Approvals / outstanding questions: On 2026-11-16 the user confirmed receipt of the $10,000 founding gift and directed anonymity. Reconcile receipt, restrictions and campaign eligibility before release; preserve anonymity in all public materials. Approve founder wording. [Stanford's official profile](https://profiles.stanford.edu/blake-snyder) and [Global Ophthalmology Program](https://med.stanford.edu/ophthalmology/education/fellowships---advanced-training/global-ophthalmology-program.html) support the Clinical Instructor and Cure Blindness Project fellowship-partnership wording. Connect Stripe and an authoritative cash ledger; approve exact match eligibility/deadline only after signed agreement. GA4 and payment reporting are not connected.
 Date deployed: —
 Production verification: —
-Rollback commit / instructions: Revert 1abcb12 to restore prior hero actions; then revert 76ddd8a, aff0348, e0244c9, 036ffc1 and 1e8b3de for the remaining campaign route. Homepage feature is separate under VWB-11.
+Rollback commit / instructions: Revert 42d85ce for the prior hero poster, 876eb80 for amount links to Donate, then 1abcb12 for prior hero actions; revert 76ddd8a, aff0348, e0244c9, 036ffc1 and 1e8b3de for the remaining campaign route. Homepage feature is separate under VWB-11.
 ```
 
 ```yaml
@@ -378,9 +378,9 @@ Each implemented website change has its own commit. Cherry-pick only the approve
 | VWB-07 | `7b3e1dd` + `8170d01` + `1656b98` + `c36ccbe` | Partnerships navigation label; Donate UI preview and design refinement; Stripe Checkout selection and signup plan |
 | VWB-08 | `412ab95` | Sponsor response wording |
 | VWB-09 | `97c01be` | Contact sketch speed and shared script revalidation |
-| VWB-11 | `c671d0a` + `6dd130f` + `71ba53b` + `f5edff7` + `1197041` | Homepage campaign feature, differentiated action links, blinking eye card and zero-shaped refinement; design commits can be selected independently in order |
+| VWB-11 | `c671d0a` + `6dd130f` + `71ba53b` + `f5edff7` + `1197041` + `876eb80` | Homepage campaign feature, differentiated action links, blinking eye card and zero-shaped refinement; design commits can be selected independently in order |
 | VWB-05 | `d27feab` | Superseded named donor recognition in publicly served specification; keep donor anonymous |
-| VWB-12 | `1e8b3de` + `036ffc1` + `e0244c9` + `aff0348` + `76ddd8a` + `1abcb12` | /2020/, public snapshot, anonymous $10,000 founding gift, community giving options, signed-match guard, sourced founder story and differentiated hero actions; depends on VWB-07 Donate UI |
+| VWB-12 | `1e8b3de` + `036ffc1` + `e0244c9` + `aff0348` + `76ddd8a` + `1abcb12` + `876eb80` + `42d85ce` | /2020/, public snapshot, anonymous $10,000 founding gift, in-page community giving and review, signed-match guard, sourced founder story, differentiated hero actions and snapshot-driven progress visual; depends on VWB-07 Donate UI |
 | VWB-13 | `3bc6282` + `855f354` | Founding sponsor proposal, private inquiry form and notification preparation |
 | VWB-14 | `bd92b51` + `bc6d0b4` | Private recognition schema, date/reminder rules and operations guide |
 
@@ -389,7 +389,7 @@ The VWB-10 documentation commit records the full review branch, so update its st
 
 | Release date | Version | Change IDs | PR / commit | Preview | QA result | Approved by | Rollback |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| — | Draft | 01–14 | `codex/vwb-website-changes` (through `1197041`, plus tracker) | Local `http://127.0.0.1:5178/?skipIntro=1` and `/2020/` | Partial; see evidence log | — | `cd9fe81` |
+| — | Draft | 01–14 | `codex/vwb-website-changes` (through `42d85ce`, plus tracker) | Local `http://127.0.0.1:5178/?skipIntro=1` and `/2020/` | Partial; see evidence log | — | `cd9fe81` |
 
 ## Notes
 

@@ -4,7 +4,7 @@
 
 ## Two audiences and two cash streams
 
-- **Community donors:** $25, $50, $100, $250, $500, or a custom amount toward a $20,000 community cash goal. The existing Donate page previews one-time and monthly selections; Stripe checkout remains disabled until account setup, server validation, webhook verification, and receipts are tested.
+- **Community donors:** $25, $50, $100, $250, $500, or a custom amount toward a $20,000 community cash goal. The `/2020/` campaign page and existing Donate page both preview one-time and monthly selections. The homepage donation action leads to the campaign form; choosing and reviewing an amount stays on that page. Stripe checkout remains disabled until account setup, server validation, webhook verification, and receipts are tested.
 - **Founding sponsor:** One proposed $20,000 matching commitment with a separate private inquiry form and a proposed 12-month recognition package. An inquiry is not an agreement, and a signed commitment is not cash received.
 - **Founder services:** If documented and approved, the founder's professional-services pledge belongs in a separate in-kind record. It is never included in community cash, sponsor cash, or the thermometer.
 
@@ -32,6 +32,6 @@ For community gifts, use the selected Stripe Checkout Sessions design in `DONATI
 
 ## Analytics and release checks
 
-Use the `campaign=2020` query parameter for the preview's donation path. When GA4 is approved and configured, track campaign page visits and `donate_click` with consent-aware attribution; preserve UTM parameters to the checkout session server-side. Measure completed donations and dollars from verified payment records, not analytics events. Track sponsor inquiries separately. No analytics account, webhook, or GA4 event has been connected yet.
+Use `/2020/#community-giving` for the homepage campaign donation action. The standalone Donate preview still accepts `campaign=2020` for direct links. When GA4 is approved and configured, track campaign page visits and `donate_click` with consent-aware attribution; preserve UTM parameters to the checkout session server-side. Measure completed donations and dollars from verified payment records, not analytics events. Track sponsor inquiries separately. No analytics account, webhook, or GA4 event has been connected yet.
 
 Before release: reconcile the anonymous founding gift against the receipt and campaign ledger, preserve donor anonymity, approve founder copy, sign any sponsor agreement before advertising a match, test sponsor form delivery privately, finish Stripe test checkout and webhook reconciliation, run mobile/keyboard/contrast checks, and approve the published campaign figures and copy. No production deployment has been made from this branch.
