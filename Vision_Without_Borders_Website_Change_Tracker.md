@@ -16,7 +16,7 @@
 | VWB-01 | Home | Preserve current home page | Low | Ready for review | Desktop/mobile home views inspected; navigation label changed under VWB-07 |
 | VWB-02 | Mission | Exact quote and reordered model/photos | High | Ready for review | Editorial visual approval |
 | VWB-03 | About | Bio, ORCID, publication, 2026 work | High | Blocked / awaiting input | Current CV and final bio/title approval; confirm ORCID with Blake |
-| VWB-04 | About | Officers & Leadership; Alicia and Kat profiles | High | Blocked / awaiting input | Formal appointments, approved bios and Kat headshot |
+| VWB-04 | About | Officers & Leadership; Alicia and Kat profiles | High | Blocked / awaiting input | Kat draft added; approve photo reuse and VWB role, confirm Alicia appointment/profile |
 | VWB-05 | About | WHH Foundation donor recognition | High | Blocked / awaiting input | Legal name, mission, donation attribution, official logo and permission, donor approval |
 | VWB-06 | Timeline | Default timeline, milestones, no repeated photos | High | Blocked / awaiting input | Verify consulting milestone copy; replacement images and image permissions |
 | VWB-07 | Donate | Partnerships navigation and hosted donation page | High | Blocked / awaiting input | Processor selection, eligibility, bank payout, nonprofit/tax wording, sandbox checkout; Partnerships label done |
@@ -88,22 +88,22 @@ Rollback commit / instructions: Revert bd0cd7b before release if copy is not app
 
 ```yaml
 Change ID: VWB-04
-Owner: VWB leadership
+Owner: Codex / VWB leadership
 Status: Blocked / awaiting input
-Date started: —
-Description of implementation: Board of Directors preserved. No officer profiles published.
-Files / routes modified: None specifically for this change.
-Before screenshot or URL: /about/
-After screenshot or preview URL: —
-Commit / PR link: —
-Automated tests: —
-Manual desktop test: —
-Manual mobile test: —
-Accessibility test: —
-Approvals / outstanding questions: Confirm Alicia and Katherine appointments/titles, approved bios, spelling/qualifications, and Kat headshot. A Gmail search for the exact phrase "Katherine Headshot" found no attachment in the connected account.
+Date started: 2026-11-16
+Description of implementation: Board of Directors preserved. Added a Leadership Team card for Katherine (Kat) Leviste using professional details from her personal site, KATRX (https://katrx.com/), and a crop displayed from its ophthalmology team photo. The card uses a subject-area label rather than an unapproved formal VWB title. No Alicia profile was added.
+Files / routes modified: about/index.html, src/styles.css, assets/kat-leviste-katrx-team.jpg; /about/
+Before screenshot or URL: Git parent 412ab95; /about/
+After screenshot or preview URL: http://127.0.0.1:5178/about/
+Commit / PR link: 983adcd; no PR
+Automated tests: HTML duplicate IDs and local image paths pass; git diff whitespace check passes.
+Manual desktop test: Local browser accessibility tree and 1280 px screenshot show Kat card, biography, source link, and team photo.
+Manual mobile test: Responsive CSS provides a one-column card at 760 px and below; visual mobile review pending.
+Accessibility test: Named section heading, descriptive image alt text, and named external source link checked in browser accessibility tree; keyboard/contrast audit pending.
+Approvals / outstanding questions: Confirm Katherine's VWB appointment and title, approve biography and permission to reuse the KATRX team photo. Her site did not provide a standalone headshot; replace the group photo if an approved portrait is supplied. Confirm Alicia's appointment, title, approved bio and headshot before adding her card.
 Date deployed: —
 Production verification: —
-Rollback commit / instructions: No change to roll back.
+Rollback commit / instructions: Revert 983adcd.
 ```
 
 ```yaml
@@ -266,7 +266,7 @@ The current home photo wall is preserved. Several photos therefore also appear o
 | `about-paraguay-community.webp` and `about-paraguay-eye-exam.webp` | Home and About | About | Yes | Two distinct Paraguay outreach images, portrait at least 1200 × 1600 px |
 | `india-clinical-teaching.webp` | Home and News | News | Yes | Distinct teaching image, portrait at least 1200 × 1600 px |
 | `IMG_1788.jpg` | News and Timeline | Timeline | Yes | Distinct Ethiopia research/news image, landscape at least 1600 × 1200 px |
-| Kat headshot | Not found in connected Gmail exact-title search | Leadership profile | — | Approved JPEG/WebP, portrait at least 1200 × 1600 px; consent and alt text |
+| KATRX ophthalmology team photo | KATRX personal website; local Kat leadership card | Leadership profile draft | No VWB reuse found | Approve reuse of this group photo, or supply an approved standalone Kat headshot for replacement |
 | WHH Foundation logo | Not supplied | Donor page | — | Official SVG or high-resolution transparent PNG; usage permission |
 
 Other repeated headshots and logos are intentional identity/attribution elements pending editorial review. Raw `IMG_` and screenshot files require crop, context and consent review before use.
@@ -275,12 +275,13 @@ Other repeated headshots and logos are intentional identity/attribution elements
 
 ### Selective promotion to main
 
-Each implemented website change has its own commit. Cherry-pick only the approved IDs, then run the checks and update this tracker for the selected release. VWB-01 is a regression check; VWB-04 and VWB-05 have no code yet. VWB-07 only changes the existing Sponsor navigation label to Partnerships; it does not add a Donate page. VWB-08 only removes the unapproved response-time promise; form delivery and alerts remain blocked. The shared `src/wordmark.js` file has separate, non-overlapping edits in VWB-06 and VWB-09.
+Each implemented website change has its own commit. Cherry-pick only the approved IDs, then run the checks and update this tracker for the selected release. VWB-01 is a regression check; VWB-05 has no code yet. VWB-04 is a Kat profile draft, with no formal title or Alicia profile. VWB-07 only changes the existing Sponsor navigation label to Partnerships; it does not add a Donate page. VWB-08 only removes the unapproved response-time promise; form delivery and alerts remain blocked. The shared `src/wordmark.js` file has separate, non-overlapping edits in VWB-06 and VWB-09.
 
 | Change | Commit | Scope |
 | --- | --- | --- |
 | VWB-02 | `771e016` | Mission content and mission CSS cache version |
 | VWB-03 | `bd0cd7b` | About bio, ORCID, and News research citation |
+| VWB-04 | `983adcd` | Kat leadership card, sourced biography, and KATRX team photo |
 | VWB-06 | `2d454c8` | Timeline content, default view, and CMS fields |
 | VWB-07 | `7b3e1dd` | Partnerships navigation label |
 | VWB-08 | `412ab95` | Sponsor response wording |
@@ -291,8 +292,8 @@ The VWB-10 documentation commit records the full review branch, so update its st
 
 | Release date | Version | Change IDs | PR / commit | Preview | QA result | Approved by | Rollback |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| — | Draft | 01–10 | `codex/vwb-website-changes` (`412ab95` latest code) | Local `http://127.0.0.1:5176/` | Partial; see evidence log | — | `cd9fe81` |
+| — | Draft | 01–10 | `codex/vwb-website-changes` (`983adcd` latest code) | Local `http://127.0.0.1:5178/` | Partial; see evidence log | — | `cd9fe81` |
 
 ## Notes
 
-This tracker records review-branch work, not live-site changes. Do not store bank details, payment credentials, email secrets or private form submissions here. The local preview is available only while a server runs in the VWB repository; start one with `python3 -m http.server 5176` if needed.
+This tracker records review-branch work, not live-site changes. Do not store bank details, payment credentials, email secrets or private form submissions here. The local preview is available only while a server runs in the VWB repository; start one with `python3 -m http.server 5178` if needed.
