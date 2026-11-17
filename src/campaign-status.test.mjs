@@ -14,4 +14,5 @@ test('signed eligible commitment and verified receipts determine public status',
   assert.equal(foundingMatchStatus(signed), 'Secured')
   assert.equal(foundingMatchStatus({ ...signed, verified_received_cents: 1999999 }), 'Secured')
   assert.equal(foundingMatchStatus({ ...signed, verified_received_cents: 2000000 }), 'Fulfilled')
+  assert.equal(foundingMatchStatus({ ...signed, agreement_status: 'completed', verified_received_cents: 2000000 }), 'Fulfilled')
 })
