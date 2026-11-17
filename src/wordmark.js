@@ -298,7 +298,7 @@ function initHeroTopography(canvas) {
 
     const startedAt = performance.now()
     const animate = (now) => {
-      reveal = Math.min(1, (now - startedAt) / 4000)
+      reveal = Math.min(1, (now - startedAt) / 2000)
       draw()
       if (reveal < 1) animationFrame = requestAnimationFrame(animate)
       else hero?.classList.add('is-marker-complete')
