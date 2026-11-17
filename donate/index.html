@@ -23,7 +23,7 @@
 
           <form class="donate-card" data-donation-form novalidate>
             <p class="donate-setup-note" data-donation-cancelled role="status" hidden>Stripe test checkout was cancelled. No payment was made; you can choose another gift below.</p>
-            <div class="donate-card-heading"><span class="donate-card-step" data-donation-step-label>01 / Your gift</span><h3 data-donation-step-title tabindex="-1">Set your donation</h3><p data-donation-step-description>Select a frequency and amount to preview your gift.</p></div>
+            <div class="donate-card-heading"><span class="donate-card-step" data-donation-step-label>01 / Your gift</span><h3 data-donation-step-title tabindex="-1">Set your donation</h3><p data-donation-step-description>Choose how often and how much you’d like to give.</p></div>
 
             <div data-donation-selection>
 
@@ -39,12 +39,12 @@
             <div class="donate-review" data-donation-review hidden>
               <p class="donate-review-intro">Here’s the gift you selected. You can go back to adjust it.</p>
               <div class="donate-summary"><span>Donation</span><div class="donate-summary-value"><output data-donation-review-summary>50</output><small data-donation-review-frequency>USD · One time</small></div></div>
-              <p class="donate-setup-note" id="donate-setup-note" data-donation-checkout-note>Secure checkout is being set up. This preview cannot take a payment.</p>
+              <p class="donate-setup-note" id="donate-setup-note" data-donation-checkout-note>Online donations are currently unavailable.</p>
               <p class="donate-error" data-donation-checkout-error role="alert" hidden></p>
               <button class="button button-primary donate-checkout" type="button" disabled aria-describedby="donate-setup-note" data-donation-checkout>Continue to secure checkout</button>
               <button class="donate-edit-button" type="button" data-donation-back>Edit your gift</button>
             </div>
-            <p class="donate-card-foot">Once connected, payment details will be entered on the provider’s secure checkout page. For questions about giving, <a href="/contact">contact us</a>.</p>
+            <p class="donate-card-foot">For questions about giving, <a href="/contact">contact us</a>.</p>
           </form>
         </div>
       </section>
@@ -57,8 +57,7 @@
             <p class="lead">Vision Without Borders works with local partners to expand access to eye care, training, and sight-restoring services.</p>
             <p>Gifts can help sustain the partnerships, clinical work, and education that make access to eye care possible.</p>
             <div class="donate-context-rule" aria-hidden="true"></div>
-            <p class="donate-context-note">This page is a preview while we complete payment setup. No payment is collected here yet.</p>
-            <p class="donate-context-note" data-campaign-donation-note hidden>20/20 Vision community gift. Your selected amount is a preview until secure checkout is connected.</p>
+            <p class="donate-context-note" data-campaign-donation-note hidden>20/20 Vision community campaign</p>
           </div>
           <div class="donate-visual" aria-hidden="true"><img src="/assets/vwb-logo-full.svg" alt="" /></div>
         </div>
@@ -69,6 +68,6 @@
       <footer class="site-footer" aria-label="Footer"><div class="footer-shell"><a class="footer-brand" href="/" aria-label="Vision Without Borders home"><span class="footer-brand-mark" aria-hidden="true"></span><span>Vision Without Borders</span></a><nav class="footer-links" aria-label="Footer links"><a href="https://www.instagram.com/visionwithoutbordersmd/" target="_blank" rel="noreferrer">Instagram</a><a href="/mission">Mission</a><a href="/about">About</a><a href="/timeline">Timeline</a><a href="/sponsor">Partnerships</a><a href="/donate">Donate</a><a href="/news">News &amp; Research</a><a href="/contact">Contact Us</a></nav></div></footer>
     </main>
     <script type="module" src="/src/wordmark.js?v=107"></script>
-    <script type="module" src="/src/donate.js?v=4"></script>
+    <script type="module" src="/src/donate.js?v=5"></script>
   </body>
 </html>

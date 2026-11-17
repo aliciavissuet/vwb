@@ -1532,12 +1532,6 @@ for (const explorer of document.querySelectorAll('[data-ambassador-explorer]')) 
   if (initialCountry) setActiveCountry(initialCountry.dataset.ambassadorCountry)
 }
 
-const SPONSOR_TAX_LANGUAGE_ENABLED = false
-
-for (const taxLanguage of document.querySelectorAll('[data-sponsor-tax-language]')) {
-  taxLanguage.hidden = !SPONSOR_TAX_LANGUAGE_ENABLED
-}
-
 for (const sponsorFlow of document.querySelectorAll('[data-sponsor-flow]')) {
   const steps = Array.from(sponsorFlow.querySelectorAll('[data-sponsor-step]'))
   const progressItems = Array.from(sponsorFlow.querySelectorAll('[data-sponsor-progress]'))

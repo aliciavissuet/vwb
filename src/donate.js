@@ -69,7 +69,7 @@ if (form) {
     review.hidden = false
     stepLabel.textContent = '02 / Review'
     stepTitle.textContent = 'Review your gift'
-    stepDescription.textContent = 'Payment setup is still in progress.'
+    stepDescription.textContent = 'Confirm your amount and frequency.'
     stepTitle.focus()
   })
 
@@ -78,7 +78,7 @@ if (form) {
     selection.hidden = false
     stepLabel.textContent = '01 / Your gift'
     stepTitle.textContent = 'Set your donation'
-    stepDescription.textContent = 'Select a frequency and amount to preview your gift.'
+    stepDescription.textContent = 'Choose how often and how much you’d like to give.'
     form.querySelector('[data-donation-review-button]').focus()
   })
 
@@ -90,7 +90,7 @@ if (form) {
         checkoutButton.disabled = false
         checkoutNote.textContent = 'Stripe test mode is ready. No real money will be charged.'
       }
-    } catch { /* Static previews do not serve Netlify Functions. */ }
+    } catch { /* The checkout endpoint is unavailable. */ }
   }
 
   checkoutButton.addEventListener('click', async () => {
