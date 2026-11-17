@@ -6588,10 +6588,32 @@ body.has-filter-drawer {
   top: 130px;
 }
 
-.sponsor-intro h1 {
+.sponsor-intro h2 {
   max-width: 9ch;
   margin-top: 18px;
 }
+
+.founding-sponsor-section { padding: clamp(150px, 17vw, 220px) clamp(20px, 6vw, 72px) clamp(80px, 10vw, 130px); background: radial-gradient(circle at 12% 24%, var(--blue-soft), transparent 34rem), var(--bg); scroll-margin-top: 80px; }
+.founding-sponsor-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(330px, 0.9fr); gap: clamp(36px, 7vw, 110px); align-items: start; }
+.founding-sponsor-copy h1 { max-width: 14ch; margin: 12px 0 30px; font-size: clamp(3.2rem, 5.3vw, 6rem); line-height: 1; letter-spacing: -0.065em; }
+.founding-sponsor-copy .lead { max-width: 45ch; }
+.founding-sponsor-copy > p:not(.section-kicker) { line-height: 1.6; }
+.founding-sponsor-benefits { margin: 42px 0 28px; padding-top: 24px; border-top: 2px solid var(--ink); }
+.founding-sponsor-benefits h2 { margin: 0 0 16px; font-size: clamp(1.5rem, 2.4vw, 2.4rem); letter-spacing: -0.05em; }
+.founding-sponsor-benefits ul { display: grid; gap: 10px; padding-left: 22px; line-height: 1.55; }
+.founding-sponsor-benefits p { color: var(--muted); font-size: 0.9rem; line-height: 1.55; }
+.founding-sponsor-copy > a { font-weight: 800; text-underline-offset: 5px; }
+.founding-sponsor-form { display: grid; gap: 15px; padding: clamp(26px, 4vw, 50px); border: 1px solid var(--quiet); border-radius: 20px; background: var(--paper); box-shadow: 0 25px 65px rgb(23 37 43 / 0.08); }
+.founding-sponsor-form h2 { margin: -5px 0 0; font-size: clamp(2rem, 3.2vw, 3.4rem); letter-spacing: -0.06em; }
+.founding-sponsor-form > p:not(.section-kicker):not(.netlify-honeypot) { margin: 0 0 10px; color: var(--muted); line-height: 1.55; }
+.founding-sponsor-form label:not(.founding-sponsor-consent) { display: grid; gap: 6px; font-size: 0.86rem; font-weight: 750; }
+.founding-sponsor-form label small { color: var(--muted); font-weight: 400; }
+.founding-sponsor-form input:not([type="checkbox"]), .founding-sponsor-form textarea { width: 100%; border: 1px solid rgb(23 37 43 / 0.28); border-radius: 9px; background: #fff; padding: 12px 14px; }
+.founding-sponsor-form input:focus-visible, .founding-sponsor-form textarea:focus-visible { outline: 3px solid var(--red); outline-offset: 2px; }
+.founding-sponsor-consent { display: flex; align-items: flex-start; gap: 10px; margin: 7px 0; font-size: 0.82rem; line-height: 1.45; }
+.founding-sponsor-consent input { margin-top: 3px; }
+.founding-sponsor-form .button { justify-content: center; cursor: pointer; }
+@media (max-width: 820px) { .founding-sponsor-grid { grid-template-columns: 1fr; } .founding-sponsor-copy h1 { max-width: 17ch; } }
 
 .sponsor-intro .lead {
   max-width: 31rem;
