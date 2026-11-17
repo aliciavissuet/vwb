@@ -37,13 +37,13 @@
           </header>
           <div class="timeline-presentation-controls">
           <div class="timeline-view-switcher" role="group" aria-label="Choose a timeline presentation">
-            <button type="button" data-timeline-view="timeline" aria-pressed="false">Timeline</button>
-            <button type="button" class="is-active" data-timeline-view="board" aria-pressed="true">Photo board</button>
+            <button type="button" class="is-active" data-timeline-view="timeline" aria-pressed="true">Timeline</button>
+            <button type="button" data-timeline-view="board" aria-pressed="false">Photo board</button>
           </div>
-          <button type="button" class="photo-board-filter-launch" data-board-filter-open aria-expanded="false"><span>Filter</span><b aria-hidden="true">+</b><i data-board-filter-count hidden>0</i></button>
+          <button type="button" class="photo-board-filter-launch" data-board-filter-open aria-expanded="false" hidden><span>Filter</span><b aria-hidden="true">+</b><i data-board-filter-count hidden>0</i></button>
           </div>
 
-          <div class="timeline-layout" data-timeline-panel="timeline" hidden>
+          <div class="timeline-layout" data-timeline-panel="timeline">
             <div class="timeline-stream" data-timeline-stream>
               <div class="timeline-progress" aria-hidden="true"><span data-timeline-progress></span></div>
 
@@ -55,14 +55,32 @@
 
                 <section class="timeline-year" aria-label="June 2026 to now">
 
+                  <article id="publication-2026" class="timeline-entry timeline-entry-left" data-timeline-entry data-timeline-year="2026" data-timeline-label="November" data-timeline-pin="california" data-timeline-location="California, USA">
+                    <div class="timeline-dot" aria-hidden="true"></div>
+                    <div class="timeline-entry-card">
+                      <div class="timeline-date"><span>November</span><strong>2026</strong></div>
+                      <h2>Worksite vision screening research published</h2>
+                      <p><em>Clinical Ophthalmology</em> published <cite>Worksite Vision Screening for Farmworkers: A California Bay Area Pilot Study</cite> on November 11, 2026, with Dr. Snyder as a coauthor.</p>
+                      <a class="timeline-entry-external" href="https://doi.org/10.2147/OPTH.S640548" target="_blank" rel="noreferrer">Read the study <span aria-hidden="true">↗</span></a>
+                    </div>
+                  </article>
+
                   <article id="june-2026" class="timeline-entry timeline-entry-right" data-timeline-entry data-timeline-year="2026" data-timeline-label="June" data-timeline-pin="prague" data-timeline-location="Colorado · Stanford · Prague · Nepal">
                     <div class="timeline-dot" aria-hidden="true"></div>
                     <div class="timeline-entry-card">
                       <div class="timeline-date"><span>June</span><strong>2026</strong></div>
                       <h2>Formalization &amp; momentum</h2>
-                      <p>Vision Without Borders incorporated in Colorado and submitted its federal tax-exempt application. Clinical instruction at Stanford, global-health fellowship work, and international teaching continued alongside the organization’s launch.</p>
+                      <p>Vision Without Borders incorporated in Colorado and submitted its federal tax-exempt application. Dr. Snyder completed his Global Ophthalmology Fellowship at Stanford in June 2026 and served at the Byers Eye Institute as a Clinical Instructor. International teaching continued alongside the organization’s launch.</p>
                       <div class="timeline-tags" aria-label="Locations and themes"><span>Colorado</span><span>Stanford</span><span>Prague</span><span>Nepal</span></div>
                       <div class="timeline-entry-partners" aria-label="Related organizations"><span>Working alongside</span><div><img src="/assets/timeline-partners/stanford-medicine.png" alt="Stanford Medicine" /><img src="/assets/timeline-partners/cure-blindness-project.png" alt="Cure Blindness Project" /></div></div>
+                    </div>
+                  </article>
+                  <article id="consulting-2026" class="timeline-entry timeline-entry-left" data-timeline-entry data-timeline-year="2026" data-timeline-label="Consulting">
+                    <div class="timeline-dot" aria-hidden="true"></div>
+                    <div class="timeline-entry-card">
+                      <div class="timeline-date"><span>Consulting</span><strong>2026</strong></div>
+                      <h2>Uveitis education and consulting</h2>
+                      <p>In 2026, Dr. Snyder consulted for Orbis International and the Ophthalmology Foundation. He developed uveitis curriculum for the Ophthalmology Foundation.</p>
                     </div>
                   </article>
                 </section>
@@ -244,7 +262,7 @@
                 <section class="timeline-nav-group is-current" data-timeline-nav-phase="established">
                   <a class="timeline-nav-group-heading is-current" href="#established" data-timeline-phase-link="established" aria-current="location"><span>03</span><strong>Established work</strong><small>June 2026–now</small></a>
                   <div class="timeline-nav-years">
-                    <div class="timeline-nav-year is-active" data-timeline-nav-phase="established" data-timeline-nav-year="2026"><div class="timeline-nav-months"><a href="#june-2026" data-timeline-link="june-2026">June 2026</a></div></div>
+                    <div class="timeline-nav-year is-active" data-timeline-nav-phase="established" data-timeline-nav-year="2026"><div class="timeline-nav-months"><a href="#publication-2026" data-timeline-link="publication-2026">Nov 2026</a><a href="#june-2026" data-timeline-link="june-2026">June 2026</a><a href="#consulting-2026" data-timeline-link="consulting-2026">2026 consulting</a></div></div>
                   </div>
                 </section>
                 <section class="timeline-nav-group" data-timeline-nav-phase="formation">
@@ -266,7 +284,7 @@
               </nav>
             </aside>
           </div>
-          <section class="photo-board-panel" data-timeline-panel="board" aria-labelledby="photo-board-title">
+          <section class="photo-board-panel" data-timeline-panel="board" aria-labelledby="photo-board-title" hidden>
             <h2 id="photo-board-title" class="sr-only">Photo board</h2>
             <div class="photo-board photo-board-grid" data-photo-board></div>
             <p class="photo-board-empty" data-photo-board-empty hidden>No cards match that category yet.</p>
@@ -288,6 +306,6 @@
 
       <footer class="site-footer" aria-label="Footer"><div class="footer-shell"><a class="footer-brand" href="/" aria-label="Vision Without Borders home"><span class="footer-brand-mark" aria-hidden="true"></span><span>Vision Without Borders</span></a><nav class="footer-links" aria-label="Footer links"><a href="https://www.instagram.com/visionwithoutbordersmd/" target="_blank" rel="noreferrer">Instagram</a><a href="/mission">Mission</a><a href="/about">About</a><a href="/timeline">Timeline</a><a href="/news">News &amp; Research</a><a href="/sponsor">Sponsor</a><a href="/contact">Contact</a></nav></div></footer>
     </main>
-    <script type="module" src="/src/wordmark.js?v=107"></script>
+    <script type="module" src="/src/wordmark.js?v=109"></script>
   </body>
 </html>

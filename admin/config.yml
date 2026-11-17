@@ -32,8 +32,8 @@ collections:
                   - { label: Before the nonprofit, value: pre-founding }
               - { label: Title, name: title, widget: string }
               - { label: Description, name: description, widget: text }
-              - { label: Image, name: image, widget: image }
-              - { label: Image description, name: imageAlt, widget: string }
+              - { label: Image, name: image, widget: image, required: false, hint: "Required for photo board cards; leave blank for text-only timeline milestones." }
+              - { label: Image description, name: imageAlt, widget: string, required: false, hint: "Describe the image when an image is supplied." }
               - { label: External link, name: externalUrl, widget: string }
               - { label: Location, name: location, widget: string, required: false }
               - { label: Map pin key, name: pin, widget: string, required: false }

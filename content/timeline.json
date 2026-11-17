@@ -1,13 +1,30 @@
 {
   "cards": [
     {
+      "id": "publication-2026",
+      "year": "2026",
+      "month": "November",
+      "sortDate": "2026-11-11",
+      "phase": "established",
+      "title": "Worksite vision screening research published",
+      "description": "Clinical Ophthalmology published Worksite Vision Screening for Farmworkers: A California Bay Area Pilot Study on November 11, 2026, with Dr. Snyder as a coauthor.",
+      "image": "",
+      "imageAlt": "",
+      "externalUrl": "https://doi.org/10.2147/OPTH.S640548",
+      "location": "California, USA",
+      "pin": "california",
+      "categories": ["Research", "Clinical care"],
+      "showInTimeline": true,
+      "showOnBoard": false
+    },
+    {
       "id": "june-2026",
       "year": "2026",
       "month": "June",
       "sortDate": "2026-06-01",
       "phase": "established",
       "title": "Formalization & momentum",
-      "description": "Vision Without Borders incorporated in Colorado and submitted its federal tax-exempt application. Clinical instruction at Stanford, global-health fellowship work, and international teaching continued alongside the organization’s launch.",
+      "description": "Vision Without Borders incorporated in Colorado and submitted its federal tax-exempt application. Dr. Snyder completed his Global Ophthalmology Fellowship at Stanford in June 2026 and served at the Byers Eye Institute as a Clinical Instructor. International teaching continued alongside the organization’s launch.",
       "image": "/assets/mission-partnership-fieldwork.webp",
       "imageAlt": "Clinicians working together during international fieldwork",
       "externalUrl": "https://profiles.stanford.edu/blake-snyder",
@@ -16,6 +33,23 @@
       "categories": ["Organization", "Education", "Partnerships"],
       "showInTimeline": true,
       "showOnBoard": true
+    },
+    {
+      "id": "consulting-2026",
+      "year": "2026",
+      "month": "Consulting",
+      "sortDate": "2026-01-01",
+      "phase": "established",
+      "title": "Uveitis education and consulting",
+      "description": "In 2026, Dr. Snyder consulted for Orbis International and the Ophthalmology Foundation. He developed uveitis curriculum for the Ophthalmology Foundation.",
+      "image": "",
+      "imageAlt": "",
+      "externalUrl": "/about/",
+      "location": "",
+      "pin": "",
+      "categories": ["Education", "Partnerships"],
+      "showInTimeline": true,
+      "showOnBoard": false
     },
     {
       "id": "may-2026",

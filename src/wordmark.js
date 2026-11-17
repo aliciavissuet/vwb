@@ -1392,7 +1392,7 @@ if (timelineViewButtons.length && photoBoard) {
       return response.json()
     })
     .then(({ cards }) => {
-      boardCards = cards.filter((card) => card.showOnBoard).sort((a, b) => b.sortDate.localeCompare(a.sortDate))
+      boardCards = cards.filter((card) => card.showOnBoard && card.image).sort((a, b) => b.sortDate.localeCompare(a.sortDate))
       for (const card of cards) syncTimelineCard(card)
 
       const representedYears = boardCards.flatMap((card) => expandYearTokens(card.year)).map(Number)
@@ -1428,7 +1428,7 @@ if (timelineViewButtons.length && photoBoard) {
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !filterDrawer.hidden) setFilterDrawer(false)
   })
-  setTimelineView('board')
+  setTimelineView('timeline')
 }
 
 for (const explorer of document.querySelectorAll('[data-ambassador-explorer]')) {
