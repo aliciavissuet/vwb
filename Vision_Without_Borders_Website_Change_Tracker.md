@@ -151,13 +151,13 @@ Change ID: VWB-07
 Owner: Codex / VWB finance
 Status: Blocked / awaiting input
 Date started: 2026-11-16
-Description of implementation: Changed Sponsor navigation label to Partnerships while preserving /sponsor/ and sponsorship content. Added a top-level Donate link and a local `/donate/` preview with one-time/monthly choices, four preset amounts, a custom USD amount, a gift review step, invalid-amount feedback, and a disabled hosted-checkout button. No payment data is collected. Added a provider/API decision plan in `DONATION_CHECKOUT_PLAN.md`. On 2026-11-16 the user selected Stripe Checkout Sessions for the custom selector; the plan now records the organization signup path and pending-status tax language. No checkout API code or account credentials are present yet.
+Description of implementation: Changed Sponsor navigation label to Partnerships while preserving /sponsor/ and sponsorship content. Added a top-level Donate link and a local `/donate/` preview with one-time/monthly choices, four preset amounts, a custom USD amount, a gift review step, invalid-amount feedback, and a disabled hosted-checkout button. No payment data is collected. Added a provider/API decision plan in `DONATION_CHECKOUT_PLAN.md`. On 2026-11-16 the user selected Stripe Checkout Sessions for the custom selector; the plan now records the organization signup path and pending-status tax language. Replaced the Donate hero's custom artwork with VWB's existing full logo. The selection and review steps now show a separate numeric amount and currency/frequency label; the amount shows `-` when empty and `0` when zero is entered. No checkout API code or account credentials are present yet.
 Files / routes modified: Navigation/footer in index.html, about/index.html, mission/index.html, timeline/index.html, news/index.html, sponsor/index.html, contact/index.html; shared CSS cache references in those and existing thanks pages; donate/index.html, src/donate.js, src/styles.css, netlify.toml, DONATION_CHECKOUT_PLAN.md; /donate/.
 Before screenshot or URL: Git parent cd9fe81; /sponsor/
 After screenshot or preview URL: http://127.0.0.1:5178/donate/
-Commit / PR link: 7b3e1dd (Partnerships label), 8170d01 (Donate UI and API plan), 1656b98 (Stripe selection and signup guidance); no PR
-Automated tests: `node --check src/donate.js` and `git diff --check` passed; parsed all HTML and checked Donate navigation on all eight main pages and disabled checkout in the Donate page.
-Manual desktop test: Local browser shows the Donate hero and selector. One-time preset selection and custom monthly $75 review displayed correctly; returning to edit worked. Zero amount displayed an error and stayed on selection. Checkout remained disabled. Partnerships navigation was checked previously.
+Commit / PR link: 7b3e1dd (Partnerships label), 8170d01 (Donate UI and API plan), 1656b98 (Stripe selection and signup guidance), c36ccbe (logo and numeric amount display); no PR
+Automated tests: `node --check src/donate.js` and `git diff --check` passed after the design update; parsed all HTML and checked Donate navigation on all eight main pages and disabled checkout in the Donate page previously.
+Manual desktop test: Local browser shows the Donate hero with the existing full VWB logo and the selector. The selected $50 preset reads `50`; custom `0` reads `0`; clearing the custom amount reads `-`; custom `75.25` reads `75.25`. One-time preset selection and custom monthly $75 review displayed correctly previously; returning to edit worked. Zero amount displayed an error and stayed on selection. Checkout remained disabled. Partnerships navigation was checked previously.
 Manual mobile test: Pending narrow-viewport browser inspection.
 Accessibility test: Browser accessibility tree exposes named navigation, radio groups, custom amount, review button, error, and disabled checkout. Full keyboard and contrast review pending.
 Approvals / outstanding questions: Stripe Checkout Sessions is selected. VWB must create/activate its own Stripe account, complete organization and bank payout verification, and provide test integration access through secure environment configuration. Confirm state incorporation and current IRS status; approve amount limits, receipt/tax wording, and nonprofit status language. Run sandbox checkout, success/cancel, webhook, and mobile tests before enabling payments or releasing the Donate link to production.
@@ -286,7 +286,7 @@ Each implemented website change has its own commit. Cherry-pick only the approve
 | VWB-03 | `bd0cd7b` | About bio, ORCID, and News research citation |
 | VWB-04 | `983adcd` + `3b9d4f1` + `9ad636c` + `cf08d39` | Kat leadership card and supplied headshot; Alicia technology card and final balcony crop showing no bare leg |
 | VWB-06 | `2d454c8` | Timeline content, default view, and CMS fields |
-| VWB-07 | `7b3e1dd` + `8170d01` + `1656b98` | Partnerships navigation label; Donate UI preview; Stripe Checkout selection and signup plan |
+| VWB-07 | `7b3e1dd` + `8170d01` + `1656b98` + `c36ccbe` | Partnerships navigation label; Donate UI preview and design refinement; Stripe Checkout selection and signup plan |
 | VWB-08 | `412ab95` | Sponsor response wording |
 | VWB-09 | `97c01be` | Contact sketch speed and shared script revalidation |
 
