@@ -11,6 +11,9 @@ if (progress) {
   const matchDetail = document.querySelector('[data-campaign-match-detail]')
   const sponsorIntro = document.querySelector('[data-campaign-sponsor-intro]')
   const note = document.querySelector('[data-campaign-data-note]')
+  const heroRing = document.querySelector('[data-campaign-hero-ring]')
+  const heroPercent = document.querySelector('[data-campaign-hero-percent]')
+  const heroTotal = document.querySelector('[data-campaign-hero-total]')
   const dollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })
 
   fetch('/content/campaign-2020-public.json', { cache: 'no-store' })
@@ -28,6 +31,12 @@ if (progress) {
       progress.setAttribute('aria-valuenow', String(Math.min(amount, 20000)))
       progress.setAttribute('aria-valuetext', `${dollars.format(amount)} in verified community cash`)
       fill.style.width = `${Math.min((cash / goal) * 100, 100)}%`
+      const ratio = Math.min(cash / goal, 1)
+      const ringLength = 2 * Math.PI * 107
+      heroRing.style.strokeDasharray = String(ringLength)
+      heroRing.style.strokeDashoffset = String(ringLength * (1 - ratio))
+      heroPercent.textContent = `${Math.round(ratio * 100)}%`
+      heroTotal.textContent = `${dollars.format(amount)} of $20,000`
       raised.textContent = `${dollars.format(amount)} verified`
       note.textContent = `Verified cash as of ${data.as_of || 'the latest approved update'}. This published snapshot is updated only after donation records are confirmed; live payment syncing is pending.`
 
@@ -50,6 +59,8 @@ if (progress) {
       }
     })
     .catch(() => {
+      heroPercent.textContent = '—'
+      heroTotal.textContent = 'Progress unavailable'
       raised.textContent = 'Total unavailable'
       progress.setAttribute('aria-valuetext', 'Verified total unavailable')
       note.textContent = 'Campaign figures are temporarily unavailable. No unverified contributions are shown.'

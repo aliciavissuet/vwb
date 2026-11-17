@@ -9116,9 +9116,20 @@ figcaption {
 .campaign-tagline { color: var(--ink); font-size: clamp(1.3rem, 2.3vw, 2.5rem); font-weight: 800; line-height: 1.22 !important; }
 .campaign-hero .lead { max-width: 48ch; }
 .campaign-actions { gap: 12px 22px; }
-.campaign-hero-mark { display: grid; min-height: 390px; place-items: center; padding: 40px; border-radius: 22px; background: var(--paper); text-align: center; }
-.campaign-hero-mark img { width: min(50%, 190px); }
-.campaign-hero-mark span { display: block; font-size: clamp(1.7rem, 3vw, 3rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.045em; }
+.campaign-hero-visual { position: relative; display: grid; min-height: 390px; align-content: center; justify-items: center; isolation: isolate; text-align: center; }
+.campaign-hero-visual::before { position: absolute; z-index: -1; width: min(100%, 360px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgb(50 106 116 / 0.16), transparent 68%); content: ""; animation: campaignHeroBreathe 6s ease-in-out infinite; }
+.campaign-hero-orbit { position: relative; width: min(100%, 290px); aspect-ratio: 1; }
+.campaign-hero-orbit > svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.campaign-hero-orbit circle { fill: none; stroke-width: 12; }
+.campaign-hero-orbit-track { stroke: rgb(50 106 116 / 0.18); }
+.campaign-hero-orbit-fill { stroke: var(--blue); stroke-linecap: round; stroke-dasharray: 672.3; stroke-dashoffset: 672.3; transition: stroke-dashoffset 1s ease; }
+.campaign-hero-orbit-center { position: absolute; inset: 0; display: grid; align-content: center; justify-items: center; gap: 10px; }
+.campaign-hero-orbit-center img { width: 82px; animation: campaignHeroBlink 7s ease-in-out infinite; }
+.campaign-hero-orbit-center strong { color: var(--ink); font-size: clamp(3.4rem, 5vw, 5rem); font-weight: 800; line-height: 1; letter-spacing: -0.065em; }
+.campaign-hero-visual-label { margin-top: 8px; color: var(--blue); font-size: 0.75rem; font-weight: 850; letter-spacing: 0.11em; text-transform: uppercase; }
+.campaign-hero-visual-total { margin-top: 7px; font-size: clamp(1.1rem, 1.8vw, 1.5rem); letter-spacing: -0.03em; }
+@keyframes campaignHeroBreathe { 50% { opacity: 0.55; transform: scale(1.06); } }
+@keyframes campaignHeroBlink { 0%, 44%, 48%, 100% { transform: scaleY(1); } 46% { transform: scaleY(0.08); } }
 .campaign-progress-section, .campaign-give-section, .campaign-sponsor-section, .campaign-story-section { padding: clamp(70px, 9vw, 130px) clamp(20px, 6vw, 72px); }
 .campaign-progress-section { background: var(--paper); }
 .campaign-progress-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr); gap: clamp(35px, 7vw, 110px); align-items: center; }
@@ -9145,9 +9156,9 @@ figcaption {
 .campaign-story-grid { align-items: start; }
 .campaign-story-grid p { margin-top: 0; }
 @media (max-width: 900px) { .campaign-give-grid { grid-template-columns: 1fr; } }
-@media (max-width: 760px) { .campaign-hero-grid, .campaign-progress-grid, .campaign-sponsor-grid, .campaign-story-grid { grid-template-columns: 1fr; } .campaign-hero-mark { min-height: 250px; } }
+@media (max-width: 760px) { .campaign-hero-grid, .campaign-progress-grid, .campaign-sponsor-grid, .campaign-story-grid { grid-template-columns: 1fr; } .campaign-hero-visual { min-height: 300px; } .campaign-hero-orbit { width: min(100%, 250px); } }
 @media (max-width: 450px) { .campaign-thermometer-labels { flex-direction: column; } .campaign-give-section .donate-amount-options { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (prefers-reduced-motion: reduce) { .campaign-thermometer span { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .campaign-thermometer span, .campaign-hero-orbit-fill { transition: none; } .campaign-hero-visual::before, .campaign-hero-orbit-center img { animation: none; } }
 
 .donate-error { margin: 17px 0 0; color: #a53025; font-weight: 700; line-height: 1.45; }
 .donate-review-button { width: 100%; justify-content: center; margin-top: 25px; cursor: pointer; }
