@@ -2,22 +2,25 @@ const form = document.querySelector('[data-donation-form]')
 
 if (form) {
   const summary = form.querySelector('[data-donation-summary]')
+  const summaryFrequency = form.querySelector('[data-donation-frequency]')
   const custom = form.elements.namedItem('custom-amount')
   const amountOptions = Array.from(form.querySelectorAll('input[name="amount"]'))
   const frequencyOptions = Array.from(form.querySelectorAll('input[name="frequency"]'))
   const selection = form.querySelector('[data-donation-selection]')
   const review = form.querySelector('[data-donation-review]')
   const reviewSummary = form.querySelector('[data-donation-review-summary]')
+  const reviewFrequency = form.querySelector('[data-donation-review-frequency]')
   const error = form.querySelector('[data-donation-error]')
   const stepLabel = form.querySelector('[data-donation-step-label]')
   const stepTitle = form.querySelector('[data-donation-step-title]')
   const stepDescription = form.querySelector('[data-donation-step-description]')
-  const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 })
+  const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 })
 
   function updateSummary() {
     const amount = custom.value.trim() ? Number(custom.value) : Number(amountOptions.find((option) => option.checked)?.value)
-    const frequency = frequencyOptions.find((option) => option.checked)?.value === 'monthly' ? 'monthly' : 'one time'
-    summary.textContent = Number.isFinite(amount) && amount >= 1 ? `${money.format(amount)} ${frequency}` : `Choose an amount ${frequency}`
+    const frequency = frequencyOptions.find((option) => option.checked)?.value === 'monthly' ? 'Monthly' : 'One time'
+    summary.textContent = Number.isFinite(amount) ? number.format(amount) : '-'
+    summaryFrequency.textContent = `USD · ${frequency}`
   }
 
   for (const option of [...amountOptions, ...frequencyOptions]) {
@@ -42,6 +45,7 @@ if (form) {
     }
     error.hidden = true
     reviewSummary.textContent = summary.textContent
+    reviewFrequency.textContent = summaryFrequency.textContent
     selection.hidden = true
     review.hidden = false
     stepLabel.textContent = '02 / Review'

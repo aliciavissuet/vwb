@@ -8842,7 +8842,7 @@ figcaption {
 }
 .donate-hero {
   padding: clamp(140px, 16vw, 205px) clamp(20px, 6vw, 72px) clamp(58px, 8vw, 118px);
-  background: radial-gradient(circle at 78% 36%, rgb(255 250 242 / 0.43), transparent 29rem), #e6cbb2;
+  background: radial-gradient(circle at 80% 32%, rgb(220 233 232 / 0.8), transparent 30rem), var(--bg);
 }
 
 .donate-hero-grid {
@@ -8869,59 +8869,20 @@ figcaption {
 }
 
 .donate-visual {
-  position: relative;
   display: grid;
   min-height: clamp(330px, 35vw, 520px);
-  overflow: hidden;
   place-items: center;
-  border-radius: 48% 52% 43% 57% / 54% 39% 61% 46%;
-  background: #315f67;
-  transform: rotate(-4deg);
+  border: 1px solid rgb(23 37 43 / 0.1);
+  border-radius: 22px;
+  background: rgb(255 250 242 / 0.78);
+  padding: clamp(32px, 5vw, 72px);
 }
 
-.donate-visual-orbit {
-  position: absolute;
-  width: 78%;
-  aspect-ratio: 1;
-  border: 1px solid rgb(255 250 242 / 0.36);
-  border-radius: 50%;
-}
-
-.donate-visual-orbit-one { transform: scale(1.23) rotate(24deg); }
-.donate-visual-orbit-two { transform: scale(0.78) rotate(-24deg); }
-
-.donate-visual-eye {
-  position: absolute;
-  top: 21%;
-  right: 11%;
-  width: 36%;
-  aspect-ratio: 1.8;
-  border: 3px solid #fffaf2;
-  border-radius: 90% 8% 90% 8%;
-  transform: rotate(44deg);
-}
-
-.donate-visual-eye::after {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 24%;
-  aspect-ratio: 1;
-  border: 3px solid #fffaf2;
-  border-radius: 50%;
-  content: "";
-  transform: translate(-50%, -50%);
-}
-
-.donate-visual-caption {
-  position: relative;
-  margin: 0 17% 0 0;
-  color: #fffaf2;
-  font-size: clamp(2.3rem, 4.8vw, 5.4rem);
-  font-weight: 800;
-  line-height: 0.91;
-  letter-spacing: -0.07em;
-  transform: rotate(4deg);
+.donate-visual img {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
 }
 
 .donate-main { padding: clamp(70px, 9vw, 130px) clamp(20px, 6vw, 72px); }
@@ -9088,7 +9049,9 @@ figcaption {
   padding-top: 23px;
 }
 
-.donate-summary strong { font-size: 1.2rem; text-align: right; }
+.donate-summary-value { display: grid; min-width: 100px; justify-items: end; gap: 2px; text-align: right; }
+.donate-summary output { color: var(--ink); font-family: Arial, Helvetica, sans-serif; font-size: clamp(2.1rem, 3.2vw, 2.8rem); font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1; letter-spacing: -0.055em; }
+.donate-summary-value small { margin: 0; color: var(--muted); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 
 .donate-error { margin: 17px 0 0; color: #a53025; font-weight: 700; line-height: 1.45; }
 .donate-review-button { width: 100%; justify-content: center; margin-top: 25px; cursor: pointer; }
@@ -9132,7 +9095,6 @@ figcaption {
   .donate-hero { padding-top: 120px; }
   .donate-hero-copy h1 { font-size: clamp(3.2rem, 13vw, 5rem); }
   .donate-visual { min-height: 230px; }
-  .donate-visual-caption { font-size: clamp(2.4rem, 10vw, 4rem); }
   .donate-amount-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .donate-other-grid { grid-template-columns: 1fr; gap: 24px; }
 }
