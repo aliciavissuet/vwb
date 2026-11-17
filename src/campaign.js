@@ -1,3 +1,5 @@
+import { foundingMatchStatus } from './campaign-status.mjs'
+
 const progress = document.querySelector('[data-campaign-progress]')
 
 if (progress) {
@@ -36,9 +38,10 @@ if (progress) {
       }
 
       const sponsor = data.founding_sponsor_match
-      const signed = sponsor?.agreement_status === 'signed' && Boolean(sponsor.signed_at) && sponsor.match_eligibility === true && Boolean(sponsor.match_deadline) && sponsor.commitment_cents === 2000000
+      const status = foundingMatchStatus(sponsor)
+      const signed = status !== 'Seeking Sponsor'
       const received = Number.isSafeInteger(sponsor?.verified_received_cents) ? sponsor.verified_received_cents : 0
-      matchStatus.textContent = signed ? `Matching status: ${received >= 2000000 ? 'Fulfilled' : 'Secured'}` : 'Matching status: Seeking Sponsor'
+      matchStatus.textContent = `Matching status: ${status}`
       if (signed) {
         sponsorIntro.textContent = 'A $20,000 founding sponsor commitment is documented. Together with the community goal, it offers a potential $40,000 cash outcome under the agreed matching terms.'
         matchDetail.textContent = received >= 2000000
