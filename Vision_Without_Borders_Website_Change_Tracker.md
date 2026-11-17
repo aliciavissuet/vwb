@@ -16,7 +16,7 @@
 | VWB-01 | Home | Preserve current home page | Low | Ready for review | Desktop/mobile home views inspected; navigation label changed under VWB-07 |
 | VWB-02 | Mission | Exact quote and reordered model/photos | High | Ready for review | Editorial visual approval |
 | VWB-03 | About | Bio, ORCID, publication, 2026 work | High | Blocked / awaiting input | Current CV and final bio/title approval; confirm ORCID with Blake |
-| VWB-04 | About | Officers & Leadership; Alicia and Kat profiles | High | Blocked / awaiting input | Kat draft added; approve photo reuse and VWB role, confirm Alicia appointment/profile |
+| VWB-04 | About | Officers & Leadership; Alicia and Kat profiles | High | Blocked / awaiting input | Kat draft and user-supplied portrait added; confirm VWB role and Alicia appointment/profile |
 | VWB-05 | About | WHH Foundation donor recognition | High | Blocked / awaiting input | Legal name, mission, donation attribution, official logo and permission, donor approval |
 | VWB-06 | Timeline | Default timeline, milestones, no repeated photos | High | Blocked / awaiting input | Verify consulting milestone copy; replacement images and image permissions |
 | VWB-07 | Donate | Partnerships navigation and hosted donation page | High | Blocked / awaiting input | Processor selection, eligibility, bank payout, nonprofit/tax wording, sandbox checkout; Partnerships label done |
@@ -91,19 +91,19 @@ Change ID: VWB-04
 Owner: Codex / VWB leadership
 Status: Blocked / awaiting input
 Date started: 2026-11-16
-Description of implementation: Board of Directors preserved. Added a Leadership Team card for Katherine (Kat) Leviste using professional details from her personal site, KATRX (https://katrx.com/), and a crop displayed from its ophthalmology team photo. The card uses a subject-area label rather than an unapproved formal VWB title. No Alicia profile was added.
-Files / routes modified: about/index.html, src/styles.css, assets/kat-leviste-katrx-team.jpg; /about/
+Description of implementation: Board of Directors preserved. Added a Leadership Team card for Katherine (Kat) Leviste using professional details from her personal site, KATRX (https://katrx.com/). Replaced the initial KATRX team photo with the standalone portrait supplied by the user. The card uses a subject-area label rather than an unapproved formal VWB title. No Alicia profile was added.
+Files / routes modified: about/index.html, src/styles.css, assets/kat-leviste-headshot.png; /about/
 Before screenshot or URL: Git parent 412ab95; /about/
 After screenshot or preview URL: http://127.0.0.1:5178/about/
-Commit / PR link: 983adcd; no PR
+Commit / PR link: 983adcd (profile), 3b9d4f1 (user-supplied headshot swap); no PR
 Automated tests: HTML duplicate IDs and local image paths pass; git diff whitespace check passes.
-Manual desktop test: Local browser accessibility tree and 1280 px screenshot show Kat card, biography, source link, and team photo.
+Manual desktop test: Local browser accessibility tree and 1280 px screenshot show Kat card, biography, source link, and standalone portrait. Portrait crop checked visually.
 Manual mobile test: Responsive CSS provides a one-column card at 760 px and below; visual mobile review pending.
 Accessibility test: Named section heading, descriptive image alt text, and named external source link checked in browser accessibility tree; keyboard/contrast audit pending.
-Approvals / outstanding questions: Confirm Katherine's VWB appointment and title, approve biography and permission to reuse the KATRX team photo. Her site did not provide a standalone headshot; replace the group photo if an approved portrait is supplied. Confirm Alicia's appointment, title, approved bio and headshot before adding her card.
+Approvals / outstanding questions: Confirm Katherine's VWB appointment and title and approve biography. User supplied the portrait for this change; source image is 600 × 600 px, so assess sharpness on large displays. Confirm Alicia's appointment, title, approved bio and headshot before adding her card.
 Date deployed: —
 Production verification: —
-Rollback commit / instructions: Revert 983adcd.
+Rollback commit / instructions: Revert 3b9d4f1 to restore the team photo, or revert both 3b9d4f1 and 983adcd to remove Kat's card.
 ```
 
 ```yaml
@@ -266,7 +266,7 @@ The current home photo wall is preserved. Several photos therefore also appear o
 | `about-paraguay-community.webp` and `about-paraguay-eye-exam.webp` | Home and About | About | Yes | Two distinct Paraguay outreach images, portrait at least 1200 × 1600 px |
 | `india-clinical-teaching.webp` | Home and News | News | Yes | Distinct teaching image, portrait at least 1200 × 1600 px |
 | `IMG_1788.jpg` | News and Timeline | Timeline | Yes | Distinct Ethiopia research/news image, landscape at least 1600 × 1200 px |
-| KATRX ophthalmology team photo | KATRX personal website; local Kat leadership card | Leadership profile draft | No VWB reuse found | Approve reuse of this group photo, or supply an approved standalone Kat headshot for replacement |
+| Kat standalone headshot | User-supplied 600 × 600 px portrait | Leadership profile draft | No VWB reuse found | Visual approval; higher-resolution original if available for large displays |
 | WHH Foundation logo | Not supplied | Donor page | — | Official SVG or high-resolution transparent PNG; usage permission |
 
 Other repeated headshots and logos are intentional identity/attribution elements pending editorial review. Raw `IMG_` and screenshot files require crop, context and consent review before use.
@@ -281,7 +281,7 @@ Each implemented website change has its own commit. Cherry-pick only the approve
 | --- | --- | --- |
 | VWB-02 | `771e016` | Mission content and mission CSS cache version |
 | VWB-03 | `bd0cd7b` | About bio, ORCID, and News research citation |
-| VWB-04 | `983adcd` | Kat leadership card, sourced biography, and KATRX team photo |
+| VWB-04 | `983adcd` + `3b9d4f1` | Kat leadership card and sourced biography; user-supplied portrait replaces initial team photo |
 | VWB-06 | `2d454c8` | Timeline content, default view, and CMS fields |
 | VWB-07 | `7b3e1dd` | Partnerships navigation label |
 | VWB-08 | `412ab95` | Sponsor response wording |
@@ -292,7 +292,7 @@ The VWB-10 documentation commit records the full review branch, so update its st
 
 | Release date | Version | Change IDs | PR / commit | Preview | QA result | Approved by | Rollback |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| — | Draft | 01–10 | `codex/vwb-website-changes` (`983adcd` latest code) | Local `http://127.0.0.1:5178/` | Partial; see evidence log | — | `cd9fe81` |
+| — | Draft | 01–10 | `codex/vwb-website-changes` (`3b9d4f1` latest code) | Local `http://127.0.0.1:5178/` | Partial; see evidence log | — | `cd9fe81` |
 
 ## Notes
 
