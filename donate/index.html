@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script>try{if(sessionStorage.getItem('vwb-blink-enter')==='true'){document.documentElement.classList.add('page-entering');setTimeout(()=>document.documentElement.classList.remove('page-entering'),1750)}}catch{}</script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Explore ways to support Vision Without Borders. Online donations are being prepared." />
+    <title>Donate | Vision Without Borders</title>
+    <link rel="icon" href="/assets/vwb-favicon.svg?v=2" type="image/svg+xml" />
+    <link rel="stylesheet" href="/src/styles.css?v=204" />
+  </head>
+  <body class="inner-page donate-page">
+    <main class="site-shell">
+      <header class="site-header" aria-label="Vision Without Borders"><a class="brand" href="/" aria-label="Vision Without Borders home"><span class="brand-mark" aria-hidden="true"></span><span class="brand-name">Vision Without Borders</span></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation"><span></span><span></span><span></span></button><nav id="primary-nav" class="site-nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/mission">Mission</a><a href="/about">About</a><a href="/timeline">Timeline</a><a href="/news">News &amp; Research</a><a href="/sponsor">Partnerships</a><a href="/donate" aria-current="page">Donate</a><a href="/contact">Contact</a></nav></header>
+
+      <section class="donate-hero" aria-labelledby="donate-title">
+        <div class="section-shell donate-hero-grid">
+          <div class="donate-hero-copy">
+            <p class="section-kicker">Support the mission</p>
+            <h1 id="donate-title">Help more people see what’s possible.</h1>
+            <p class="lead">Vision Without Borders works with local partners to expand access to eye care, training, and sight-restoring services.</p>
+            <a href="#donation-options" class="button button-primary">Explore giving options</a>
+          </div>
+          <div class="donate-visual" aria-hidden="true"><span class="donate-visual-orbit donate-visual-orbit-one"></span><span class="donate-visual-orbit donate-visual-orbit-two"></span><span class="donate-visual-eye"></span><span class="donate-visual-caption">VISION<br />WITHOUT<br />BORDERS</span></div>
+        </div>
+      </section>
+
+      <section class="donate-main content-section" id="donation-options" aria-labelledby="donation-options-title">
+        <div class="section-shell donate-layout">
+          <div class="donate-context">
+            <p class="section-kicker">Make a contribution</p>
+            <h2 id="donation-options-title">Choose what works for you.</h2>
+            <p>Gifts can help sustain the partnerships, clinical work, and education that make access to eye care possible.</p>
+            <div class="donate-context-rule" aria-hidden="true"></div>
+            <p class="donate-context-note">This page is a preview while we complete payment setup. No payment is collected here yet.</p>
+          </div>
+
+          <form class="donate-card" data-donation-form novalidate>
+            <div class="donate-card-heading"><span class="donate-card-step" data-donation-step-label>01 / Your gift</span><h3 data-donation-step-title tabindex="-1">Set your donation</h3><p data-donation-step-description>Select a frequency and amount to preview your gift.</p></div>
+
+            <div data-donation-selection>
+
+            <fieldset class="donate-frequency"><legend>How often would you like to give?</legend><div class="donate-frequency-options"><label><input type="radio" name="frequency" value="once" checked /><span>One time</span></label><label><input type="radio" name="frequency" value="monthly" /><span>Monthly</span></label></div></fieldset>
+
+            <fieldset class="donate-amount"><legend>Choose an amount in US dollars</legend><div class="donate-amount-options"><label><input type="radio" name="amount" value="25" /><span>$25</span></label><label><input type="radio" name="amount" value="50" checked /><span>$50</span></label><label><input type="radio" name="amount" value="100" /><span>$100</span></label><label><input type="radio" name="amount" value="250" /><span>$250</span></label></div><label class="donate-custom"><span>Or enter another amount</span><span class="donate-custom-field"><span aria-hidden="true">$</span><input type="number" name="custom-amount" min="1" step="0.01" inputmode="decimal" autocomplete="off" placeholder="Other amount" aria-describedby="donate-custom-hint" /></span></label><small id="donate-custom-hint">Enter at least $1 if you choose another amount.</small></fieldset>
+
+              <div class="donate-summary" aria-live="polite"><span>Your selection</span><strong data-donation-summary>$50 one time</strong></div>
+              <p class="donate-error" data-donation-error role="alert" hidden>Enter an amount of at least $1, with no more than two decimal places.</p>
+              <button class="button button-primary donate-review-button" type="button" data-donation-review-button>Review your gift</button>
+            </div>
+
+            <div class="donate-review" data-donation-review hidden>
+              <p class="donate-review-intro">Here’s the gift you selected. You can go back to adjust it.</p>
+              <div class="donate-summary"><span>Donation</span><strong data-donation-review-summary>$50 one time</strong></div>
+              <p class="donate-setup-note" id="donate-setup-note">Secure checkout is being set up. This preview cannot take a payment.</p>
+              <button class="button button-primary donate-checkout" type="button" disabled aria-describedby="donate-setup-note">Continue to secure checkout</button>
+              <button class="donate-edit-button" type="button" data-donation-back>Edit your gift</button>
+            </div>
+            <p class="donate-card-foot">Once connected, payment details will be entered on the provider’s secure checkout page. For questions about giving, <a href="/contact">contact us</a>.</p>
+          </form>
+        </div>
+      </section>
+
+      <section class="donate-other content-section" aria-labelledby="other-ways-title"><div class="section-shell donate-other-grid"><div><p class="section-kicker">More ways to help</p><h2 id="other-ways-title">Support takes many forms.</h2></div><div><p>Partnerships and sharing the mission can also help us reach more people.</p><a href="/sponsor">Explore partnerships <span aria-hidden="true">↗</span></a></div></div></section>
+
+      <footer class="site-footer" aria-label="Footer"><div class="footer-shell"><a class="footer-brand" href="/" aria-label="Vision Without Borders home"><span class="footer-brand-mark" aria-hidden="true"></span><span>Vision Without Borders</span></a><nav class="footer-links" aria-label="Footer links"><a href="https://www.instagram.com/visionwithoutbordersmd/" target="_blank" rel="noreferrer">Instagram</a><a href="/mission">Mission</a><a href="/about">About</a><a href="/timeline">Timeline</a><a href="/news">News &amp; Research</a><a href="/sponsor">Partnerships</a><a href="/donate">Donate</a><a href="/contact">Contact</a></nav></div></footer>
+    </main>
+    <script type="module" src="/src/wordmark.js?v=107"></script>
+    <script type="module" src="/src/donate.js?v=1"></script>
+  </body>
+</html>

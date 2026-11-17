@@ -133,6 +133,11 @@
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
+[[headers]]
+  for = "/donate/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
 # Revalidate the shared script so independently deployed behavior changes reach returning visitors.
 [[headers]]
   for = "/src/wordmark.js"
