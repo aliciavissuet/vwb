@@ -19,7 +19,7 @@
 | VWB-04 | About | Officers & Leadership; Alicia and Kat profiles | High | Blocked / awaiting input | Alicia and Kat cards use user-supplied portraits and subject-area labels; approve profile copy and confirm formal VWB roles before using titles |
 | VWB-05 | About | WHH Foundation donor recognition | High | Blocked / awaiting input | Legal name, mission, donation attribution, official logo and permission, donor approval |
 | VWB-06 | Timeline | Default timeline, milestones, no repeated photos | High | Blocked / awaiting input | Verify consulting milestone copy; replacement images and image permissions |
-| VWB-07 | Donate | Partnerships navigation and hosted donation page | High | Blocked / awaiting input | Processor selection, eligibility, bank payout, nonprofit/tax wording, sandbox checkout; Partnerships label done |
+| VWB-07 | Donate | Partnerships navigation and hosted donation page | High | Blocked / awaiting input | Donate UI and navigation ready for review; processor selection, eligibility, bank payout, nonprofit/tax wording, sandbox checkout still pending |
 | VWB-08 | Partnerships | Inquiry routing, lead tracking, alerts | High | Blocked / awaiting input | Confirm Jaime/Jamie address, notification settings, tracking platform and SLA; form remains on Netlify Forms |
 | VWB-09 | Contact | Approximately 2× sketch speed | Medium | Ready for review | Reduced-motion and wider device review |
 | VWB-10 | Release | QA, changelog, rollback, approval | High | In progress | Full QA, approvals and production deployment |
@@ -151,19 +151,19 @@ Change ID: VWB-07
 Owner: Codex / VWB finance
 Status: Blocked / awaiting input
 Date started: 2026-11-16
-Description of implementation: Changed Sponsor navigation label to Partnerships while preserving /sponsor/ and sponsorship content. No Donate link or checkout is exposed until a usable hosted processor exists.
-Files / routes modified: Navigation in index.html, about/index.html, mission/index.html, timeline/index.html, news/index.html, sponsor/index.html, contact/index.html.
+Description of implementation: Changed Sponsor navigation label to Partnerships while preserving /sponsor/ and sponsorship content. Added a top-level Donate link and a local `/donate/` preview with one-time/monthly choices, four preset amounts, a custom USD amount, a gift review step, invalid-amount feedback, and a disabled hosted-checkout button. No payment data is collected. Added a provider/API decision plan in `DONATION_CHECKOUT_PLAN.md`; Stripe Checkout Sessions is the provisional fit for the custom selector, while Zeffy remains an alternative if its own hosted form is preferred.
+Files / routes modified: Navigation/footer in index.html, about/index.html, mission/index.html, timeline/index.html, news/index.html, sponsor/index.html, contact/index.html; shared CSS cache references in those and existing thanks pages; donate/index.html, src/donate.js, src/styles.css, netlify.toml, DONATION_CHECKOUT_PLAN.md; /donate/.
 Before screenshot or URL: Git parent cd9fe81; /sponsor/
-After screenshot or preview URL: http://127.0.0.1:5176/sponsor/
-Commit / PR link: 7b3e1dd; no PR
-Automated tests: HTML IDs/local image paths pass.
-Manual desktop test: Partnerships navigation reaches existing sponsorship page.
-Manual mobile test: Pending.
-Accessibility test: Navigation link names checked in browser accessibility tree.
-Approvals / outstanding questions: Select Zeffy or Stripe after checking current eligibility, fees, recurring gifts, receipts, tax language and bank payout. A Donate link would lead to an incomplete flow now.
+After screenshot or preview URL: http://127.0.0.1:5178/donate/
+Commit / PR link: 7b3e1dd (Partnerships label), 8170d01 (Donate UI and API plan); no PR
+Automated tests: `node --check src/donate.js` and `git diff --check` passed; parsed all HTML and checked Donate navigation on all eight main pages and disabled checkout in the Donate page.
+Manual desktop test: Local browser shows the Donate hero and selector. One-time preset selection and custom monthly $75 review displayed correctly; returning to edit worked. Zero amount displayed an error and stayed on selection. Checkout remained disabled. Partnerships navigation was checked previously.
+Manual mobile test: Pending narrow-viewport browser inspection.
+Accessibility test: Browser accessibility tree exposes named navigation, radio groups, custom amount, review button, error, and disabled checkout. Full keyboard and contrast review pending.
+Approvals / outstanding questions: Choose Stripe Checkout Sessions for this custom selector or Zeffy's hosted campaign form after eligibility, fee, donor prompt and UX review. Complete provider account and bank payout setup; approve amount limits, receipt/tax wording, and nonprofit status language. Run sandbox checkout, success/cancel, webhook, and mobile tests before enabling payments or releasing the Donate link to production.
 Date deployed: —
 Production verification: —
-Rollback commit / instructions: Revert 7b3e1dd.
+Rollback commit / instructions: Revert 8170d01 to remove the Donate UI and link; revert 7b3e1dd separately to restore the Sponsor label if desired.
 ```
 
 ```yaml
@@ -241,7 +241,9 @@ The [publisher's article page](https://www.dovepress.com/worksite-vision-screeni
 | Fees and donor experience | No platform or processing fee to the organization; optional contribution prompt for Zeffy appears at checkout and cannot be removed or defaulted to zero. [Zeffy fee explanation](https://support.zeffy.com/zeffy-really-is-free-no-fees-no-catch-4zjir) | Standard US domestic-card rate is 2.9% + 30¢ unless special pricing applies. [Stripe pricing](https://stripe.com/pricing?locale=en-US) |
 | Receipts | Payment confirmations are available, but US tax receipts require confirmed 501(c)(3) status. [Zeffy tax receipts](https://support.zeffy.com/setting-up-your-account-to-generate-receipts-e2fi1) | Hosted payment receipts can be configured; tax-deductibility wording remains VWB's responsibility. |
 
-**Provisional choice:** Zeffy fits the requested preset/custom and recurring donation flow if VWB has an EIN, an organization bank account, and accepts the donor contribution prompt. Selection, onboarding, tax wording, checkout design, and activation remain pending VWB approval. No payment account or live Donate route was created.
+**Initial provider review:** Zeffy fits the requested preset/custom and recurring donation flow if VWB has an EIN, an organization bank account, and accepts the donor contribution prompt. Selection, onboarding, tax wording, checkout design, and activation remain pending VWB approval. No payment account has been created.
+
+**API/UI update (2026-11-16):** The local Donate preview now uses VWB's own amount and frequency selector. For that specific UX, Stripe's [Checkout Sessions API](https://docs.stripe.com/api/checkout/sessions/create) is the provisional integration choice: a server-side function can create a hosted one-time payment or monthly subscription session from validated input. Zeffy's [published API](https://support.zeffy.com/get-started-with-the-zeffy-api-yourg) is read-only for payments, contacts and campaigns; its [hosted/embedded campaign](https://support.zeffy.com/how-to-embed-your-zeffy-campaign-on-your-website-km0gv) is the lower-fee alternative, but would replace the VWB selector. Stripe [Payment Links](https://support.stripe.com/questions/how-to-accept-donations-through-stripe?locale=en-US) allow a donor-chosen amount for one-time gifts only in the documented no-code flow. See `DONATION_CHECKOUT_PLAN.md`. The local route cannot take payment and has not been deployed.
 
 | Decision | Current proposal | Final decision | Approver / date |
 | --- | --- | --- | --- |
@@ -249,7 +251,7 @@ The [publisher's article page](https://www.dovepress.com/worksite-vision-screeni
 | Alicia title | CTO, subject to appointment | Pending | — |
 | Kat title | Director of Clinical Innovation | Pending | — |
 | Donor page URL | `/about/donors/` | Pending | — |
-| Donation processor | Evaluate Zeffy; fallback Stripe | Pending | — |
+| Donation processor | Stripe Checkout Sessions for the custom VWB selector; Zeffy hosted campaign if its form and fee model are preferred | Pending | — |
 | Sponsor lead tracking | Trello or replacement | Pending | — |
 | Follow-up SLA | Two business days | Pending; existing promise removed | — |
 | Production release | Explicit approval required | Pending | — |
@@ -276,7 +278,7 @@ Other repeated headshots and logos are intentional identity/attribution elements
 
 ### Selective promotion to main
 
-Each implemented website change has its own commit. Cherry-pick only the approved IDs, then run the checks and update this tracker for the selected release. VWB-01 is a regression check; VWB-05 has no code yet. VWB-04 has separate commits for Kat's draft profile, Kat's supplied headshot, Alicia's card, and Alicia's replacement balcony crop; neither card uses an unapproved formal title. VWB-07 only changes the existing Sponsor navigation label to Partnerships; it does not add a Donate page. VWB-08 only removes the unapproved response-time promise; form delivery and alerts remain blocked. The shared `src/wordmark.js` file has separate, non-overlapping edits in VWB-06 and VWB-09.
+Each implemented website change has its own commit. Cherry-pick only the approved IDs, then run the checks and update this tracker for the selected release. VWB-01 is a regression check; VWB-05 has no code yet. VWB-04 has separate commits for Kat's draft profile, Kat's supplied headshot, Alicia's card, and Alicia's replacement balcony crop; neither card uses an unapproved formal title. VWB-07 has separate Partnerships-label and Donate-UI commits; the Donate UI commit must not be promoted as a live payment flow until hosted checkout is connected and tested. VWB-08 only removes the unapproved response-time promise; form delivery and alerts remain blocked. The shared `src/wordmark.js` file has separate, non-overlapping edits in VWB-06 and VWB-09.
 
 | Change | Commit | Scope |
 | --- | --- | --- |
@@ -284,7 +286,7 @@ Each implemented website change has its own commit. Cherry-pick only the approve
 | VWB-03 | `bd0cd7b` | About bio, ORCID, and News research citation |
 | VWB-04 | `983adcd` + `3b9d4f1` + `9ad636c` + `cf08d39` | Kat leadership card and supplied headshot; Alicia technology card and final balcony crop showing no bare leg |
 | VWB-06 | `2d454c8` | Timeline content, default view, and CMS fields |
-| VWB-07 | `7b3e1dd` | Partnerships navigation label |
+| VWB-07 | `7b3e1dd` + `8170d01` | Partnerships navigation label; Donate UI preview and checkout integration plan |
 | VWB-08 | `412ab95` | Sponsor response wording |
 | VWB-09 | `97c01be` | Contact sketch speed and shared script revalidation |
 
