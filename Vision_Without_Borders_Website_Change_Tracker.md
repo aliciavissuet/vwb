@@ -259,15 +259,15 @@ Description of implementation: Built /2020/ with verified-only $20,000 community
 Files / routes modified: 2020/index.html, content/campaign-2020-public.json, src/campaign.js, src/campaign-status.mjs, src/campaign-status.test.mjs, donate/index.html, src/donate.js, src/styles.css, netlify.toml; /2020/ and /donate/
 Before screenshot or URL: No /2020/ route; Donate page before 1e8b3de.
 After screenshot or preview URL: http://127.0.0.1:5178/2020/
-Commit / PR link: 1e8b3de, 036ffc1, e0244c9; no PR
+Commit / PR link: 1e8b3de, 036ffc1, e0244c9, aff0348; no PR
 Automated tests: Match-status tests pass; JS syntax, public JSON parse, and git diff whitespace check pass.
 Manual desktop test: /2020/ screenshot and accessibility tree show $0 verified, foundation verification pending, Seeking Sponsor, six giving choices, potential $40,000 conditional outcome. The $500 link opens Donate with $500 selected; gift review shows 500 and checkout remains disabled.
 Manual mobile test: Pending narrow-viewport check.
 Accessibility test: Named progress indicator, heading order, and giving link names checked in browser accessibility tree; keyboard/contrast review pending.
-Approvals / outstanding questions: Verify WHH receipt, restrictions, campaign eligibility and donor recognition consent before publishing amount/name; approve founder wording concerning Cure Blindness Project; connect Stripe and an authoritative cash ledger; approve exact match eligibility/deadline only after signed agreement. GA4 and payment reporting are not connected.
+Approvals / outstanding questions: Verify WHH receipt, restrictions, campaign eligibility and donor recognition consent before publishing amount/name; approve founder wording. [Stanford's official profile](https://profiles.stanford.edu/blake-snyder) and [Global Ophthalmology Program](https://med.stanford.edu/ophthalmology/education/fellowships---advanced-training/global-ophthalmology-program.html) support the Clinical Instructor and Cure Blindness Project fellowship-partnership wording. Connect Stripe and an authoritative cash ledger; approve exact match eligibility/deadline only after signed agreement. GA4 and payment reporting are not connected.
 Date deployed: —
 Production verification: —
-Rollback commit / instructions: Revert e0244c9, 036ffc1, then 1e8b3de; homepage campaign feature is separate under VWB-11.
+Rollback commit / instructions: Revert aff0348, e0244c9, 036ffc1, then 1e8b3de; homepage campaign feature is separate under VWB-11.
 ```
 
 ```yaml
@@ -378,7 +378,7 @@ Each implemented website change has its own commit. Cherry-pick only the approve
 | VWB-08 | `412ab95` | Sponsor response wording |
 | VWB-09 | `97c01be` | Contact sketch speed and shared script revalidation |
 | VWB-11 | `c671d0a` + `6dd130f` | Homepage campaign feature and card fit |
-| VWB-12 | `1e8b3de` + `036ffc1` + `e0244c9` | /2020/, public snapshot, community giving options and signed-match guard; depends on VWB-07 Donate UI |
+| VWB-12 | `1e8b3de` + `036ffc1` + `e0244c9` + `aff0348` | /2020/, public snapshot, community giving options, signed-match guard and sourced founder story; depends on VWB-07 Donate UI |
 | VWB-13 | `3bc6282` | Founding sponsor proposal and private inquiry form |
 | VWB-14 | `bd92b51` + `bc6d0b4` | Private recognition schema, date/reminder rules and operations guide |
 
@@ -387,7 +387,7 @@ The VWB-10 documentation commit records the full review branch, so update its st
 
 | Release date | Version | Change IDs | PR / commit | Preview | QA result | Approved by | Rollback |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| — | Draft | 01–14 | `codex/vwb-website-changes` (through `bc6d0b4`, plus tracker) | Local `http://127.0.0.1:5178/2020/` | Partial; see evidence log | — | `cd9fe81` |
+| — | Draft | 01–14 | `codex/vwb-website-changes` (through `aff0348`, plus tracker) | Local `http://127.0.0.1:5178/2020/` | Partial; see evidence log | — | `cd9fe81` |
 
 ## Notes
 
