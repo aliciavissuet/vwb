@@ -235,19 +235,19 @@ Change ID: VWB-11
 Owner: Codex / VWB reviewer
 Status: Ready for review
 Date started: 2026-11-16
-Description of implementation: Added a 20/20 Vision homepage feature below the existing hero with the requested goal/opportunity line, two distinct CTAs, and a link to /2020/. Following user review, styled the donation link as a filled teal button with a heart icon and the sponsor link as an underlined action with an arrow. The donation action now goes to the in-page giving form at `/2020/#community-giving`. Replaced the card's two zeroes with brand-colored eye marks that blink at staggered intervals, then reshaped them as tall oval zeroes after a second visual review; animation is disabled for reduced motion.
+Description of implementation: Added a 20/20 Vision homepage feature below the existing hero with the requested goal/opportunity line, two distinct CTAs, and a link to /2020/. Following user review, styled the donation link as a filled teal button with a heart icon and the sponsor link as an underlined action with an arrow. The donation action now goes to the in-page giving form at `/2020/#community-giving`. Replaced the card's two zeroes with brand-colored eye marks that blink at staggered intervals, then reshaped them as tall oval zeroes after a second visual review. Raised the eye zeroes slightly to align with the adjacent numerals; animation is disabled for reduced motion.
 Files / routes modified: index.html, src/styles.css; /
 Before screenshot or URL: Local home page before c671d0a.
 After screenshot or preview URL: http://127.0.0.1:5178/?skipIntro=1
-Commit / PR link: c671d0a, 6dd130f, 71ba53b (actions), f5edff7 (eye card), 1197041 (zero shape), 876eb80 (campaign form link); no PR
+Commit / PR link: c671d0a, 6dd130f, 71ba53b (actions), f5edff7 (eye card), 1197041 (zero shape), 876eb80 (campaign form link), 0c51586 (eye alignment); no PR
 Automated tests: HTML parse confirms both eye marks and the three campaign links; four campaign/recognition tests and git diff whitespace check pass.
-Manual desktop test: Home page accessibility tree confirms both CTAs and the /2020/ link; local screenshots confirm distinct action treatments, zero-shaped eye marks and card fit.
+Manual desktop test: Home page accessibility tree confirms both CTAs and the /2020/ link; local screenshots confirm distinct action treatments, zero-shaped eye marks and card fit. After 0c51586, a local screenshot at `/?skipIntro=1&preview=eyes-raised` shows open eye outlines aligned with the adjacent 2s.
 Manual mobile test: Pending narrow-viewport check.
 Accessibility test: Heading and CTA names exposed in browser accessibility tree; decorative eye marks are hidden from assistive technology and the card retains its accessible link name. Reduced-motion CSS disables blinking; keyboard and contrast review pending.
 Approvals / outstanding questions: Approve homepage placement and copy.
 Date deployed: —
 Production verification: —
-Rollback commit / instructions: Revert 1197041 for the original eye shape, then f5edff7 to restore numeric card; revert 71ba53b to restore prior CTAs. Revert 6dd130f and c671d0a together to remove the campaign feature.
+Rollback commit / instructions: Revert 0c51586 for the prior eye placement. Revert 1197041 for the original eye shape, then f5edff7 to restore numeric card; revert 71ba53b to restore prior CTAs. Revert 6dd130f and c671d0a together to remove the campaign feature.
 ```
 
 ```yaml
@@ -378,7 +378,7 @@ Each implemented website change retains its own commit on local `main` after a f
 | VWB-07 | `7b3e1dd` + `8170d01` + `1656b98` + `c36ccbe` | Partnerships navigation label; Donate UI preview and design refinement; Stripe Checkout selection and signup plan |
 | VWB-08 | `412ab95` | Sponsor response wording |
 | VWB-09 | `97c01be` | Contact sketch speed and shared script revalidation |
-| VWB-11 | `c671d0a` + `6dd130f` + `71ba53b` + `f5edff7` + `1197041` + `876eb80` | Homepage campaign feature, differentiated action links, blinking eye card and zero-shaped refinement; design commits can be selected independently in order |
+| VWB-11 | `c671d0a` + `6dd130f` + `71ba53b` + `f5edff7` + `1197041` + `876eb80` + `0c51586` | Homepage campaign feature, differentiated action links, blinking eye card, zero-shaped refinement and vertical alignment; design commits can be selected independently in order |
 | VWB-05 | `d27feab` | Superseded named donor recognition in publicly served specification; keep donor anonymous |
 | VWB-12 | `1e8b3de` + `036ffc1` + `e0244c9` + `aff0348` + `76ddd8a` + `1abcb12` + `876eb80` + `42d85ce` | /2020/, public snapshot, anonymous $10,000 founding gift, in-page community giving and review, signed-match guard, sourced founder story, differentiated hero actions and snapshot-driven progress visual; depends on VWB-07 Donate UI |
 | VWB-13 | `3bc6282` + `855f354` + `53fd72e` | Founding sponsor proposal and one private partnership form with an interest choice; notification preparation |
