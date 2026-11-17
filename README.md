@@ -19,16 +19,14 @@ Then open `http://127.0.0.1:5176/`.
 
 ## Netlify form email notifications
 
-The `contact` and `sponsor-inquiry` forms are handled by Netlify Forms. After a
+The `contact`, `sponsor-inquiry`, and `founding-sponsor-inquiry` forms are handled by Netlify Forms. After an approved
 deploy, add an email notification for each form in the Netlify site dashboard:
 
 1. Open **Forms** and select **Enable form detection** if it is not already enabled.
 2. Redeploy the site so Netlify discovers both forms.
-3. Open **Project configuration → Notifications → Emails and webhooks → Form submission notifications**.
+3. Open **Forms → Submission notifications**.
 4. Choose **Add notification → Email notification**.
 5. Select the form, enter the destination email address, and save.
-6. Repeat for the other form.
+6. Repeat for the other forms. The founding sponsor form has a distinct email subject and an `email` field so a form notification can use the submitter's address as Reply-to.
 
-Netlify only discovers form changes during a deploy. Test each form on the
-deployed site and confirm both the submission in Netlify and the notification
-email. Check the recipient's spam folder during the first test.
+Netlify only discovers form changes during a deploy. Notification recipients must be active Netlify team members or, if the team supports it, outside addresses that confirm receipt. Test each form on the deployed site and confirm both the submission in Netlify and the notification email. Check the recipient's spam folder during the first test. Form submission notifications do not schedule the 12-month sponsor recognition reminder; that requires the separate private record and scheduled notification described in `CAMPAIGN_2020_OPERATIONS.md`.
