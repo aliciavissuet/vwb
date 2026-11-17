@@ -9131,11 +9131,10 @@ figcaption {
 .campaign-foundation-card > span, .campaign-outcome-card > span { color: var(--blue); font-size: 0.74rem; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; }
 .campaign-foundation-card h3 { margin: 25px 0 12px; font-size: 2rem; letter-spacing: -0.05em; }
 .campaign-give-section { background: var(--blue-soft); }
+.campaign-give-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(35px, 6vw, 85px); align-items: start; }
 .campaign-give-section h2 { max-width: 16ch; }
 .campaign-give-section p { max-width: 60ch; }
-.campaign-amounts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 40px; }
-.campaign-amounts a { display: flex; min-height: 105px; align-items: center; justify-content: space-between; padding: 24px; border: 1px solid var(--blue); border-radius: 12px; background: var(--paper); font-size: clamp(1.3rem, 2vw, 2rem); font-weight: 800; text-decoration: none; }
-.campaign-amounts a:hover, .campaign-amounts a:focus-visible { background: var(--blue); color: white; }
+.campaign-give-section .donate-card { width: 100%; min-width: 0; }
 .campaign-sponsor-section { background: var(--bg); }
 .campaign-sponsor-grid, .campaign-story-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.7fr); gap: clamp(35px, 7vw, 110px); align-items: center; }
 .campaign-sponsor-grid > div:first-child p { max-width: 64ch; }
@@ -9145,8 +9144,9 @@ figcaption {
 .campaign-story-section { background: var(--paper); }
 .campaign-story-grid { align-items: start; }
 .campaign-story-grid p { margin-top: 0; }
-@media (max-width: 760px) { .campaign-hero-grid, .campaign-progress-grid, .campaign-sponsor-grid, .campaign-story-grid { grid-template-columns: 1fr; } .campaign-hero-mark { min-height: 250px; } .campaign-amounts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 450px) { .campaign-amounts { grid-template-columns: 1fr; } .campaign-thermometer-labels { flex-direction: column; } }
+@media (max-width: 900px) { .campaign-give-grid { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .campaign-hero-grid, .campaign-progress-grid, .campaign-sponsor-grid, .campaign-story-grid { grid-template-columns: 1fr; } .campaign-hero-mark { min-height: 250px; } }
+@media (max-width: 450px) { .campaign-thermometer-labels { flex-direction: column; } .campaign-give-section .donate-amount-options { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (prefers-reduced-motion: reduce) { .campaign-thermometer span { transition: none; } }
 
 .donate-error { margin: 17px 0 0; color: #a53025; font-weight: 700; line-height: 1.45; }

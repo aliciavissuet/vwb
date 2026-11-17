@@ -14,7 +14,7 @@
 
       <section class="campaign-hero" aria-labelledby="campaign-title">
         <div class="section-shell campaign-hero-grid">
-          <div><p class="section-kicker">Our founding campaign</p><h1 id="campaign-title">20/20<br /><em>Vision</em></h1><p class="campaign-tagline">$20,000 Community Goal.<br />$20,000 Founding Sponsor Opportunity.</p><p class="lead">Help build a foundation for sight-restoring care, education, and lasting local partnerships.</p><div class="campaign-actions"><a class="home-campaign-donate" href="/donate/?campaign=2020"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 8.6c0 4.2-8.8 10.2-8.8 10.2S3.2 12.8 3.2 8.6a4.5 4.5 0 0 1 8.8-1.1 4.5 4.5 0 0 1 8.8 1.1Z"/></svg><span>Make a Donation</span></a><a class="home-campaign-sponsor" href="/sponsor/#founding-sponsor"><span>Become Our Founding Sponsor</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19 19 5M8 5h11v11"/></svg></a></div></div>
+          <div><p class="section-kicker">Our founding campaign</p><h1 id="campaign-title">20/20<br /><em>Vision</em></h1><p class="campaign-tagline">$20,000 Community Goal.<br />$20,000 Founding Sponsor Opportunity.</p><p class="lead">Help build a foundation for sight-restoring care, education, and lasting local partnerships.</p><div class="campaign-actions"><a class="home-campaign-donate" href="#community-giving"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 8.6c0 4.2-8.8 10.2-8.8 10.2S3.2 12.8 3.2 8.6a4.5 4.5 0 0 1 8.8-1.1 4.5 4.5 0 0 1 8.8 1.1Z"/></svg><span>Make a Donation</span></a><a class="home-campaign-sponsor" href="/sponsor/#founding-sponsor"><span>Become Our Founding Sponsor</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19 19 5M8 5h11v11"/></svg></a></div></div>
           <div class="campaign-hero-mark" aria-hidden="true"><img src="/assets/vwb-logo-mark.svg" alt="" /><span>See what<br />comes next.</span></div>
         </div>
       </section>
@@ -26,7 +26,29 @@
         </div>
       </section>
 
-      <section class="campaign-give-section" aria-labelledby="campaign-give-title"><div class="section-shell"><p class="section-kicker">Community donors</p><h2 id="campaign-give-title">Choose your part in 20/20 Vision.</h2><p>Give once or monthly toward the community cash goal. Payment checkout is being set up; the Donate page currently previews your choice.</p><div class="campaign-amounts" aria-label="Suggested donation amounts"><a href="/donate/?campaign=2020&amp;amount=25">$25</a><a href="/donate/?campaign=2020&amp;amount=50">$50</a><a href="/donate/?campaign=2020&amp;amount=100">$100</a><a href="/donate/?campaign=2020&amp;amount=250">$250</a><a href="/donate/?campaign=2020&amp;amount=500">$500</a><a href="/donate/?campaign=2020&amp;amount=custom">Custom amount <span aria-hidden="true">↗</span></a></div></div></section>
+      <section class="campaign-give-section" id="community-giving" aria-labelledby="campaign-give-title">
+        <div class="section-shell campaign-give-grid">
+          <div><p class="section-kicker">Community donors</p><h2 id="campaign-give-title">Choose your part in 20/20 Vision.</h2><p>Give once or monthly toward the community cash goal. Choose and review your gift here; secure checkout will be connected after payment setup is complete.</p></div>
+          <form class="donate-card" data-donation-form novalidate>
+            <div class="donate-card-heading"><span class="donate-card-step" data-donation-step-label>01 / Your gift</span><h3 data-donation-step-title tabindex="-1">Set your donation</h3><p data-donation-step-description>Select a frequency and amount to preview your gift.</p></div>
+            <div data-donation-selection>
+              <fieldset class="donate-frequency"><legend>How often would you like to give?</legend><div class="donate-frequency-options"><label><input type="radio" name="frequency" value="once" checked /><span>One time</span></label><label><input type="radio" name="frequency" value="monthly" /><span>Monthly</span></label></div></fieldset>
+              <fieldset class="donate-amount"><legend>Choose an amount in US dollars</legend><div class="donate-amount-options"><label><input type="radio" name="amount" value="25" /><span>$25</span></label><label><input type="radio" name="amount" value="50" checked /><span>$50</span></label><label><input type="radio" name="amount" value="100" /><span>$100</span></label><label><input type="radio" name="amount" value="250" /><span>$250</span></label><label><input type="radio" name="amount" value="500" /><span>$500</span></label></div><label class="donate-custom"><span>Or enter another amount</span><span class="donate-custom-field"><span aria-hidden="true">$</span><input type="number" name="custom-amount" min="1" step="0.01" inputmode="decimal" autocomplete="off" placeholder="Other amount" aria-describedby="campaign-custom-hint" /></span></label><small id="campaign-custom-hint">Enter at least $1 if you choose another amount.</small></fieldset>
+              <div class="donate-summary" aria-live="polite"><span>Your selection</span><div class="donate-summary-value"><output data-donation-summary>50</output><small data-donation-frequency>USD · One time</small></div></div>
+              <p class="donate-error" data-donation-error role="alert" hidden>Enter an amount of at least $1, with no more than two decimal places.</p>
+              <button class="button button-primary donate-review-button" type="button" data-donation-review-button>Review your gift</button>
+            </div>
+            <div class="donate-review" data-donation-review hidden>
+              <p class="donate-review-intro">Here’s the gift you selected. You can go back to adjust it.</p>
+              <div class="donate-summary"><span>Donation</span><div class="donate-summary-value"><output data-donation-review-summary>50</output><small data-donation-review-frequency>USD · One time</small></div></div>
+              <p class="donate-setup-note" id="campaign-checkout-note">Secure checkout is being set up. This preview cannot take a payment.</p>
+              <button class="button button-primary donate-checkout" type="button" disabled aria-describedby="campaign-checkout-note">Continue to secure checkout</button>
+              <button class="donate-edit-button" type="button" data-donation-back>Edit your gift</button>
+            </div>
+            <p class="donate-card-foot">Once connected, payment details will be entered on the provider’s secure checkout page. For questions about giving, <a href="/contact">contact us</a>.</p>
+          </form>
+        </div>
+      </section>
 
       <section class="campaign-sponsor-section" aria-labelledby="campaign-sponsor-title"><div class="section-shell campaign-sponsor-grid"><div><p class="section-kicker">One lead partner</p><h2 id="campaign-sponsor-title">A $20,000 Founding Sponsor Opportunity.</h2><p data-campaign-sponsor-intro>We are seeking one sponsor for a proposed $20,000 matching commitment. If documented and fulfilled under agreed terms, it could bring the combined cash outcome to $40,000.</p><p><strong data-campaign-match-status>Matching status: Seeking Sponsor</strong></p><p data-campaign-match-detail>No match is confirmed. Eligibility, deadline, and whether the match covers the initial foundation contribution or only new gifts would be set in a signed agreement.</p><a class="button button-primary" href="/sponsor/#founding-sponsor">Explore the sponsor opportunity</a></div><div class="campaign-outcome-card"><span>Potential combined cash outcome</span><strong>$40,000</strong><p>$20,000 community goal + a proposed $20,000 founding sponsor commitment, if secured and fulfilled.</p></div></div></section>
 
@@ -36,5 +58,6 @@
     </main>
     <script type="module" src="/src/wordmark.js?v=107"></script>
     <script type="module" src="/src/campaign.js?v=2"></script>
+    <script type="module" src="/src/donate.js?v=3"></script>
   </body>
 </html>
