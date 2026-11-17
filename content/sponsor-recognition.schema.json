@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Private 20/20 founding sponsor recognition record",
+  "description": "Store privately. This record is separate from the verified cash donation ledger and must never be served from /content/.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sponsor_name", "sponsor_logo", "recognition_consent", "sponsorship_agreement_status",
+    "commitment_amount", "match_eligibility", "match_deadline", "recognition_start",
+    "recognition_end", "anonymity_preference", "signed_at", "verified_received_amount",
+    "reminder_due", "reminder_sent_at"
+  ],
+  "properties": {
+    "sponsor_name": { "type": ["string", "null"] },
+    "sponsor_logo": { "type": ["string", "null"], "description": "Approved private asset reference; never publish without consent." },
+    "recognition_consent": { "type": "boolean" },
+    "sponsorship_agreement_status": { "enum": ["inquiry", "negotiating", "signed", "cancelled", "completed"] },
+    "commitment_amount": { "type": "integer", "minimum": 0, "description": "US cents; commitment, not cash received." },
+    "match_eligibility": { "type": "boolean" },
+    "match_deadline": { "type": ["string", "null"], "format": "date" },
+    "recognition_start": { "type": ["string", "null"], "format": "date" },
+    "recognition_end": { "type": ["string", "null"], "format": "date" },
+    "anonymity_preference": { "enum": ["public", "anonymous", "undecided"] },
+    "signed_at": { "type": ["string", "null"], "format": "date" },
+    "verified_received_amount": { "type": "integer", "minimum": 0, "description": "US cents; from confirmed transactions only." },
+    "reminder_due": { "type": ["string", "null"], "format": "date" },
+    "reminder_sent_at": { "type": ["string", "null"], "format": "date-time" }
+  }
+}
