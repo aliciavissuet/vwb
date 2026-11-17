@@ -15,5 +15,6 @@ test('public recognition requires signed agreement, consent, public preference, 
   assert.equal(publicRecognitionAllowed({ ...record, anonymity_preference: 'anonymous' }, '2027-01-01'), false)
   assert.equal(publicRecognitionAllowed(record, '2027-11-16'), false)
   assert.equal(expirationReminderDue(record, '2027-10-17'), true)
+  assert.equal(expirationReminderDue({ ...record, sponsorship_agreement_status: 'cancelled' }, '2027-10-17'), false)
   assert.equal(expirationReminderDue({ ...record, reminder_sent_at: '2027-10-17T12:00:00Z' }, '2027-10-18'), false)
 })

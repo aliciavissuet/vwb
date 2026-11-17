@@ -16,7 +16,7 @@ The potential $40,000 outcome is $20,000 in community cash plus $20,000 in spons
 
 The proposed WHH Foundation $10,000 initial gift remains excluded. Before showing its amount or name, VWB must confirm the receipt, amount, any restrictions, eligibility for this campaign, and donor recognition permission. Only then set `verified`, `campaign_eligible`, and `recognition_consent` to true, provide the exact amount in cents, and include that amount in `verified_community_cash_cents`. The page hides WHH's name and amount until all conditions are met. No WHH logo should be added without an approved asset and usage rights.
 
-The public sponsor snapshot must be derived from the **private** agreement and cash records. `agreement_status: signed`, `signed_at`, `match_eligibility: true`, a deadline, and the $20,000 commitment are all required before a secured status appears. A fulfilled status also requires $20,000 in verified sponsor receipts. The public JSON must never contain private inquiry content, a sponsor name, or a logo without separate recognition approval.
+The public sponsor snapshot must be derived from the **private** agreement and cash records. `agreement_status: signed` (or `completed` after fulfillment), `signed_at`, `match_eligibility: true`, a deadline, and the $20,000 commitment are all required before a secured status appears. A fulfilled status also requires $20,000 in verified sponsor receipts. The public JSON must never contain private inquiry content, a sponsor name, or a logo without separate recognition approval.
 
 ## Private recognition record and expiration
 

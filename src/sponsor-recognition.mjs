@@ -21,7 +21,7 @@ export function publicRecognitionAllowed(record, today) {
 }
 
 export function expirationReminderDue(record, today) {
-  if (!record.recognition_start || !record.recognition_end || record.reminder_sent_at) return false
+  if (!publicRecognitionAllowed(record, today) || record.reminder_sent_at) return false
   const expected = recognitionSchedule(record.recognition_start)
   return record.recognition_end === expected.recognition_end && today >= expected.reminder_due && today < expected.recognition_end
 }
