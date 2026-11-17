@@ -180,12 +180,14 @@ textarea {
 
 .site-nav {
   display: flex;
-  gap: clamp(16px, 3vw, 30px);
+  align-items: center;
+  gap: clamp(12px, 1.5vw, 24px);
   color: var(--muted);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .site-nav a {
