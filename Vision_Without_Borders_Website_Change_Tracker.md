@@ -9,7 +9,7 @@
 
 ## Status legend
 
-`Not started` · `Blocked / awaiting input` · `In progress` · `Ready for review` · `Approved` · `Deployed` · `Verified`
+`Not started` · `Blocked / awaiting input` · `In progress` · `Ready for review` · `Approved` · `Deployed` · `Verified` · `Superseded`
 
 | ID | Area | Requested change | Priority | Status | What remains |
 | --- | --- | --- | --- | --- | --- |
@@ -17,16 +17,16 @@
 | VWB-02 | Mission | Exact quote and reordered model/photos | High | Ready for review | Editorial visual approval |
 | VWB-03 | About | Bio, ORCID, publication, 2026 work | High | Blocked / awaiting input | Current CV and final bio/title approval; confirm ORCID with Blake |
 | VWB-04 | About | Officers & Leadership; Alicia and Kat profiles | High | Blocked / awaiting input | Alicia and Kat cards use user-supplied portraits and subject-area labels; approve profile copy and confirm formal VWB roles before using titles |
-| VWB-05 | About | WHH Foundation donor recognition | High | Blocked / awaiting input | Legal name, mission, donation attribution, official logo and permission, donor approval |
+| VWB-05 | About | Donor recognition | High | Superseded | Donor remains anonymous; no donor page, name or logo to publish |
 | VWB-06 | Timeline | Default timeline, milestones, no repeated photos | High | Blocked / awaiting input | Verify consulting milestone copy; replacement images and image permissions |
 | VWB-07 | Donate | Partnerships navigation and hosted donation page | High | Blocked / awaiting input | Donate UI now offers $25–$500 presets and custom amount; Stripe Checkout Sessions selected; account onboarding, payout, nonprofit/tax wording, sandbox checkout still pending |
 | VWB-08 | Partnerships | Inquiry routing, lead tracking, alerts | High | Blocked / awaiting input | Confirm Jaime/Jamie address, notification settings, tracking platform and SLA; form remains on Netlify Forms |
 | VWB-09 | Contact | Approximately 2× sketch speed | Medium | Ready for review | Reduced-motion and wider device review |
 | VWB-10 | Release | QA, changelog, rollback, approval | High | In progress | Full QA, approvals and production deployment |
 | VWB-11 | Home | 20/20 Vision feature and two audience CTAs | High | Ready for review | Editorial approval; mobile and keyboard review |
-| VWB-12 | /2020 and Donate | Verified-only community goal, six giving choices, sponsor status | High | Blocked / awaiting input | WHH receipt/eligibility/recognition consent; Stripe checkout and verified ledger; founder copy approval |
-| VWB-13 | Partnerships | Founding sponsor package and private inquiry | High | Blocked / awaiting input | Approve benefit terms; configure and test private Netlify form notifications |
-| VWB-14 | Operations | Independent recognition model and 12-month reminder rule | High | Blocked / awaiting input | Private record store, reminder owner/channel, automated delivery |
+| VWB-12 | /2020 and Donate | Community goal, six giving choices, sponsor status | High | Blocked / awaiting input | User confirms $10,000 founding gift and requests anonymity; reconcile receipt/ledger before release; Stripe checkout and founder copy approval pending |
+| VWB-13 | Partnerships | Founding sponsor package and private inquiry | High | Blocked / awaiting input | Netlify form notifications selected; deploy, sign in, configure recipient and test delivery; approve benefit terms |
+| VWB-14 | Operations | Independent recognition model and 12-month reminder rule | High | Blocked / awaiting input | Private record store and timed reminder delivery; Netlify form alerts cover inquiries only |
 
 ## Implementation evidence log
 
@@ -112,10 +112,10 @@ Rollback commit / instructions: Revert cf08d39 to restore Alicia's initial group
 
 ```yaml
 Change ID: VWB-05
-Owner: VWB / WHH Foundation
-Status: Blocked / awaiting input
+Owner: VWB
+Status: Superseded
 Date started: —
-Description of implementation: No donor page or logo published.
+Description of implementation: No donor page or logo published. The user's anonymity instruction supersedes the earlier recognition request.
 Files / routes modified: None.
 Before screenshot or URL: —
 After screenshot or preview URL: —
@@ -124,7 +124,7 @@ Automated tests: —
 Manual desktop test: —
 Manual mobile test: —
 Accessibility test: —
-Approvals / outstanding questions: Confirm legal name, website, mission, donation relationship, official logo rights and donor-approved acknowledgement.
+Approvals / outstanding questions: On 2026-11-16 the user directed that the founding donor remain anonymous. Do not publish a donor page, name, logo or identifying profile for this gift. The earlier named-recognition request is superseded.
 Date deployed: —
 Production verification: —
 Rollback commit / instructions: No change to roll back.
@@ -224,7 +224,7 @@ Automated tests: JS syntax, campaign public JSON and recognition schema parse, 4
 Manual desktop test: Home, Mission, About, News and Timeline inspected previously; 20/20, Sponsor and Donate campaign path inspected in local browser. Full page and form delivery audit pending.
 Manual mobile test: Home, Mission, Timeline and Contact inspected at 390 px; other routes pending.
 Accessibility test: Partial browser accessibility-tree checks; keyboard, contrast, reduced-motion and full alt text review pending.
-Approvals / outstanding questions: Editorial copy, assets, WHH verification, payments, form routing, private reminder integration and release approvals. No sandbox checkout or live form test possible before configuration.
+Approvals / outstanding questions: Editorial copy, assets, anonymous gift reconciliation, payments, form routing, private reminder integration and release approvals. No sandbox checkout or live form test possible before configuration.
 Date deployed: —
 Production verification: —
 Rollback commit / instructions: Before deployment, reset the review branch to cd9fe81 or revert selected change commits. After deployment, redeploy the prior known-good Netlify commit; verify forms and redirects.
@@ -255,16 +255,16 @@ Change ID: VWB-12
 Owner: Codex / VWB finance and editorial reviewers
 Status: Blocked / awaiting input
 Date started: 2026-11-16
-Description of implementation: Built /2020/ with verified-only $20,000 community thermometer, pending foundation contribution, six suggested/custom giving links, a separately labeled $20,000 founding sponsor proposal, potential $40,000 outcome, match status, and founder story. Added a public snapshot with $0 verified cash and no signed match because no eligible receipts or agreement were supplied. Added a $500 Donate preset and campaign-prefilled links. Match status requires signed terms; fulfilled requires $20,000 verified sponsor receipts.
+Description of implementation: Built /2020/ with a $20,000 community thermometer, six suggested/custom giving links, a separately labeled $20,000 founding sponsor proposal, potential $40,000 outcome, match status, and founder story. The public snapshot now includes the $10,000 founding gift confirmed by the user, with no donor identity or recognition consent in public data. No match is signed. Added a $500 Donate preset and campaign-prefilled links. Match status requires signed terms; fulfilled requires $20,000 verified sponsor receipts.
 Files / routes modified: 2020/index.html, content/campaign-2020-public.json, src/campaign.js, src/campaign-status.mjs, src/campaign-status.test.mjs, donate/index.html, src/donate.js, src/styles.css, netlify.toml; /2020/ and /donate/
 Before screenshot or URL: No /2020/ route; Donate page before 1e8b3de.
 After screenshot or preview URL: http://127.0.0.1:5178/2020/
-Commit / PR link: 1e8b3de, 036ffc1, e0244c9, aff0348; no PR
-Automated tests: Match-status tests pass; JS syntax, public JSON parse, and git diff whitespace check pass.
-Manual desktop test: /2020/ screenshot and accessibility tree show $0 verified, foundation verification pending, Seeking Sponsor, six giving choices, potential $40,000 conditional outcome. The $500 link opens Donate with $500 selected; gift review shows 500 and checkout remains disabled.
+Commit / PR link: 1e8b3de, 036ffc1, e0244c9, aff0348, 76ddd8a; no PR
+Automated tests: Match-status tests pass; JS syntax, public JSON parse, anonymous public snapshot check, and git diff whitespace check pass.
+Manual desktop test: Refreshed /2020/ accessibility tree shows $10,000 in the progress indicator and total, “Anonymous founding gift,” six giving choices, Seeking Sponsor and conditional $40,000 outcome. The $500 link previously opened Donate with $500 selected; gift review showed 500 and checkout remained disabled.
 Manual mobile test: Pending narrow-viewport check.
 Accessibility test: Named progress indicator, heading order, and giving link names checked in browser accessibility tree; keyboard/contrast review pending.
-Approvals / outstanding questions: Verify WHH receipt, restrictions, campaign eligibility and donor recognition consent before publishing amount/name; approve founder wording. [Stanford's official profile](https://profiles.stanford.edu/blake-snyder) and [Global Ophthalmology Program](https://med.stanford.edu/ophthalmology/education/fellowships---advanced-training/global-ophthalmology-program.html) support the Clinical Instructor and Cure Blindness Project fellowship-partnership wording. Connect Stripe and an authoritative cash ledger; approve exact match eligibility/deadline only after signed agreement. GA4 and payment reporting are not connected.
+Approvals / outstanding questions: On 2026-11-16 the user confirmed receipt of the $10,000 founding gift and directed anonymity. Reconcile receipt, restrictions and campaign eligibility before release; preserve anonymity in all public materials. Approve founder wording. [Stanford's official profile](https://profiles.stanford.edu/blake-snyder) and [Global Ophthalmology Program](https://med.stanford.edu/ophthalmology/education/fellowships---advanced-training/global-ophthalmology-program.html) support the Clinical Instructor and Cure Blindness Project fellowship-partnership wording. Connect Stripe and an authoritative cash ledger; approve exact match eligibility/deadline only after signed agreement. GA4 and payment reporting are not connected.
 Date deployed: —
 Production verification: —
 Rollback commit / instructions: Revert aff0348, e0244c9, 036ffc1, then 1e8b3de; homepage campaign feature is separate under VWB-11.
@@ -275,19 +275,19 @@ Change ID: VWB-13
 Owner: Codex / VWB partnerships reviewer
 Status: Blocked / awaiting input
 Date started: 2026-11-16
-Description of implementation: Added a prominent founding sponsor section to /sponsor/ with proposed 12-month recognition benefits, conditional matching terms, and a separate private Netlify inquiry form. The existing general partnership form remains.
-Files / routes modified: sponsor/index.html, src/styles.css; /sponsor/
+Description of implementation: Added a prominent founding sponsor section to /sponsor/ with proposed 12-month recognition benefits, conditional matching terms, and a separate private Netlify inquiry form. The existing general partnership form remains. The user selected Netlify form email notifications; added a distinct notification subject and updated configuration guidance. No live notification was configured or sent.
+Files / routes modified: sponsor/index.html, src/styles.css, README.md, CAMPAIGN_2020_OPERATIONS.md; /sponsor/
 Before screenshot or URL: Sponsor page before 3bc6282.
 After screenshot or preview URL: http://127.0.0.1:5178/sponsor/#founding-sponsor
-Commit / PR link: 3bc6282; no PR
-Automated tests: HTML parse and git diff whitespace check passed.
+Commit / PR link: 3bc6282, 855f354; no PR
+Automated tests: HTML parse, required Netlify form fields/detection attributes, and git diff whitespace check passed.
 Manual desktop test: Screenshot and accessibility tree show sponsor copy, benefits, required contact fields and consent checkbox.
 Manual mobile test: Pending narrow-viewport check.
 Accessibility test: Form fields and button have names in browser accessibility tree; keyboard/contrast review pending.
-Approvals / outstanding questions: Approve proposed benefits and terms; configure private Netlify form recipient, access, retention and spam controls; test deployed submission and notification. No inquiry has been submitted.
+Approvals / outstanding questions: Approve proposed benefits and terms. The Netlify dashboard is not signed in in this environment and the new form is not deployed/discovered; configure a recipient under Forms → Submission notifications after approved deployment, confirm recipient if required, and test delivery. No inquiry has been submitted.
 Date deployed: —
 Production verification: —
-Rollback commit / instructions: Revert 3bc6282.
+Rollback commit / instructions: Revert 855f354 and 3bc6282.
 ```
 
 ```yaml
@@ -304,7 +304,7 @@ Automated tests: Node tests cover 12-month dates, leap-day handling, reminder du
 Manual desktop test: Not applicable to private model.
 Manual mobile test: Not applicable to private model.
 Accessibility test: Not applicable to private model.
-Approvals / outstanding questions: Select private record store, administrator and notification channel; connect daily reminder delivery before any signed sponsor receives recognition.
+Approvals / outstanding questions: Select private record store, administrator and timed notification channel; connect daily reminder delivery before any signed sponsor receives recognition. Netlify's form-submission email alerts cannot schedule an expiration reminder without a separate job and private record source.
 Date deployed: —
 Production verification: —
 Rollback commit / instructions: Revert bc6d0b4 and bd92b51.
@@ -336,9 +336,10 @@ The [publisher's article page](https://www.dovepress.com/worksite-vision-screeni
 | Kat title | Director of Clinical Innovation | Pending | — |
 | Donor page URL | `/about/donors/` | Pending | — |
 | Donation processor | Stripe Checkout Sessions for the custom VWB selector | Selected for integration; activation pending | User / 2026-11-16 |
-| WHH initial campaign gift | Proposed $10,000 starting gift | Verification and recognition consent pending; excluded from public total | — |
+| Anonymous initial campaign gift | $10,000 starting gift | User confirms receipt and requests anonymity; included in local preview, receipt/ledger review pending before release | User / 2026-11-16 |
 | Sponsor matching terms | One $20,000 commitment | Signed agreement, eligible gifts and deadline pending; status Seeking Sponsor | — |
-| Sponsor recognition | Proposed 12 months from agreed start | Benefits and consent pending; reminder delivery not connected | — |
+| Sponsor recognition | Proposed 12 months from agreed start | Benefits and consent pending; timed reminder delivery not connected | — |
+| Inquiry notification | Netlify Forms email | Selected; new form must be deployed/discovered and recipient configured/tested | User / 2026-11-16 |
 | Founder story | Stanford role in past tense; Cure Blindness Project work attributed to founder only | Blake's wording approval pending | — |
 | Sponsor lead tracking | Trello or replacement | Pending | — |
 | Follow-up SLA | Two business days | Pending; existing promise removed | — |
@@ -358,7 +359,7 @@ The current home photo wall is preserved. Several photos therefore also appear o
 | `IMG_1788.jpg` | News and Timeline | Timeline | Yes | Distinct Ethiopia research/news image, landscape at least 1600 × 1200 px |
 | Kat standalone headshot | User-supplied 600 × 600 px portrait | Leadership profile draft | No VWB reuse found | Visual approval; higher-resolution original if available for large displays |
 | Alicia portrait crop | User-supplied 1536 × 2048 px balcony photo; direct crop saved at `assets/alicia-otto-portrait.webp` (1100 × 1200 px) | Leadership profile draft | No VWB reuse found | User selected this replacement and requested no bare leg in frame; approve profile copy and formal role before release |
-| WHH Foundation logo | Not supplied | Donor page | — | Official SVG or high-resolution transparent PNG; usage permission |
+| Founding donor logo | Not supplied | None; donor anonymity requested | — | No logo to publish |
 
 Other repeated headshots and logos are intentional identity/attribution elements pending editorial review. Raw `IMG_` and screenshot files require crop, context and consent review before use.
 
@@ -378,8 +379,8 @@ Each implemented website change has its own commit. Cherry-pick only the approve
 | VWB-08 | `412ab95` | Sponsor response wording |
 | VWB-09 | `97c01be` | Contact sketch speed and shared script revalidation |
 | VWB-11 | `c671d0a` + `6dd130f` | Homepage campaign feature and card fit |
-| VWB-12 | `1e8b3de` + `036ffc1` + `e0244c9` + `aff0348` | /2020/, public snapshot, community giving options, signed-match guard and sourced founder story; depends on VWB-07 Donate UI |
-| VWB-13 | `3bc6282` | Founding sponsor proposal and private inquiry form |
+| VWB-12 | `1e8b3de` + `036ffc1` + `e0244c9` + `aff0348` + `76ddd8a` | /2020/, public snapshot, anonymous $10,000 founding gift, community giving options, signed-match guard and sourced founder story; depends on VWB-07 Donate UI |
+| VWB-13 | `3bc6282` + `855f354` | Founding sponsor proposal, private inquiry form and notification preparation |
 | VWB-14 | `bd92b51` + `bc6d0b4` | Private recognition schema, date/reminder rules and operations guide |
 
 The VWB-10 documentation commit records the full review branch, so update its status and evidence when promoting a subset.
@@ -387,7 +388,7 @@ The VWB-10 documentation commit records the full review branch, so update its st
 
 | Release date | Version | Change IDs | PR / commit | Preview | QA result | Approved by | Rollback |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| — | Draft | 01–14 | `codex/vwb-website-changes` (through `aff0348`, plus tracker) | Local `http://127.0.0.1:5178/2020/` | Partial; see evidence log | — | `cd9fe81` |
+| — | Draft | 01–14 | `codex/vwb-website-changes` (through `76ddd8a`, plus tracker) | Local `http://127.0.0.1:5178/2020/` | Partial; see evidence log | — | `cd9fe81` |
 
 ## Notes
 
