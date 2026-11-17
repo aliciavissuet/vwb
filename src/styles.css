@@ -92,10 +92,10 @@ textarea {
 .home-campaign-mark { display: flex; align-items: center; font-size: clamp(3.4rem, 5.5vw, 5rem); line-height: 1; letter-spacing: -0.08em; white-space: nowrap; }
 .home-campaign-mark > span:not(.home-campaign-slash) { display: inline-block; }
 .home-campaign-mark .home-campaign-slash { margin: 0 0.06em; color: var(--red); }
-.home-campaign-eye { width: 0.78em; height: 0.62em; margin: 0 0.01em 0 0.07em; flex: none; overflow: visible; transform-origin: center; animation: homeCampaignBlink 6s ease-in-out infinite; }
+.home-campaign-eye { width: 0.58em; height: 0.91em; margin: 0 0.025em 0 0.045em; flex: none; overflow: visible; transform-origin: center; animation: homeCampaignBlink 6s ease-in-out infinite; }
 .home-campaign-eye-second { animation-delay: -3s; }
 .home-campaign-eye-outline, .home-campaign-eye-iris, .home-campaign-eye-grid { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; }
-.home-campaign-eye-outline { stroke-width: 5; }
+.home-campaign-eye-outline { stroke-width: 8; }
 .home-campaign-eye-iris { stroke: var(--blue); stroke-width: 5; }
 .home-campaign-eye-grid { stroke: var(--blue); stroke-width: 3; }
 @keyframes homeCampaignBlink { 0%, 42%, 48%, 100% { transform: scaleY(1); } 45% { transform: scaleY(0.08); } }
