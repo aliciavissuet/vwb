@@ -95,19 +95,19 @@ Change ID: VWB-04
 Owner: Codex / VWB leadership
 Status: Blocked / awaiting input
 Date started: 2026-11-16
-Description of implementation: Board of Directors preserved. Added a Leadership Team card for Katherine (Kat) Leviste using professional details from her personal site, KATRX (https://katrx.com/), then replaced the initial KATRX team photo with the standalone portrait supplied by the user. Added Alicia Otto's card with a subject-area label and limited website/technology description from the specification. Alicia's initial group-photo crop was superseded by the user's balcony photo with her dog. The current 1100 × 1200 px asset is a direct crop of the 1536 × 2048 px source, ending above her bare legs; the generated preview was discarded because it changed photo details. No formal officer title is asserted for Alicia or Kat.
+Description of implementation: Board of Directors preserved. Added a Leadership Team card for Katherine (Kat) Leviste using professional details from her personal site, KATRX (https://katrx.com/), then replaced the initial KATRX team photo with the standalone portrait supplied by the user. Added Alicia Otto's card with a subject-area label and limited website/technology description from the specification. Alicia's initial group-photo crop was superseded by the user's balcony photo with her dog. The current 1100 × 1200 px asset is a direct crop of the 1536 × 2048 px source, ending above her bare legs; the generated preview was discarded because it changed photo details. No formal officer title is asserted for Alicia or Kat. Kat’s card now appears before Alicia’s at the user’s request.
 Files / routes modified: about/index.html, src/styles.css (prior Kat card), assets/kat-leviste-headshot.png, assets/alicia-otto-portrait.webp; /about/
 Before screenshot or URL: Git parent 412ab95 (Kat card), da06f05 (before Alicia card); /about/
 After screenshot or preview URL: http://127.0.0.1:5178/about/
-Commit / PR link: 983adcd (Kat profile), 3b9d4f1 (Kat headshot), 9ad636c (Alicia card and initial portrait), cf08d39 (replacement balcony crop); no PR
+Commit / PR link: 983adcd (Kat profile), 3b9d4f1 (Kat headshot), 9ad636c (Alicia card and initial portrait), cf08d39 (replacement balcony crop), 5977c0e (Kat-first order); no PR
 Automated tests: Current Alicia asset identified as 1100 × 1200 px WebP; the original card was checked at a 390 px mobile viewport with no horizontal overflow; git diff whitespace check passed.
-Manual desktop test: Local browser preview previously showed both leadership cards. The replacement crop was visually checked against the 1536 × 2048 px user upload; Alicia and her dog retain the source pixels, and no bare leg appears. Desktop layout recheck of the replacement is pending.
+Manual desktop test: Local browser accessibility tree at `/about/?preview=kat-first` shows Kat’s portrait, heading and bio before Alicia’s. The replacement crop was visually checked against the 1536 × 2048 px user upload; Alicia and her dog retain the source pixels, and no bare leg appears. Desktop layout recheck of the replacement is pending.
 Manual mobile test: Local browser preview shows the replacement Alicia photo in the one-column card with face, dog, and copy visible; no bare leg appears.
 Accessibility test: Named Leadership Team section and descriptive Alicia/Kat image alt text checked in the browser accessibility tree; full keyboard/contrast audit pending.
 Approvals / outstanding questions: User selected the balcony photo as the replacement and requested the leg-free crop. Confirm Alicia's formal appointment/title and approve the concise website/technology description before release. Confirm Katherine's VWB appointment/title and approve her biography. Kat's supplied source portrait is 600 × 600 px, so assess sharpness on large displays.
 Date deployed: —
 Production verification: —
-Rollback commit / instructions: Revert cf08d39 to restore Alicia's initial group-photo crop, or revert 9ad636c too to remove her card and asset. Revert 3b9d4f1 to restore Kat's prior team photo, or revert both 3b9d4f1 and 983adcd to remove Kat's card.
+Rollback commit / instructions: Revert 5977c0e to restore Alicia-first order. Revert cf08d39 to restore Alicia's initial group-photo crop, or revert 9ad636c too to remove her card and asset. Revert 3b9d4f1 to restore Kat's prior team photo, or revert both 3b9d4f1 and 983adcd to remove Kat's card.
 ```
 
 ```yaml
@@ -373,7 +373,7 @@ Each implemented website change has its own commit. Cherry-pick only the approve
 | --- | --- | --- |
 | VWB-02 | `771e016` | Mission content and mission CSS cache version |
 | VWB-03 | `bd0cd7b` | About bio, ORCID, and News research citation |
-| VWB-04 | `983adcd` + `3b9d4f1` + `9ad636c` + `cf08d39` | Kat leadership card and supplied headshot; Alicia technology card and final balcony crop showing no bare leg |
+| VWB-04 | `983adcd` + `3b9d4f1` + `9ad636c` + `cf08d39` + `5977c0e` | Kat leadership card and supplied headshot; Alicia technology card and final balcony crop showing no bare leg; Kat displayed first |
 | VWB-06 | `2d454c8` | Timeline content, default view, and CMS fields |
 | VWB-07 | `7b3e1dd` + `8170d01` + `1656b98` + `c36ccbe` | Partnerships navigation label; Donate UI preview and design refinement; Stripe Checkout selection and signup plan |
 | VWB-08 | `412ab95` | Sponsor response wording |
@@ -389,7 +389,7 @@ The VWB-10 documentation commit records the full review branch, so update its st
 
 | Release date | Version | Change IDs | PR / commit | Preview | QA result | Approved by | Rollback |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| — | Draft | 01–14 | `codex/vwb-website-changes` (through `53fd72e`, plus tracker) | Local `http://127.0.0.1:5178/?skipIntro=1` and `/2020/` | Partial; see evidence log | — | `cd9fe81` |
+| — | Draft | 01–14 | `codex/vwb-website-changes` (through `5977c0e`, plus tracker) | Local `http://127.0.0.1:5178/?skipIntro=1` and `/2020/` | Partial; see evidence log | — | `cd9fe81` |
 
 ## Notes
 
