@@ -235,19 +235,19 @@ Change ID: VWB-11
 Owner: Codex / VWB reviewer
 Status: Ready for review
 Date started: 2026-11-16
-Description of implementation: Added a 20/20 Vision homepage feature below the existing hero with the requested goal/opportunity line, two distinct CTAs, and a link to /2020/. Adjusted the campaign card after desktop visual inspection to keep 20/20 within its bounds.
+Description of implementation: Added a 20/20 Vision homepage feature below the existing hero with the requested goal/opportunity line, two distinct CTAs, and a link to /2020/. Following user review, styled the donation link as a filled teal button with a heart icon and the sponsor link as an underlined action with an arrow. Replaced the card's two zeroes with brand-colored eye marks that blink at staggered intervals; animation is disabled for reduced motion.
 Files / routes modified: index.html, src/styles.css; /
 Before screenshot or URL: Local home page before c671d0a.
 After screenshot or preview URL: http://127.0.0.1:5178/?skipIntro=1
-Commit / PR link: c671d0a, 6dd130f; no PR
-Automated tests: HTML parse and git diff whitespace check passed.
-Manual desktop test: Home page accessibility tree confirms both CTAs and the /2020/ link; screenshot confirms the campaign card fits.
+Commit / PR link: c671d0a, 6dd130f, 71ba53b (actions), f5edff7 (eye card); no PR
+Automated tests: HTML parse confirms both eye marks and the three campaign links; four campaign/recognition tests and git diff whitespace check pass.
+Manual desktop test: Home page accessibility tree confirms both CTAs and the /2020/ link; local screenshot confirms distinct action treatments and the eye card fits.
 Manual mobile test: Pending narrow-viewport check.
-Accessibility test: Heading and CTA names exposed in browser accessibility tree; keyboard and contrast review pending.
+Accessibility test: Heading and CTA names exposed in browser accessibility tree; decorative eye marks are hidden from assistive technology and the card retains its accessible link name. Reduced-motion CSS disables blinking; keyboard and contrast review pending.
 Approvals / outstanding questions: Approve homepage placement and copy.
 Date deployed: —
 Production verification: —
-Rollback commit / instructions: Revert 6dd130f and c671d0a together.
+Rollback commit / instructions: Revert f5edff7 to restore numeric card; revert 71ba53b to restore prior CTAs. Revert 6dd130f and c671d0a together to remove the campaign feature.
 ```
 
 ```yaml
@@ -378,7 +378,7 @@ Each implemented website change has its own commit. Cherry-pick only the approve
 | VWB-07 | `7b3e1dd` + `8170d01` + `1656b98` + `c36ccbe` | Partnerships navigation label; Donate UI preview and design refinement; Stripe Checkout selection and signup plan |
 | VWB-08 | `412ab95` | Sponsor response wording |
 | VWB-09 | `97c01be` | Contact sketch speed and shared script revalidation |
-| VWB-11 | `c671d0a` + `6dd130f` | Homepage campaign feature and card fit |
+| VWB-11 | `c671d0a` + `6dd130f` + `71ba53b` + `f5edff7` | Homepage campaign feature, differentiated action links and blinking eye card; last two commits can be selected independently |
 | VWB-05 | `d27feab` | Superseded named donor recognition in publicly served specification; keep donor anonymous |
 | VWB-12 | `1e8b3de` + `036ffc1` + `e0244c9` + `aff0348` + `76ddd8a` | /2020/, public snapshot, anonymous $10,000 founding gift, community giving options, signed-match guard and sourced founder story; depends on VWB-07 Donate UI |
 | VWB-13 | `3bc6282` + `855f354` | Founding sponsor proposal, private inquiry form and notification preparation |
@@ -389,7 +389,7 @@ The VWB-10 documentation commit records the full review branch, so update its st
 
 | Release date | Version | Change IDs | PR / commit | Preview | QA result | Approved by | Rollback |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| — | Draft | 01–14 | `codex/vwb-website-changes` (through `d27feab`, plus tracker) | Local `http://127.0.0.1:5178/2020/` | Partial; see evidence log | — | `cd9fe81` |
+| — | Draft | 01–14 | `codex/vwb-website-changes` (through `f5edff7`, plus tracker) | Local `http://127.0.0.1:5178/?skipIntro=1` and `/2020/` | Partial; see evidence log | — | `cd9fe81` |
 
 ## Notes
 
