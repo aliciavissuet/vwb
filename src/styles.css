@@ -6606,8 +6606,10 @@ body.has-filter-drawer {
 }
 
 .sponsor-intro h2 {
-  max-width: 9ch;
+  max-width: 100%;
   margin-top: 18px;
+  font-size: clamp(2.8rem, 3.3vw, 3.5rem);
+  line-height: 1.02;
 }
 
 .founding-sponsor-section { padding: clamp(150px, 17vw, 220px) clamp(20px, 6vw, 72px) clamp(80px, 10vw, 130px); background: radial-gradient(circle at 12% 24%, var(--blue-soft), transparent 34rem), var(--bg); scroll-margin-top: 80px; }
