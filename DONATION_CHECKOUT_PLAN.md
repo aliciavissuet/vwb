@@ -1,6 +1,6 @@
 # Donation checkout plan
 
-**Reviewed:** 2026-11-16  
+**Reviewed:** 2026-11-16
 **Status:** UI preview built; Stripe Checkout Sessions selected; account onboarding and live payments pending
 
 ## Provider finding
