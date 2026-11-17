@@ -32,9 +32,9 @@ if (progress) {
       note.textContent = `Verified cash as of ${data.as_of || 'the latest approved update'}. This published snapshot is updated only after donation records are confirmed; live payment syncing is pending.`
 
       const foundation = data.initial_foundation_contribution
-      if (foundation?.verified === true && foundation.campaign_eligible === true && foundation.recognition_consent === true && Number.isSafeInteger(foundation.amount_cents) && foundation.amount_cents > 0 && foundation.amount_cents <= cash) {
-        foundationName.textContent = foundation.source || 'Foundation gift'
-        foundationStatus.textContent = `${dollars.format(foundation.amount_cents / 100)} verified and included in the community total.`
+      if (foundation?.verified === true && foundation.campaign_eligible === true && Number.isSafeInteger(foundation.amount_cents) && foundation.amount_cents > 0 && foundation.amount_cents <= cash) {
+        foundationName.textContent = foundation.recognition_consent === true && foundation.source ? foundation.source : 'Anonymous founding gift'
+        foundationStatus.textContent = `${dollars.format(foundation.amount_cents / 100)} included in the community total.`
       }
 
       const sponsor = data.founding_sponsor_match
