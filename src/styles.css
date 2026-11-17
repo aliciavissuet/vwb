@@ -72,6 +72,19 @@ textarea {
   display: none;
 }
 
+.home-campaign { padding: clamp(72px, 9vw, 120px) clamp(20px, 6vw, 72px); background: var(--paper); }
+.home-campaign-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr); gap: clamp(36px, 7vw, 100px); align-items: center; }
+.home-campaign h2 { margin: 12px 0 16px; font-size: clamp(3.5rem, 7vw, 7rem); line-height: 0.94; letter-spacing: -0.07em; }
+.home-campaign-headline { max-width: 22ch; margin: 0 0 20px; color: var(--blue); font-size: clamp(1.45rem, 2.4vw, 2.4rem); font-weight: 800; line-height: 1.17; }
+.home-campaign p:not(.section-kicker):not(.home-campaign-headline) { max-width: 58ch; line-height: 1.65; }
+.home-campaign-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.home-campaign-secondary { border: 1px solid var(--ink); background: transparent; }
+.home-campaign-link { display: grid; min-height: 290px; align-content: space-between; padding: clamp(26px, 4vw, 48px); border: 1px solid var(--quiet); border-radius: 20px; background: var(--blue-soft); text-decoration: none; }
+.home-campaign-link > span { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.home-campaign-link strong { font-size: clamp(5rem, 10vw, 9rem); line-height: 1; letter-spacing: -0.09em; }
+.home-campaign-link strong span { color: var(--red); }
+@media (max-width: 760px) { .home-campaign-grid { grid-template-columns: 1fr; } .home-campaign-link { min-height: 230px; } }
+
 .site-header {
   position: fixed;
   top: 0;
