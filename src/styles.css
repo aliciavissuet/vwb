@@ -6065,6 +6065,72 @@ body.has-filter-drawer {
   line-height: 1.65;
 }
 
+.about-section .leadership-section {
+  margin-top: clamp(72px, 9vw, 112px);
+}
+
+.leadership-card {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1fr);
+  margin-top: clamp(36px, 5vw, 58px);
+  overflow: hidden;
+  border: 1px solid rgb(23 37 43 / 0.08);
+  border-radius: 24px 5px 20px 7px;
+  background: rgb(255 255 255 / 0.76);
+  box-shadow: 0 24px 60px rgb(16 16 16 / 0.04);
+}
+
+.leadership-photo {
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  background: #e7e4dd;
+}
+
+.leadership-photo img {
+  position: absolute;
+  top: -30%;
+  left: 50%;
+  width: 320%;
+  max-width: none;
+  height: auto;
+  transform: translateX(-50%);
+}
+
+.leadership-copy {
+  align-self: center;
+  padding: clamp(28px, 5vw, 64px);
+}
+
+.leadership-copy h3 {
+  margin: 12px 0 24px;
+  font-size: clamp(2rem, 3.4vw, 3.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+
+.leadership-copy > p:not(.section-kicker) {
+  max-width: 55ch;
+  margin: 0 0 16px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.leadership-copy .text-link {
+  display: inline-flex;
+  margin-top: 10px;
+}
+
+@media (max-width: 760px) {
+  .leadership-card {
+    grid-template-columns: 1fr;
+  }
+
+  .leadership-photo {
+    min-height: 360px;
+  }
+}
+
 .advisor-forming {
   display: flex;
   min-height: 180px;
