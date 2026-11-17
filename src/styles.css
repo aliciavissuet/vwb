@@ -81,7 +81,7 @@ textarea {
 .home-campaign-secondary { border: 1px solid var(--ink); background: transparent; }
 .home-campaign-link { display: grid; min-height: 290px; align-content: space-between; padding: clamp(26px, 4vw, 48px); border: 1px solid var(--quiet); border-radius: 20px; background: var(--blue-soft); text-decoration: none; }
 .home-campaign-link > span { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
-.home-campaign-link strong { font-size: clamp(5rem, 10vw, 9rem); line-height: 1; letter-spacing: -0.09em; }
+.home-campaign-link strong { font-size: clamp(4.5rem, 6.2vw, 6.3rem); line-height: 1; letter-spacing: -0.09em; white-space: nowrap; }
 .home-campaign-link strong span { color: var(--red); }
 @media (max-width: 760px) { .home-campaign-grid { grid-template-columns: 1fr; } .home-campaign-link { min-height: 230px; } }
 
