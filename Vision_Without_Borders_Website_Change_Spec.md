@@ -1,5 +1,6 @@
 Vision Without Borders — Codex Implementation Specification
-Version: 1.0 · Prepared: 2026-11-16 · Status: Proposed; not implemented
+Version: 1.1 · Prepared: 2026-11-16 · Status: Amended by user; see tracker for implementation
+Campaign donor amendment (2026-11-16): The founding donor is anonymous. The earlier VWB-05 named-recognition request is superseded. Show the user-confirmed $10,000 contribution in the local 20/20 preview without publishing the donor's name, logo, or identifying profile. Reconcile the receipt and campaign ledger before release.
 Instructions to Codex
 1. Inspect the existing repository, routing, hosting configuration, forms, assets, and tests before modifying code. Do not overwrite working content or deploy automatically.
 2. Work on a new branch, commit changes in logical groups using the change IDs below, and provide a preview URL or screenshots for review.
@@ -38,12 +39,10 @@ Priority: High
 - Katherine (Kat) Leviste: Proposed title Director of Clinical Innovation (subject to approval). Draft her biography using her official website https://katrx.com and an approved headshot. Verify spelling, qualifications, and role before publishing.
 - The headshot reportedly appeared in a Superhuman email attachment titled “Katherine Headshot”; the actual image must be provided or securely retrieved in the implementation workspace. Do not use an unverified placeholder as final.
 - Use accessible image alt text, consistent crop and responsive cards.
-VWB-05 — Donor recognition page
+VWB-05 — Donor recognition page (superseded)
 Priority: High
-- Add a donor recognition page under About, with a clean, shareable direct URL.
-- Feature the WHH Foundation, its approved logo, and a short factual profile. Verify its legal name, website, mission, donation attribution, and logo permission before publication.
-- Use appreciative but non-transactional language. Do not disclose donation amount without explicit approval.
-- Provide page metadata, social sharing image, and a stable URL suitable for sending to the donor.
+- Do not publish a donor page, name, logo, or identifying profile for the founding contribution while anonymity is requested.
+- The $10,000 amount may appear in the community goal, as directed by the user; verify the underlying record before production release.
 VWB-06 — Timeline
 Priority: High
 - Make the timeline view the default instead of photo/gallery view; preserve optional photo view if already implemented.
@@ -79,7 +78,7 @@ Priority: High
 Inputs and approvals required
 - Current Blake Snyder CV in the Codex workspace; confirm founder biography wording and formal title.
 - Katherine Leviste approved headshot, bio facts, and role/title approval.
-- WHH Foundation official logo, profile details, donation acknowledgement approval.
+- Founding gift receipt and campaign ledger reconciliation; preserve donor anonymity.
 - Confirmed sponsor email for Jaime/Jamie, and selected tracking platform (Trello or replacement).
 - Donation platform selection, bank payout onboarding, nonprofit verification, tax receipt wording.
 - Repository access, existing assets, domain, staging/deployment details.
