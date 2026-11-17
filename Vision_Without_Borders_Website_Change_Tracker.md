@@ -25,7 +25,7 @@
 | VWB-10 | Release | QA, changelog, rollback, approval | High | In progress | Full QA, approvals and production deployment |
 | VWB-11 | Home | 20/20 Vision feature and two audience CTAs | High | Ready for review | Editorial approval; mobile and keyboard review |
 | VWB-12 | /2020 and Donate | Community goal, six giving choices, sponsor status | High | Blocked / awaiting input | User confirms $10,000 founding gift and requests anonymity; reconcile receipt/ledger before release; Stripe checkout and founder copy approval pending |
-| VWB-13 | Partnerships | Founding sponsor package and private inquiry | High | Blocked / awaiting input | Netlify form notifications selected; deploy, sign in, configure recipient and test delivery; approve benefit terms |
+| VWB-13 | Partnerships | Founding sponsor package and private inquiry | High | Blocked / awaiting input | One unified form; Netlify notifications selected; deploy, configure recipient and test delivery; approve benefit terms |
 | VWB-14 | Operations | Independent recognition model and 12-month reminder rule | High | Blocked / awaiting input | Private record store and timed reminder delivery; Netlify form alerts cover inquiries only |
 
 ## Implementation evidence log
@@ -275,19 +275,19 @@ Change ID: VWB-13
 Owner: Codex / VWB partnerships reviewer
 Status: Blocked / awaiting input
 Date started: 2026-11-16
-Description of implementation: Added a prominent founding sponsor section to /sponsor/ with proposed 12-month recognition benefits, conditional matching terms, and a separate private Netlify inquiry form. The existing general partnership form remains. The user selected Netlify form email notifications; added a distinct notification subject and updated configuration guidance. No live notification was configured or sent.
+Description of implementation: Added a prominent founding sponsor section to /sponsor/ with proposed 12-month recognition benefits and conditional matching terms. After user review, consolidated the founding and general partnership forms into one private four-step Netlify form with a required interest choice. The inactive submit control is hidden on earlier steps; only “Submit inquiry” appears at the final step. The user selected Netlify form email notifications. No live notification was configured or sent.
 Files / routes modified: sponsor/index.html, src/styles.css, README.md, CAMPAIGN_2020_OPERATIONS.md; /sponsor/
 Before screenshot or URL: Sponsor page before 3bc6282.
 After screenshot or preview URL: http://127.0.0.1:5178/sponsor/#founding-sponsor
-Commit / PR link: 3bc6282, 855f354; no PR
-Automated tests: HTML parse, required Netlify form fields/detection attributes, and git diff whitespace check passed.
-Manual desktop test: Screenshot and accessibility tree show sponsor copy, benefits, required contact fields and consent checkbox.
+Commit / PR link: 3bc6282, 855f354, 53fd72e (unified form); no PR
+Automated tests: HTML parse confirms exactly one sponsor Netlify form and unique IDs; JS syntax and git diff whitespace checks pass.
+Manual desktop test: Screenshot and accessibility tree show sponsor copy, benefits, required interest choice, and one form. Clicked through all four steps with preview data without submitting; the earlier steps expose only Continue, and the final step exposes only Submit inquiry. The former disabled button is not visible or clickable.
 Manual mobile test: Pending narrow-viewport check.
-Accessibility test: Form fields and button have names in browser accessibility tree; keyboard/contrast review pending.
-Approvals / outstanding questions: Approve proposed benefits and terms. The Netlify dashboard is not signed in in this environment and the new form is not deployed/discovered; configure a recipient under Forms → Submission notifications after approved deployment, confirm recipient if required, and test delivery. No inquiry has been submitted.
+Accessibility test: Form fields, interest options, and current step action have names in browser accessibility tree; inactive action is absent from the accessible tree. Keyboard/contrast review pending.
+Approvals / outstanding questions: Approve proposed benefits and terms. The unified form is not deployed/discovered; configure a recipient for `sponsor-inquiry` under Forms → Submission notifications after approved deployment, confirm recipient if required, and test delivery. Retire any obsolete `founding-sponsor-inquiry` notification after the unified notification is working. No inquiry has been submitted.
 Date deployed: —
 Production verification: —
-Rollback commit / instructions: Revert 855f354 and 3bc6282.
+Rollback commit / instructions: Revert 53fd72e to restore two forms, then 855f354 and 3bc6282 to remove the founding sponsor section.
 ```
 
 ```yaml
@@ -381,7 +381,7 @@ Each implemented website change has its own commit. Cherry-pick only the approve
 | VWB-11 | `c671d0a` + `6dd130f` + `71ba53b` + `f5edff7` + `1197041` + `876eb80` | Homepage campaign feature, differentiated action links, blinking eye card and zero-shaped refinement; design commits can be selected independently in order |
 | VWB-05 | `d27feab` | Superseded named donor recognition in publicly served specification; keep donor anonymous |
 | VWB-12 | `1e8b3de` + `036ffc1` + `e0244c9` + `aff0348` + `76ddd8a` + `1abcb12` + `876eb80` + `42d85ce` | /2020/, public snapshot, anonymous $10,000 founding gift, in-page community giving and review, signed-match guard, sourced founder story, differentiated hero actions and snapshot-driven progress visual; depends on VWB-07 Donate UI |
-| VWB-13 | `3bc6282` + `855f354` | Founding sponsor proposal, private inquiry form and notification preparation |
+| VWB-13 | `3bc6282` + `855f354` + `53fd72e` | Founding sponsor proposal and one private partnership form with an interest choice; notification preparation |
 | VWB-14 | `bd92b51` + `bc6d0b4` | Private recognition schema, date/reminder rules and operations guide |
 
 The VWB-10 documentation commit records the full review branch, so update its status and evidence when promoting a subset.
@@ -389,7 +389,7 @@ The VWB-10 documentation commit records the full review branch, so update its st
 
 | Release date | Version | Change IDs | PR / commit | Preview | QA result | Approved by | Rollback |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| — | Draft | 01–14 | `codex/vwb-website-changes` (through `42d85ce`, plus tracker) | Local `http://127.0.0.1:5178/?skipIntro=1` and `/2020/` | Partial; see evidence log | — | `cd9fe81` |
+| — | Draft | 01–14 | `codex/vwb-website-changes` (through `53fd72e`, plus tracker) | Local `http://127.0.0.1:5178/?skipIntro=1` and `/2020/` | Partial; see evidence log | — | `cd9fe81` |
 
 ## Notes
 
