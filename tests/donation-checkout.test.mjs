@@ -58,6 +58,7 @@ test('creates a monthly Stripe test session with the chosen cents', async () => 
     assert.equal(form.get('mode'), 'subscription')
     assert.equal(form.get('line_items[0][price_data][unit_amount]'), '7500')
     assert.equal(form.get('line_items[0][price_data][recurring][interval]'), 'month')
+    assert.equal(form.get('allowed_payment_method_types[0]'), 'card')
     assert.equal(form.get('metadata[campaign]'), '2020')
     return Response.json({ id: 'cs_test_mock', livemode: false, url: 'https://checkout.stripe.com/c/pay/cs_test_mock' })
   }

@@ -36,7 +36,7 @@ export default async function handler(request) {
     'line_items[0][price_data][unit_amount]': String(amountCents),
     'line_items[0][price_data][product_data][name]': campaign === '2020' ? '20/20 Vision community donation' : 'Vision Without Borders donation',
     'line_items[0][quantity]': '1',
-    'payment_method_types[0]': 'card',
+    'allowed_payment_method_types[0]': 'card',
     'metadata[campaign]': campaign,
     'metadata[frequency]': frequency,
   })
@@ -49,13 +49,21 @@ export default async function handler(request) {
       body: form,
     })
     const session = await response.json()
-    if (!response.ok) return reply(502, { error: 'Stripe could not start checkout. Please try again.' })
+    if (!response.ok) {
+      const stripeError = session?.error || {}
+      const code = String(stripeError.code || stripeError.type || 'unknown_error').replace(/[^a-z0-9_]/gi, '').slice(0, 80)
+      const parameter = String(stripeError.param || '').replace(/[^a-z0-9_\[\].]/gi, '').slice(0, 100)
+      console.error('Stripe test checkout rejected', { status: response.status, code, parameter, requestId: response.headers.get('request-id') })
+      return reply(502, { error: `Stripe rejected the test checkout (HTTP ${response.status}, ${code}${parameter ? `, ${parameter}` : ''}).` })
+    }
     const checkout = new URL(session.url)
     if (session.livemode !== false || !session.id?.startsWith('cs_test_') || checkout.protocol !== 'https:' || checkout.hostname !== 'checkout.stripe.com') {
       return reply(502, { error: 'Stripe did not return a test checkout session.' })
     }
     return reply(200, { url: checkout.href })
-  } catch {
-    return reply(502, { error: 'Stripe could not be reached. Please try again.' })
+  } catch (failure) {
+    const code = String(failure?.cause?.code || failure?.code || failure?.name || 'unknown_error').replace(/[^a-z0-9_]/gi, '').slice(0, 80)
+    console.error('Stripe test checkout connection failed', { code })
+    return reply(502, { error: `Stripe test checkout could not be reached (${code}).` })
   }
 }

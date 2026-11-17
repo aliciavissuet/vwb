@@ -182,11 +182,11 @@ Files / routes modified: donate/index.html, donate/success/index.html, 2020/inde
 Before screenshot or URL: http://127.0.0.1:5178/donate/ (disabled static preview)
 After screenshot or preview URL: http://127.0.0.1:8888/2020/ and /donate/ when npm run dev:stripe-test is running with a private sk_test_ key
 Commit / PR link: d380b4c on codex/stripe-test-checkout; no PR or deployment
-Automated tests: npm test passed 9/9; npm run test:e2e passed 5/5 in Chrome against local Netlify Dev (Stripe responses mocked; optional real handoff skipped); local Netlify endpoint returned enabled test configuration and rejected an invalid amount with HTTP 400.
-Manual desktop test: Local Netlify Dev served /2020/ and the test endpoint. Real hosted Stripe checkout awaits a privately supplied test key.
+Automated tests: npm test passed 9/9; npm run test:e2e passed 5/5 in Chrome against local Netlify Dev with mocked Stripe responses. On 2026-11-16, the first real test-key run exposed a Stripe HTTP 400 caused by the outdated payment_method_types request field. After changing it to allowed_payment_method_types, the local endpoint created one-time and monthly test Checkout Sessions (HTTP 200), and VWB_RUN_STRIPE_HANDOFF=1 npm run test:e2e passed 6/6 including navigation to Stripe-hosted test checkout. The endpoint also rejected an invalid amount with HTTP 400.
+Manual desktop test: Local Netlify Dev served /2020/ and the test endpoint. Real Stripe test Checkout Session creation and hosted-page handoff verified. Test-card submission and return-page verification still pending.
 Manual mobile test: Pending real-key test and narrow-viewport review.
 Accessibility test: Browser tests exercised named amount/frequency controls and visible review/cancellation status; full keyboard and screen-reader review pending.
-Approvals / outstanding questions: Enter test key only through local prompt, run real Stripe test-card checkout, verify success/cancel and subscription behavior; approve amount cap. Implement signed webhooks, idempotent ledger, receipts, refund handling, tax copy, and production release controls before live payments.
+Approvals / outstanding questions: Test key was provided privately through the local prompt. Run a test-card payment and verify success/cancel and subscription behavior; approve amount cap. Implement signed webhooks, idempotent ledger, receipts, refund handling, tax copy, and production release controls before live payments.
 Date deployed: —
 Production verification: —
 Rollback commit / instructions: Revert d380b4c; existing static donation preview remains on main.
@@ -412,7 +412,7 @@ The VWB-10 documentation commits record the local review and promotion history. 
 | Release date | Version | Change IDs | PR / commit | Preview | QA result | Approved by | Rollback |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | — | Local main draft | 01–14 | `main` through `49681c6` before this tracker update; `origin/main` remains `cd9fe81` | Local `http://127.0.0.1:5178/?skipIntro=1` and `/2020/` | Partial; 4 unit tests pass; Stripe and release checks pending | Local promotion requested by user on 2026-11-16 | `cd9fe81` |
-| — | Local Stripe test branch | VWB-07, VWB-12 | `d380b4c` | `http://127.0.0.1:8888/2020/` when started with a private test key | 9 unit checks and 5 mocked-browser checks pass; real Stripe test payment pending | Not approved for production | Revert `d380b4c` |
+| — | Local Stripe test branch | VWB-07, VWB-12 | `d380b4c` plus follow-up API fix | `http://127.0.0.1:8888/2020/` when started with a private test key | 9 unit checks, 6 browser checks, and real one-time/monthly test Session creation pass; test-card payment pending | Not approved for production | Revert test checkout commits |
 
 ## Notes
 
