@@ -77,13 +77,21 @@ textarea {
 .home-campaign h2 { margin: 12px 0 16px; font-size: clamp(3.5rem, 7vw, 7rem); line-height: 0.94; letter-spacing: -0.07em; }
 .home-campaign-headline { max-width: 22ch; margin: 0 0 20px; color: var(--blue); font-size: clamp(1.45rem, 2.4vw, 2.4rem); font-weight: 800; line-height: 1.17; }
 .home-campaign p:not(.section-kicker):not(.home-campaign-headline) { max-width: 58ch; line-height: 1.65; }
-.home-campaign-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-.home-campaign-secondary { border: 1px solid var(--ink); background: transparent; }
+.home-campaign-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 30px; }
+.home-campaign-actions a { display: inline-flex; min-height: 52px; align-items: center; gap: 11px; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.07em; text-decoration: none; text-transform: uppercase; transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease; }
+.home-campaign-actions svg { width: 21px; height: 21px; flex: none; }
+.home-campaign-donate { padding: 0 21px; border-radius: 28px; background: var(--blue); color: #fff; }
+.home-campaign-donate:hover { background: var(--ink); transform: translateY(-2px); }
+.home-campaign-sponsor { padding: 0 2px; border-bottom: 2px solid var(--red); color: var(--ink); }
+.home-campaign-sponsor svg { color: var(--red); transition: transform 0.2s ease; }
+.home-campaign-sponsor:hover svg { transform: translate(3px, -3px); }
+.home-campaign-actions a:focus-visible { outline: 3px solid var(--red); outline-offset: 5px; }
 .home-campaign-link { display: grid; min-height: 290px; align-content: space-between; padding: clamp(26px, 4vw, 48px); border: 1px solid var(--quiet); border-radius: 20px; background: var(--blue-soft); text-decoration: none; }
 .home-campaign-link > span { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
 .home-campaign-link strong { font-size: clamp(4.5rem, 6.2vw, 6.3rem); line-height: 1; letter-spacing: -0.09em; white-space: nowrap; }
 .home-campaign-link strong span { color: var(--red); }
 @media (max-width: 760px) { .home-campaign-grid { grid-template-columns: 1fr; } .home-campaign-link { min-height: 230px; } }
+@media (prefers-reduced-motion: reduce) { .home-campaign-actions a, .home-campaign-sponsor svg { transition: none; } .home-campaign-donate:hover { transform: none; } }
 
 .site-header {
   position: fixed;
